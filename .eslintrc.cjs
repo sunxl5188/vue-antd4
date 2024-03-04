@@ -8,7 +8,8 @@ module.exports = {
 		'eslint:recommended',
 		'plugin:@typescript-eslint/recommended',
 		'plugin:vue/vue3-essential',
-		'plugin:prettier/recommended'
+		'plugin:prettier/recommended',
+		'./.eslintrc-auto-import.json'
 	],
 	overrides: [
 		{
@@ -31,6 +32,12 @@ module.exports = {
 		indent: ['error', 'tab'],
 		'linebreak-style': ['error', 'unix'],
 		quotes: ['error', 'single'],
-		semi: ['error', 'never']
+		semi: ['error', 'never'],
+		'vue/multi-word-component-names': [
+			'error',
+			{
+				ignores: ['index', 'main'] //需要忽略的组件名
+			}
+		]
 	}
 }
