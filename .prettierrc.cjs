@@ -41,8 +41,7 @@ module.exports = {
 		{
 			files: '*.html',
 			options: {
-				tabWidth: 2,
-				semi: false
+				parser: 'html'
 			}
 		}
 	]

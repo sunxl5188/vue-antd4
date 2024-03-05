@@ -116,7 +116,7 @@ const removePending = (config: AxiosRequestConfig) => {
  * 实例化配置
  */
 const instance = axios.create({
-	baseURL: '/api',
+	baseURL: import.meta.env.VITE_API,
 	//"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
 	headers: {
 		'Content-Type': 'application/json;charset=UTF-8' //默认

@@ -1,11 +1,12 @@
 //https://router.vuejs.org/zh/
-import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 const routes: Array<RouteRecordRaw> = [
 	{
 		path: '/',
 		name: 'Home',
-		component: () => import('@/views/home/index.vue')
+		component: () => import('@/views/home/index.vue'),
+		meta: {}
 	},
 	{
 		path: '/admin',
@@ -18,16 +19,21 @@ const routes: Array<RouteRecordRaw> = [
 ]
 
 const router = createRouter({
-	history: createWebHashHistory(),
+	history: createWebHistory('/'),
 	routes
 })
 
 //全局前置守卫
 
 router.beforeEach((to, from) => {
+	//设置页面标题
+	if (to.meta.title) {
+		//判断是否有标题
+		document.title = to.meta.title as string
+	}
 	// 返回 false 以取消导航
 	console.log(to, from)
-	return false
+	return true
 })
 
 //全局解析守卫,所有组件内守卫和异步路由组件被解析之后调用
