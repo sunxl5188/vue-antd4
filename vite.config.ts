@@ -6,6 +6,7 @@ import Components from 'unplugin-vue-components/vite'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 import AutoImport from 'unplugin-auto-import/vite'
 import { createHtmlPlugin } from 'vite-plugin-html'
+import VueSetupExtend from 'vite-plugin-vue-setup-extend'
 
 // https://vitejs.dev/config/
 export default ({ mode }: { mode: any }) => {
@@ -30,6 +31,7 @@ export default ({ mode }: { mode: any }) => {
 		},
 		plugins: [
 			vue(),
+			VueSetupExtend(),
 			eslintPlugin({
 				lintOnStart: true,
 				cache: false,
