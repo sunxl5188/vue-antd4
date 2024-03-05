@@ -7,6 +7,7 @@ import axios, {
 	InternalAxiosRequestConfig,
 	AxiosPromise
 } from 'axios'
+import { useAppStore } from '@/store/appStore'
 import { message } from 'ant-design-vue'
 
 declare module 'axios' {
@@ -16,6 +17,7 @@ declare module 'axios' {
 	}
 }
 
+const store = useAppStore()
 const handleMessage = (content: string): void => {
 	message.error(content)
 }
@@ -143,16 +145,14 @@ instance.interceptors.request.use(
 			})
 		})
 		const token = localStorage.getItem('token') ?? ''
-		if (token) {
-			config.headers!.Authorization = token
-			config.headers!.Token = token
+		if (token && config.headers) {
+			config.headers.Authorization = token
+			config.headers.Token = token
 		}
 		return config
 	},
-	error => {
-		const err = error.data.error as any
-		message.error(err.message)
-		return Promise.reject(err.message)
+	(error: AxiosError) => {
+		return Promise.reject(error)
 	}
 )
 
@@ -178,7 +178,7 @@ instance.interceptors.response.use(
 
 			if (config && RETRY_COUNT) {
 				// 设置用于跟踪重试计数的变量
-				config._count = config._count || 0
+				config._count = config._count ?? 0
 				// 检查是否已经把重试的总数用完
 				if (config._count >= RETRY_COUNT) {
 					return Promise.reject(response ?? { message: error.message })
@@ -203,7 +203,7 @@ instance.interceptors.response.use(
 			// eg:请求超时或断网时，更新state的network状态
 			// network状态在app.vue中控制着一个全局的断网提示组件的显示隐藏
 			// 后续增加断网情况下做的一些操作
-			//store.commit('setNetwork', false)
+			store.setNetWork(false)
 		}
 	}
 )
