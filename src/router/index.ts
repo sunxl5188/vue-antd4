@@ -12,13 +12,199 @@ const routes: Array<RouteRecordRaw> = [
 				path: 'index',
 				name: 'index',
 				component: () => import('@/views/index.vue'),
-				meta: { title: '后台首页' }
+				meta: { title: '工作台' }
+			}
+		]
+	},
+	{
+		path: '/dashboard',
+		name: 'dashboard',
+		component: layout,
+		redirect: { name: 'welcome' },
+		meta: { title: '仪表盘', keepAlive: true },
+		children: [
+			{
+				path: 'welcome',
+				name: 'welcome',
+				component: () => import('@/views/dashboard/WelcomePage.vue'),
+				meta: { title: '欢迎页', keepAlive: true }
 			},
 			{
-				path: 'about',
-				name: 'about',
-				component: () => import('@/views/AboutPage.vue'),
-				meta: { title: '关于我们', keepAlive: true }
+				path: 'analysis',
+				name: 'analysis',
+				component: () => import('@/views/dashboard/AnalysisPage.vue'),
+				meta: { title: '分析页', keepAlive: true }
+			},
+			{
+				path: 'monitor',
+				name: 'monitor',
+				component: () => import('@/views/dashboard/MonitorPage.vue'),
+				meta: { title: '监控页', keepAlive: true }
+			}
+		]
+	},
+	{
+		path: '/form',
+		name: 'form',
+		component: layout,
+		redirect: { name: 'base-form' },
+		meta: { title: '表单页', keepAlive: true },
+		children: [
+			{
+				path: 'base-form',
+				name: 'base-form',
+				component: () => import('@/views/form/BaseForm.vue'),
+				meta: { title: '基础表单', keepAlive: true }
+			},
+			{
+				path: 'step-form',
+				name: 'step-form',
+				component: () => import('@/views/form/StepForm.vue'),
+				meta: { title: '分步表单', keepAlive: true }
+			},
+			{
+				path: 'advanced-form',
+				name: 'advanced-form',
+				component: () => import('@/views/form/AdvancedForm.vue'),
+				meta: { title: '高级表单', keepAlive: true }
+			}
+		]
+	},
+	{
+		path: '/list',
+		name: 'list',
+		component: layout,
+		redirect: { name: 'table-list' },
+		meta: { title: '表单页', keepAlive: true },
+		children: [
+			{
+				path: 'table-list',
+				name: 'table-list',
+				component: () => import('@/views/table/TableList.vue'),
+				meta: { title: '基础表单', keepAlive: true }
+			},
+			{
+				path: 'basic-list',
+				name: 'basic-list',
+				component: () => import('@/views/table/BasicList.vue'),
+				meta: { title: '标准列表', keepAlive: true }
+			},
+			{
+				path: 'card-list',
+				name: 'card-list',
+				component: () => import('@/views/table/CardList.vue'),
+				meta: { title: '卡片列表', keepAlive: true }
+			}
+		]
+	},
+	{
+		path: '/profile',
+		name: 'profile',
+		component: layout,
+		redirect: { name: 'basic' },
+		meta: { title: '详细页', keepAlive: true },
+		children: [
+			{
+				path: 'basic',
+				name: 'basic',
+				component: () => import('@/views/profile/BasicPage.vue'),
+				meta: { title: '基础表单', keepAlive: true }
+			},
+			{
+				path: 'advanced',
+				name: 'advanced',
+				component: () => import('@/views/profile/AdvancedPage.vue'),
+				meta: { title: '标准列表', keepAlive: true }
+			}
+		]
+	},
+	{
+		path: '/error',
+		name: 'error',
+		component: layout,
+		redirect: { name: 'error-403' },
+		meta: { title: '异常页', keepAlive: true },
+		children: [
+			{
+				path: 'error-403',
+				name: 'error-403',
+				component: () => import('@/views/error/ErrorPage403.vue'),
+				meta: { title: '403', keepAlive: true }
+			},
+			{
+				path: 'error-404',
+				name: 'error-404',
+				component: () => import('@/views/error/ErrorPage404.vue'),
+				meta: { title: '404', keepAlive: true }
+			},
+			{
+				path: 'error-500',
+				name: 'error-500',
+				component: () => import('@/views/error/ErrorPage500.vue'),
+				meta: { title: '500', keepAlive: true }
+			}
+		]
+	},
+	{
+		path: '/result',
+		name: 'result',
+		component: layout,
+		redirect: { name: 'success' },
+		meta: { title: '结果页', keepAlive: true },
+		children: [
+			{
+				path: 'success',
+				name: 'success',
+				component: () => import('@/views/result/SuccessPage.vue'),
+				meta: { title: '成功页', keepAlive: true }
+			},
+			{
+				path: 'fail',
+				name: 'fail',
+				component: () => import('@/views/result/FailPage.vue'),
+				meta: { title: '失败页', keepAlive: true }
+			}
+		]
+	},
+	{
+		path: '/account',
+		name: 'account',
+		component: layout,
+		redirect: { name: 'center' },
+		meta: { title: '个人中心', keepAlive: true },
+		children: [
+			{
+				path: 'center',
+				name: 'center',
+				component: () => import('@/views/account/CenterPage.vue'),
+				meta: { title: '个人中心', keepAlive: true }
+			},
+			{
+				path: 'settings',
+				name: 'settings',
+				component: () => import('@/views/account/SettingPage.vue'),
+				meta: { title: '个人设置', keepAlive: true }
+			}
+		]
+	},
+	{
+		path: '/system',
+		name: 'system',
+		component: layout,
+		redirect: { name: 'role-list' },
+		meta: { title: '系统管理', keepAlive: true },
+		children: [
+			{
+				path: 'role-list',
+				name: 'role-list',
+				component: () => import('@/views/system/RoleList.vue'),
+				meta: { title: '角色管理', keepAlive: true }
+			},
+			{
+				path: 'permission-list',
+				name: 'permission-list',
+				component: () => import('@/views/system/PermissionList.vue'),
+				meta: { title: '个人设置', keepAlive: true }
 			}
 		]
 	},
