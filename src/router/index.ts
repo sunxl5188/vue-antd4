@@ -2,7 +2,15 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import layout from '@/layout/index.vue'
 
-const routes: Array<RouteRecordRaw> = [
+const constantRoutes: Array<RouteRecordRaw> = [
+	{
+		path: '/login',
+		component: () => import('@/views/LoginPage.vue'),
+		meta: { title: '用户登录' }
+	}
+]
+
+const dynamicRoutes: Array<RouteRecordRaw> = [
 	{
 		path: '/',
 		component: layout,
@@ -217,7 +225,7 @@ const routes: Array<RouteRecordRaw> = [
 
 const router = createRouter({
 	history: createWebHistory('/'),
-	routes
+	routes: [...constantRoutes, ...dynamicRoutes]
 })
 
 //全局前置守卫

@@ -7,6 +7,7 @@ import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 import AutoImport from 'unplugin-auto-import/vite'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import VueSetupExtend from 'vite-plugin-vue-setup-extend'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 // https://vitejs.dev/config/
 export default ({ mode }: { mode: any }) => {
@@ -76,6 +77,12 @@ export default ({ mode }: { mode: any }) => {
 						title: env.VITE_TITLE
 					}
 				}
+			}),
+			createSvgIconsPlugin({
+				// 指定路径在你的src里的svg存放文件
+				iconDirs: [resolve(process.cwd(), 'src/assets/icons')],
+				// 指定symbolId格式
+				symbolId: '[name]'
 			})
 		],
 		server: {
