@@ -1,6 +1,7 @@
 //https://www.axios-http.cn/docs/intro
 //http://www.axios-js.com/zh-cn/docs/#axios-put-url-data-config
 import axios, {
+	AxiosInstance,
 	AxiosRequestConfig,
 	AxiosResponse,
 	AxiosError,
@@ -217,7 +218,7 @@ instance.interceptors.response.use(
  */
 export const fetch = (
 	url: string,
-	params: object,
+	params?: object,
 	config?: AxiosRequestConfig
 ): AxiosPromise => {
 	return new Promise((resolve, reject) => {
@@ -321,3 +322,16 @@ export const request = (config: AxiosRequestConfig): AxiosPromise => {
 			.catch(error => reject(error))
 	})
 }
+
+export interface AxiosType {
+	request(config?: InternalAxiosRequestConfig): AxiosInstance
+	fetch(url: string, params?: object, config?: AxiosRequestConfig): AxiosPromise
+	post(url: string, data: object, config?: AxiosRequestConfig): AxiosPromise
+	put(url: string, params: object, config?: AxiosRequestConfig): AxiosPromise
+	patch(url: string, params: object, config?: AxiosRequestConfig): AxiosPromise
+	del(url: string, params: object, config?: AxiosRequestConfig): AxiosPromise
+}
+
+declare const $axios: AxiosType
+
+export default $axios

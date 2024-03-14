@@ -7,3 +7,7 @@ export const getList = () => {
 			.catch(err => reject(err))
 	})
 }
+
+export declare const home: typeof getList
+
+export default home
