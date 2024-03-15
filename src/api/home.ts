@@ -1,6 +1,6 @@
 import { fetch } from '@/utils/request'
 
-export const getList = () => {
+const getList = () => {
 	return new Promise((resolve, reject) => {
 		fetch('/index/system/index/code/2', {})
 			.then(res => resolve(res.data))
@@ -8,6 +8,6 @@ export const getList = () => {
 	})
 }
 
-export declare const home: typeof getList
+const home = { getList: getList }
 
 export default home

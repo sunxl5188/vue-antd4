@@ -1,7 +1,6 @@
 //https://www.axios-http.cn/docs/intro
 //http://www.axios-js.com/zh-cn/docs/#axios-put-url-data-config
 import axios, {
-	AxiosInstance,
 	AxiosRequestConfig,
 	AxiosResponse,
 	AxiosError,
@@ -210,7 +209,7 @@ instance.interceptors.response.use(
 )
 
 /**
- * GET
+ * Axios.GET
  * @param url API地址
  * @param params 参数
  * @param config axios.config
@@ -230,9 +229,9 @@ export const fetch = (
 }
 
 /**
- * POST
+ * Axios.POST
  * @param url API地址
- * @param data 能数
+ * @param data 参数
  * @param config axios.config
  * @returns 返回数据
  */
@@ -250,7 +249,7 @@ export const post = (
 }
 
 /**
- * PUT~完整的更新资源,修改数据:将所有数据都推送到后端
+ * Axios.PUT~完整的更新资源,修改数据:将所有数据都推送到后端
  * @param url API地址
  * @param params 参数
  * @param config axios.config
@@ -270,7 +269,7 @@ export const put = (
 }
 
 /**
- * PATCH~局部更新~修改数据：只将修改的数据推送到后端
+ * Axios.PATCH~局部更新~修改数据：只将修改的数据推送到后端
  * @param url API地址
  * @param params 参数
  * @param config axios.config
@@ -290,7 +289,7 @@ export const patch = (
 }
 
 /**
- * DELETE 用于删除数据
+ * Axios.DELETE 用于删除数据
  * @param url API地址
  * @param params 参数
  * @param config axios.config
@@ -310,7 +309,7 @@ export const del = (
 }
 
 /**
- * REQUEST请求
+ * Axios.REQUEST请求
  * @param config axios.config
  * @returns 返回数据
  */
@@ -322,16 +321,3 @@ export const request = (config: AxiosRequestConfig): AxiosPromise => {
 			.catch(error => reject(error))
 	})
 }
-
-export interface AxiosType {
-	request(config?: InternalAxiosRequestConfig): AxiosInstance
-	fetch(url: string, params?: object, config?: AxiosRequestConfig): AxiosPromise
-	post(url: string, data: object, config?: AxiosRequestConfig): AxiosPromise
-	put(url: string, params: object, config?: AxiosRequestConfig): AxiosPromise
-	patch(url: string, params: object, config?: AxiosRequestConfig): AxiosPromise
-	del(url: string, params: object, config?: AxiosRequestConfig): AxiosPromise
-}
-
-declare const $axios: AxiosType
-
-export default $axios

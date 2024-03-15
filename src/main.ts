@@ -6,6 +6,7 @@ import { createPinia } from 'pinia'
 import { createPersistedState } from 'pinia-plugin-persistedstate'
 import 'virtual:svg-icons-register'
 import SvgIcon from './components/icons/SvgIcon.vue'
+import * as api from '@/api'
 
 const app = createApp(App)
 const pinia = createPinia()
@@ -13,6 +14,8 @@ pinia.use(createPersistedState())
 
 // 注册全局组件
 app.component('SvgIcon', SvgIcon)
+
+app.config.globalProperties.$api = api
 
 app.use(router)
 app.use(pinia)
