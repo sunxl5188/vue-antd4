@@ -12,16 +12,15 @@
 				<a-tab-pane key="1" tab="帐号密码登录" />
 				<a-tab-pane key="2" tab="手机号登录" />
 			</a-tabs>
-			<a-form-model ref="ruleForm" :model="formParams" :rules="formRules">
-			</a-form-model>
+			<a-form ref="ruleForm" :model="formData" :rules="rules"> </a-form>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts" name="LoginPage">
 const activeKey = ref('1')
-const formParams = ref({})
-const formRules = ref({})
+const formData = ref({})
+const rules = ref({})
 </script>
 
 <style scoped land="less"></style>
