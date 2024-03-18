@@ -41,13 +41,13 @@ const dynamicRoutes: Array<RouteRecordRaw> = [
 				path: 'analysis',
 				name: 'analysis',
 				component: () => import('@/views/dashboard/AnalysisPage.vue'),
-				meta: { title: '分析页', keepAlive: true }
+				meta: { title: '分析页', keepAlive: false }
 			},
 			{
 				path: 'monitor',
 				name: 'monitor',
 				component: () => import('@/views/dashboard/MonitorPage.vue'),
-				meta: { title: '监控页', keepAlive: true }
+				meta: { title: '监控页', keepAlive: false }
 			}
 		]
 	},

@@ -21,6 +21,7 @@ declare module 'vue' {
     AMenu: typeof import('ant-design-vue/es')['Menu']
     ATabPane: typeof import('ant-design-vue/es')['TabPane']
     ATabs: typeof import('ant-design-vue/es')['Tabs']
+    MyTable: typeof import('./src/components/MyTable.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SvgIcon: typeof import('./src/components/icons/SvgIcon.vue')['default']
