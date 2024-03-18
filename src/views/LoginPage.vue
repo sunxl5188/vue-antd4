@@ -12,15 +12,73 @@
 				<a-tab-pane key="1" tab="帐号密码登录" />
 				<a-tab-pane key="2" tab="手机号登录" />
 			</a-tabs>
-			<a-form ref="ruleForm" :model="formData" :rules="rules"> </a-form>
+			<a-form ref="formRef" :model="formData" :rules="rules">
+				<a-form-item name="userName">
+					<a-input
+						v-model:value="formData.userName"
+						placeholder="请输入账号"
+						allowClear
+						autoComplete="off"
+					>
+						<template #prefix><user-outlined /></template>
+					</a-input>
+				</a-form-item>
+				<a-form-item name="password">
+					<a-input-password
+						v-model:value="formData.password"
+						placeholder="请输入登录密码"
+						allowClear
+						autoComplete="off"
+					>
+						<template #prefix>
+							<LockOutlined class="site-form-item-icon" />
+						</template>
+					</a-input-password>
+				</a-form-item>
+				<a-form-model-item class="flex justify-between items-center mb-6">
+					<a-checkbox value="1">自动登录 </a-checkbox>
+					<a-button type="link">忘记密码</a-button>
+				</a-form-model-item>
+				<a-form-item>
+					<a-button type="primary" block @click="handleSubmit">登录</a-button>
+				</a-form-item>
+			</a-form>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts" name="LoginPage">
-const activeKey = ref('1')
-const formData = ref({})
-const rules = ref({})
-</script>
+import type { UnwrapRef } from 'vue'
+import type { Rule } from 'ant-design-vue/es/form'
 
-<style scoped land="less"></style>
+interface LoginPropType {
+	userName: string
+	password: string
+}
+const activeKey = ref<string>('1')
+const formData: UnwrapRef<LoginPropType> = reactive({
+	userName: '',
+	password: ''
+})
+
+const rules: Record<string, Rule[]> = {
+	userName: [{ required: true, message: '请输入帐户名或邮箱地址' }],
+	password: [{ required: true, message: '请输入密码' }]
+}
+
+const formRef = ref()
+const handleSubmit = (): void => {
+	formRef.value
+		.validate()
+		.then(() => {
+			console.log(22)
+		})
+		.catch(() => {
+			console.log(11)
+		})
+}
+
+const handleReset = (): void => {
+	formRef.value.resetFields()
+}
+</script>

@@ -1,10 +1,7 @@
 //https://router.vuejs.org/zh/
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import layout from '@/layout/index.vue'
-import { useAppStore } from '@/store/appStore'
 
-const store = useAppStore()
-console.log(store)
 const constantRoutes: Array<RouteRecordRaw> = [
 	{
 		path: '/login',
@@ -36,19 +33,19 @@ const dynamicRoutes: Array<RouteRecordRaw> = [
 		children: [
 			{
 				path: 'welcome',
-				name: 'welcome',
+				name: 'WelcomePage',
 				component: () => import('@/views/dashboard/WelcomePage.vue'),
 				meta: { title: '欢迎页', keepAlive: true }
 			},
 			{
 				path: 'analysis',
-				name: 'analysis',
+				name: 'AnalysisPage',
 				component: () => import('@/views/dashboard/AnalysisPage.vue'),
-				meta: { title: '分析页', keepAlive: false }
+				meta: { title: '分析页', keepAlive: true }
 			},
 			{
 				path: 'monitor',
-				name: 'monitor',
+				name: 'MonitorPage',
 				component: () => import('@/views/dashboard/MonitorPage.vue'),
 				meta: { title: '监控页', keepAlive: false }
 			}
@@ -63,19 +60,19 @@ const dynamicRoutes: Array<RouteRecordRaw> = [
 		children: [
 			{
 				path: 'base-form',
-				name: 'base-form',
+				name: 'BaseForm',
 				component: () => import('@/views/form/BaseForm.vue'),
 				meta: { title: '基础表单', keepAlive: true }
 			},
 			{
 				path: 'step-form',
-				name: 'step-form',
+				name: 'StepForm',
 				component: () => import('@/views/form/StepForm.vue'),
 				meta: { title: '分步表单', keepAlive: true }
 			},
 			{
 				path: 'advanced-form',
-				name: 'advanced-form',
+				name: 'AdvancedForm',
 				component: () => import('@/views/form/AdvancedForm.vue'),
 				meta: { title: '高级表单', keepAlive: true }
 			}
@@ -90,19 +87,19 @@ const dynamicRoutes: Array<RouteRecordRaw> = [
 		children: [
 			{
 				path: 'table-list',
-				name: 'table-list',
+				name: 'TableList',
 				component: () => import('@/views/table/TableList.vue'),
 				meta: { title: '基础表单', keepAlive: true }
 			},
 			{
 				path: 'basic-list',
-				name: 'basic-list',
+				name: 'BasicList',
 				component: () => import('@/views/table/BasicList.vue'),
 				meta: { title: '标准列表', keepAlive: true }
 			},
 			{
 				path: 'card-list',
-				name: 'card-list',
+				name: 'CardList',
 				component: () => import('@/views/table/CardList.vue'),
 				meta: { title: '卡片列表', keepAlive: true }
 			}
@@ -117,13 +114,13 @@ const dynamicRoutes: Array<RouteRecordRaw> = [
 		children: [
 			{
 				path: 'basic',
-				name: 'basic',
+				name: 'BasicPage',
 				component: () => import('@/views/profile/BasicPage.vue'),
 				meta: { title: '基础表单', keepAlive: true }
 			},
 			{
 				path: 'advanced',
-				name: 'advanced',
+				name: 'AdvancedPage',
 				component: () => import('@/views/profile/AdvancedPage.vue'),
 				meta: { title: '标准列表', keepAlive: true }
 			}
@@ -165,13 +162,13 @@ const dynamicRoutes: Array<RouteRecordRaw> = [
 		children: [
 			{
 				path: 'success',
-				name: 'success',
+				name: 'SuccessPage',
 				component: () => import('@/views/result/SuccessPage.vue'),
 				meta: { title: '成功页', keepAlive: true }
 			},
 			{
 				path: 'fail',
-				name: 'fail',
+				name: 'FailPage',
 				component: () => import('@/views/result/FailPage.vue'),
 				meta: { title: '失败页', keepAlive: true }
 			}
@@ -186,13 +183,13 @@ const dynamicRoutes: Array<RouteRecordRaw> = [
 		children: [
 			{
 				path: 'center',
-				name: 'center',
+				name: 'CenterPage',
 				component: () => import('@/views/account/CenterPage.vue'),
 				meta: { title: '个人中心', keepAlive: true }
 			},
 			{
 				path: 'settings',
-				name: 'settings',
+				name: 'SettingPage',
 				component: () => import('@/views/account/SettingPage.vue'),
 				meta: { title: '个人设置', keepAlive: true }
 			}
@@ -207,13 +204,13 @@ const dynamicRoutes: Array<RouteRecordRaw> = [
 		children: [
 			{
 				path: 'role-list',
-				name: 'role-list',
+				name: 'RoleList',
 				component: () => import('@/views/system/RoleList.vue'),
 				meta: { title: '角色管理', keepAlive: true }
 			},
 			{
 				path: 'permission-list',
-				name: 'permission-list',
+				name: 'PermissionList',
 				component: () => import('@/views/system/PermissionList.vue'),
 				meta: { title: '个人设置', keepAlive: true }
 			}

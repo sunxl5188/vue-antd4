@@ -6,9 +6,12 @@ interface StateType {
 }
 
 export const useAppStore = defineStore('app', {
-	state: (): StateType => ({ network: true, keepAlive: [] }),
+	state: (): StateType => ({
+		network: true,
+		keepAlive: ['WelcomePage', 'AnalysisPage']
+	}),
 	getters: {
-		keepAlive: (state): string[] => state.keepAlive
+		keepArray: (state): string[] => state.keepAlive
 	},
 	actions: {
 		//设置网络状态

@@ -2,6 +2,10 @@
 	<div></div>
 </template>
 
-<script setup lang="ts" name="MonitorPage"></script>
-
-<style scoped land="scss"></style>
+<script setup lang="ts" name="MonitorPage">
+import { useRoute } from 'vue-router'
+const route = useRoute()
+onMounted(() => {
+	console.log(route.name)
+})
+</script>

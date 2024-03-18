@@ -3,7 +3,6 @@
 </template>
 
 <script setup lang="ts" name="WelcomePage">
-import { useRoute } from 'vue-router'
 const route = useRoute()
 onMounted(() => {
 	console.log(route.name)
