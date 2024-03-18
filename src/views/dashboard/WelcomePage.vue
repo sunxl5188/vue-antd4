@@ -2,6 +2,12 @@
 	<div></div>
 </template>
 
-<script setup lang="ts" name="WelcomePage"></script>
+<script setup lang="ts" name="WelcomePage">
+import { useRoute } from 'vue-router'
+const route = useRoute()
+onMounted(() => {
+	console.log(route.name)
+})
+</script>
 
 <style scoped land="scss"></style>

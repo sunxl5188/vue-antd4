@@ -4,14 +4,13 @@
 		<a-layout>
 			<LayoutSider />
 			<a-layout-content class="bg-gray-100 p-4">
-				<router-view v-if="$route.meta.keepAlive" v-slot="{ Component }">
+				<router-view v-slot="{ Component }">
 					<transition>
-						<keep-alive>
+						<keep-alive include="WelcomePage">
 							<component :is="Component"></component>
 						</keep-alive>
 					</transition>
 				</router-view>
-				<router-view v-else />
 			</a-layout-content>
 		</a-layout>
 	</a-layout>

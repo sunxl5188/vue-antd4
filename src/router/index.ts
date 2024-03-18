@@ -1,7 +1,10 @@
 //https://router.vuejs.org/zh/
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import layout from '@/layout/index.vue'
+import { useAppStore } from '@/store/appStore'
 
+const store = useAppStore()
+console.log(store)
 const constantRoutes: Array<RouteRecordRaw> = [
 	{
 		path: '/login',
@@ -18,7 +21,7 @@ const dynamicRoutes: Array<RouteRecordRaw> = [
 		children: [
 			{
 				path: 'index',
-				name: 'index',
+				name: 'index', //名称要与组件名称相同,用于keepAlive缓存页面
 				component: () => import('@/views/index.vue'),
 				meta: { title: '工作台' }
 			}
@@ -249,7 +252,10 @@ router.beforeEach(to => {
 	}
 }) */
 //全局后置钩子~它们对于分析、更改页面标题、声明页面等辅助功能以及许多其他事情都很有用
-/* router.afterEach((to, from) => {
-	console.log(to, from)
+/* router.afterEach((to: RouteLocationNormalized) => {
+	console.log(store)
+	if (to.meta.keepAlive) {
+		console.log(to.name)
+	}
 }) */
 export default router
