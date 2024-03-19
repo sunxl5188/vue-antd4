@@ -42,7 +42,8 @@ export default ({ mode }: { mode: any }) => {
 				resolvers: [
 					AntDesignVueResolver({
 						importStyle: false, // css in js
-						resolveIcons: true
+						resolveIcons: true,
+						size: 'large'
 					})
 				]
 			}),

@@ -5,8 +5,21 @@ import layout from '@/layout/index.vue'
 const constantRoutes: Array<RouteRecordRaw> = [
 	{
 		path: '/login',
+		name: 'LoginPage',
 		component: () => import('@/views/LoginPage.vue'),
 		meta: { title: '用户登录' }
+	},
+	{
+		path: '/recover',
+		name: 'RecoverPassword',
+		component: () => import('@/views/RecoverPassword.vue'),
+		meta: { title: '找回密码' }
+	},
+	{
+		path: '/register',
+		name: 'RegisterAccount',
+		component: () => import('@/views/RegisterAccount.vue'),
+		meta: { title: '注册账号' }
 	}
 ]
 

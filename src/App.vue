@@ -1,5 +1,5 @@
 <template>
-	<a-config-provider :locale="locale">
+	<a-config-provider :locale="locale" component-size="large">
 		<router-view />
 	</a-config-provider>
 </template>
