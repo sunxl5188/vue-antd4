@@ -50,5 +50,9 @@ module.exports = {
 		'no-unused-vars': 'off',
 		'@typescript-eslint/no-unused-vars': 'error',
 		'vue/comment-directive': 'off'
+	},
+	globals: {
+		__APP_VERSION__: true,
+		__APP_PREFIX__: true
 	}
 }

@@ -11,8 +11,15 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 // https://vitejs.dev/config/
 export default ({ mode }: { mode: any }) => {
-	const env = loadEnv(mode, process.cwd())
+	const env = loadEnv(mode, process.cwd(), '')
 	return defineConfig({
+		define: {
+			__APP_PREFIX__: JSON.stringify(env.VITE_PREFIX),
+			__APP_VERSION__: JSON.stringify(env.npm_package_version),
+			__IS_ENCRYPT__: JSON.stringify(true),
+			__SECRET_KEY__: JSON.stringify('ccdde6e143439161'),
+			__SECRET_VI__: JSON.stringify('aabbe7e3ba84431a')
+		},
 		base: '/',
 		css: {
 			preprocessorOptions: {
@@ -42,8 +49,7 @@ export default ({ mode }: { mode: any }) => {
 				resolvers: [
 					AntDesignVueResolver({
 						importStyle: false, // css in js
-						resolveIcons: true,
-						size: 'large'
+						resolveIcons: true
 					})
 				]
 			}),

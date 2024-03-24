@@ -249,6 +249,7 @@ router.beforeEach(to => {
 		//判断是否有标题
 		document.title = to.meta.title as string
 	}
+
 	// 返回 false 以取消导航
 	//console.log(to, from)
 	return true
