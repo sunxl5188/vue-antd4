@@ -1,8 +1,25 @@
 //https://router.vuejs.org/zh/
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import layout from '@/layout/index.vue'
+import cookies from '@/utils/cookies'
+import { useUserStore } from '@/store/userStore'
 
-const constantRoutes: Array<RouteRecordRaw> = [
+const whiteList: Array<string> = ['/login', '/register']
+
+export const constantRoutes: Array<RouteRecordRaw> = [
+	{
+		path: '/',
+		component: layout,
+		redirect: { name: 'index' },
+		children: [
+			{
+				path: 'index',
+				name: 'index', //名称要与组件名称相同,用于keepAlive缓存页面
+				component: () => import('@/views/index.vue'),
+				meta: { title: '工作台' }
+			}
+		]
+	},
 	{
 		path: '/login',
 		name: 'LoginPage',
@@ -20,23 +37,15 @@ const constantRoutes: Array<RouteRecordRaw> = [
 		name: 'RegisterAccount',
 		component: () => import('@/views/RegisterAccount.vue'),
 		meta: { title: '注册账号' }
+	},
+	{
+		path: '/:pathMatch(.*)*',
+		name: 'NotFound',
+		component: () => import('@/views/error/ErrorPage404.vue')
 	}
 ]
 
-const dynamicRoutes: Array<RouteRecordRaw> = [
-	{
-		path: '/',
-		component: layout,
-		redirect: { name: 'index' },
-		children: [
-			{
-				path: 'index',
-				name: 'index', //名称要与组件名称相同,用于keepAlive缓存页面
-				component: () => import('@/views/index.vue'),
-				meta: { title: '工作台' }
-			}
-		]
-	},
+export const dynamicRoutes: Array<RouteRecordRaw> = [
 	{
 		path: '/dashboard',
 		name: 'dashboard',
@@ -228,31 +237,65 @@ const dynamicRoutes: Array<RouteRecordRaw> = [
 				meta: { title: '个人设置', keepAlive: true }
 			}
 		]
-	},
-	{
-		path: '/:pathMatch(.*)*',
-		name: 'NotFound',
-		component: () => import('@/views/error/ErrorPage404.vue')
 	}
 ]
 
 const router = createRouter({
 	history: createWebHistory('/'),
-	routes: [...constantRoutes, ...dynamicRoutes]
+	routes: constantRoutes,
+	scrollBehavior(to, form, savedPosition) {
+		if (to && form) {
+			// ....
+		}
+		if (savedPosition) {
+			return savedPosition
+		} else {
+			return { top: 0, left: 0 }
+		}
+	}
 })
 
 //全局前置守卫
 
-router.beforeEach(to => {
+router.beforeEach(function (to, from) {
+	const store = useUserStore()
 	//设置页面标题
 	if (to.meta.title) {
 		//判断是否有标题
 		document.title = to.meta.title as string
 	}
-
-	// 返回 false 以取消导航
-	//console.log(to, from)
-	return true
+	if (from) {
+		// ...
+	}
+	if (cookies.get('token')) {
+		console.log(to)
+		if (to.path === '/login') {
+			return { path: '/' }
+		} else if (store.routes.length === 0) {
+			// 判断当前用户是否已拉取完user_info信息
+			store
+				.getInfo()
+				.then(() => {
+					store.generateRoutes().then(accessRoutes => {
+						// 根据roles权限生成可访问的路由表
+						router.addRoutes(accessRoutes) // 动态添加可访问路由表
+						return { ...to, replace: true } // hack方法 确保addRoutes已完成
+					})
+				})
+				.catch(err => {
+					store.dispatch('LogOut').then(() => {
+						return { path: '/' }
+					})
+				})
+		} else {
+			return true
+		}
+	} else if (whiteList.indexOf(to.path) !== -1) {
+		// 在免登录白名单，直接进入
+		return true
+	} else {
+		return { path: `/login?redirect=${to.fullPath}` } // 否则全部重定向到登录页
+	}
 })
 
 //全局解析守卫,所有组件内守卫和异步路由组件被解析之后调用

@@ -1,7 +1,13 @@
 import { defineStore } from 'pinia'
+import loginJson from '@/data/login.json'
 
 export const useUserStore = defineStore('user', {
-	state: () => ({ token: '', userInfo: {}, code: '' }),
+	state: () => ({
+		token: '',
+		userInfo: {},
+		code: '',
+		routes: <any>[]
+	}),
 	getters: {},
 	actions: {
 		//登录
@@ -27,6 +33,23 @@ export const useUserStore = defineStore('user', {
 					}
 				}
 			})
+		},
+		// 获取用户信息
+		getInfo() {
+			return new Promise((resolve, reject) => {
+				if (loginJson.user) {
+					this.userInfo = loginJson.user
+					resolve(true)
+				} else {
+					reject(new Error('获取用户信息失败'))
+				}
+			})
+		},
+		//生成路由
+		generateRoutes(data: Array<any>) {
+			this.routes = data
+			// 向后端请求路由数据
+			return new Promise((resolve, reject) => {})
 		}
 	},
 	persist: {

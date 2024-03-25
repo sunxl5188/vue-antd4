@@ -1,0 +1,220 @@
+{
+	"msg": "操作成功",
+	"code": 200,
+	"token": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjlkNThiNDY4LTU1MzYtNGJhZS1hOGUzLWJmZDdiMmVjZmUwNCJ9.uOpmflYVD3mrwLzRgswfRcix5bkuD2jEzNeASUlVXU5InCIVb6gMysuN_CWpLfprM5zI8X-dDXDbJeEGNIqJbw",
+	"user": {
+		"createBy": "admin",
+		"createTime": "2023-04-23 16:11:38",
+		"updateBy": null,
+		"updateTime": null,
+		"remark": "管理员",
+		"userId": 1,
+		"deptId": 103,
+		"userName": "admin",
+		"nickName": "若依",
+		"email": "ry@163.com",
+		"phonenumber": "15888888888",
+		"sex": "1",
+		"avatar": "",
+		"password": "$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2",
+		"status": "0",
+		"delFlag": "0",
+		"loginIp": "110.190.178.194",
+		"loginDate": "2023-08-11T11:12:24.000+08:00"
+	},
+	"permissions": ["*:*:*"],
+	"routes": [
+		{
+			"path": "/dashboard",
+			"name": "dashboard",
+			"component": "layout",
+			"redirect": { "name": "welcome" },
+			"meta": { "title": "仪表盘", "keepAlive": true },
+			"children": [
+				{
+					"path": "welcome",
+					"name": "WelcomePage",
+					"component": "/dashboard/WelcomePage.vue",
+					"meta": { "title": "欢迎页", "keepAlive": true }
+				},
+				{
+					"path": "analysis",
+					"name": "AnalysisPage",
+					"component": "dashboard/AnalysisPage.vue",
+					"meta": { "title": "分析页", "keepAlive": true }
+				},
+				{
+					"path": "monitor",
+					"name": "MonitorPage",
+					"component": "dashboard/MonitorPage.vue",
+					"meta": { " title": "监控页", "keepAlive": false }
+				}
+			]
+		},
+		{
+			"path": "/form",
+			"name": "form",
+			"component": "layout",
+			"redirect": { "name": "base-form" },
+			"meta": { " title": "表单页", "keepAlive": true },
+			"children": [
+				{
+					"path": "base-form",
+					"name": "BaseForm",
+					"component": "form/BaseForm.vue",
+					"meta": { " title": "基础表单", "keepAlive": true }
+				},
+				{
+					"path": "step-form",
+					"name": "StepForm",
+					"component": "form/StepForm.vue",
+					"meta": { " title": "分步表单", "keepAlive": true }
+				},
+				{
+					"path": "advanced-form",
+					"name": "AdvancedForm",
+					"component": "form/AdvancedForm.vue",
+					"meta": { " title": "高级表单", "keepAlive": true }
+				}
+			]
+		},
+		{
+			"path": "/list",
+			"name": "list",
+			"component": "layout",
+			"redirect": { "name": "table-list" },
+			"meta": { " title": "表单页", "keepAlive": true },
+			"children": [
+				{
+					"path": "table-list",
+					"name": "TableList",
+					"component": "table/TableList.vue",
+					"meta": { " title": "基础表单", "keepAlive": true }
+				},
+				{
+					"path": "basic-list",
+					"name": "BasicList",
+					"component": "table/BasicList.vue",
+					"meta": { " title": "标准列表", "keepAlive": true }
+				},
+				{
+					"path": "card-list",
+					"name": "CardList",
+					"component": "table/CardList.vue",
+					"meta": { " title": "卡片列表", "keepAlive": true }
+				}
+			]
+		},
+		{
+			"path": "/profile",
+			"name": "profile",
+			"component": "layout",
+			"redirect": { "name": "basic" },
+			"meta": { " title": "详细页", "keepAlive": true },
+			"children": [
+				{
+					"path": "basic",
+					"name": "BasicPage",
+					"component": "profile/BasicPage.vue",
+					"meta": { " title": "基础表单", "keepAlive": true }
+				},
+				{
+					"path": "advanced",
+					"name": "AdvancedPage",
+					"component": "profile/AdvancedPage.vue",
+					"meta": { " title": "标准列表", "keepAlive": true }
+				}
+			]
+		},
+		{
+			"path": "/error",
+			"name": "error",
+			"component": "layout",
+			"redirect": { "name": "error-403" },
+			"meta": { " title": "异常页", "keepAlive": true },
+			"children": [
+				{
+					"path": "error-403",
+					"name": "error-403",
+					"component": "error/ErrorPage403.vue",
+					"meta": { " title": "403", "keepAlive": true }
+				},
+				{
+					"path": "error-404",
+					"name": "error-404",
+					"component": "error/ErrorPage404.vue",
+					"meta": { " title": "404", "keepAlive": true }
+				},
+				{
+					"path": "error-500",
+					"name": "error-500",
+					"component": "error/ErrorPage500.vue",
+					"meta": { " title": "500", "keepAlive": true }
+				}
+			]
+		},
+		{
+			"path": "/result",
+			"name": "result",
+			"component": "layout",
+			"redirect": { "name": "success" },
+			"meta": { " title": "结果页", "keepAlive": true },
+			"children": [
+				{
+					"path": "success",
+					"name": "SuccessPage",
+					"component": "result/SuccessPage.vue",
+					"meta": { " title": "成功页", "keepAlive": true }
+				},
+				{
+					"path": "fail",
+					"name": "FailPage",
+					"component": "result/FailPage.vue",
+					"meta": { " title": "失败页", "keepAlive": true }
+				}
+			]
+		},
+		{
+			"path": "/account",
+			"name": "account",
+			"component": "layout",
+			"redirect": { "name": "center" },
+			"meta": { " title": "个人中心", "keepAlive": true },
+			"children": [
+				{
+					"path": "center",
+					"name": "CenterPage",
+					"component": "account/CenterPage.vue",
+					"meta": { " title": "个人中心", "keepAlive": true }
+				},
+				{
+					"path": "settings",
+					"name": "SettingPage",
+					"component": "account/SettingPage.vue",
+					"meta": { " title": "个人设置", "keepAlive": true }
+				}
+			]
+		},
+		{
+			"path": "/system",
+			"name": "system",
+			"component": "layout",
+			"redirect": { "name": "role-list" },
+			"meta": { " title": "系统管理", "keepAlive": true },
+			"children": [
+				{
+					"path": "role-list",
+					"name": "RoleList",
+					"component": "system/RoleList.vue",
+					"meta": { " title": "角色管理", "keepAlive": true }
+				},
+				{
+					"path": "permission-list",
+					"name": "PermissionList",
+					"component": "system/PermissionList.vue",
+					"meta": { " title": "个人设置", "keepAlive": true }
+				}
+			]
+		}
+	]
+}
