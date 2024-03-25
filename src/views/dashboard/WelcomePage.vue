@@ -4,6 +4,7 @@
 
 <script setup lang="ts" name="WelcomePage">
 const route = useRoute()
+
 onMounted(() => {
 	console.log(route.name)
 })

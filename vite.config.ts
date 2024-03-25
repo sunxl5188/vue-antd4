@@ -54,8 +54,14 @@ export default ({ mode }: { mode: any }) => {
 				]
 			}),
 			AutoImport({
+				include: [
+					/\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+					/\.vue$/,
+					/\.vue\?vue/, // .vue
+					/\.md$/ // .md
+				],
 				// 自动导入 Vue 相关函数，如：ref, reactive, toRef 等
-				imports: ['vue', 'vue-router', 'pinia'],
+				imports: ['vue', 'vue-router', 'pinia', '@vueuse/core'],
 				// eslint 报错解决：'ref' is not defined
 				eslintrc: {
 					// 默认 false, true 启用生成。生成一次就可以，避免每次工程启动都生成，一旦生成配置文件之后，最好把 enable 关掉，即改成 false。
@@ -64,7 +70,8 @@ export default ({ mode }: { mode: any }) => {
 					// filepath: './.eslintrc-auto-import.json', // 默认就是 ./.eslintrc-auto-import.json
 					// globalsPropValue: true, // 默认 true
 				},
-				resolvers: [AntDesignVueResolver()]
+				resolvers: [AntDesignVueResolver()],
+				dts: './auto-imports.d.ts'
 			}),
 			createHtmlPlugin({
 				minify: true, //是否压缩 html
