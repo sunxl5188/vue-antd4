@@ -1,79 +1,92 @@
 <template>
-	<div style="width: 700px" class="mx-auto">
-		<a-row
-			align="middle"
-			:gutter="20"
-			type="flex"
-			justify="space-between"
-			class="mb-4"
-		>
-			<a-col flex="1">
-				<div style="width: 530px; height: 450px">
-					<vueCropper ref="cropperRef" v-bind="option" @realTime="realTime" />
-				</div>
-			</a-col>
-			<a-col>
-				<div :style="previewStyle1">
-					<div :style="previews.div">
-						<img :src="previews.url" alt="" :style="previews.img" />
+	<modal
+		v-model:open="visible"
+		v-bind="modalProps"
+		@confirm="handleConfirm"
+		@cancel="handleCancel"
+	>
+		<div style="width: 700px" class="mx-auto">
+			<a-row
+				align="middle"
+				:gutter="20"
+				type="flex"
+				justify="space-between"
+				class="mb-4"
+			>
+				<a-col flex="1">
+					<div style="width: 530px; height: 450px">
+						<vueCropper ref="cropperRef" v-bind="option" @realTime="realTime" />
 					</div>
-				</div>
+				</a-col>
+				<a-col>
+					<div :style="previewStyle1">
+						<div :style="previews.div">
+							<img :src="previews.url" alt="" :style="previews.img" />
+						</div>
+					</div>
 
-				<div :style="previewStyle2">
-					<div :style="previews.div">
-						<img :src="previews.url" alt="" :style="previews.img" />
+					<div :style="previewStyle2">
+						<div :style="previews.div">
+							<img :src="previews.url" alt="" :style="previews.img" />
+						</div>
 					</div>
-				</div>
 
-				<div :style="previewStyle3">
-					<div :style="previews.div">
-						<img :src="previews.url" alt="" :style="previews.img" />
+					<div :style="previewStyle3">
+						<div :style="previews.div">
+							<img :src="previews.url" alt="" :style="previews.img" />
+						</div>
 					</div>
-				</div>
-			</a-col>
-		</a-row>
-		<a-row align="middle" type="flex" justify="space-between">
-			<a-col>
-				<a-space>
-					<a-upload
-						:action="upload.action"
-						:headers="upload.headers"
-						:beforeUpload="upload.handleBeforeUpload"
-						@change="upload.handleChange"
-					>
-						<a-button>
-							<CloudUploadOutlined />
-							上传
+				</a-col>
+			</a-row>
+			<a-row align="middle" type="flex" justify="space-between">
+				<a-col>
+					<a-space>
+						<a-upload v-bind="upload">
+							<a-button>
+								<CloudUploadOutlined />
+								上传
+							</a-button>
+						</a-upload>
+						<a-button @click="handleScale(1)">
+							<PlusOutlined />
 						</a-button>
-					</a-upload>
-					<a-button @click="handleScale(1)">
-						<PlusOutlined />
-					</a-button>
-					<a-button @click="handleScale(-1)">
-						<MinusOutlined />
-					</a-button>
-					<a-button @click="handleRotate('left')">
-						<ReloadOutlined />
-					</a-button>
-					<a-button @click="handleRotate('right')">
-						<ReloadOutlined style="transform: rotateY(180deg)" />
-					</a-button>
-					<a-button @click="handleRefreshCrop">重置</a-button>
-				</a-space>
-			</a-col>
-			<a-col>
-				<a-button type="primary" @click="handleSubmit">保存</a-button>
-			</a-col>
-		</a-row>
-	</div>
+						<a-button @click="handleScale(-1)">
+							<MinusOutlined />
+						</a-button>
+						<a-button @click="handleRotate('left')">
+							<ReloadOutlined />
+						</a-button>
+						<a-button @click="handleRotate('right')">
+							<ReloadOutlined style="transform: rotateY(180deg)" />
+						</a-button>
+						<a-button @click="handleRefreshCrop">重置</a-button>
+					</a-space>
+				</a-col>
+				<a-col>
+					<a-button type="primary" @click="handleSubmit">保存</a-button>
+				</a-col>
+			</a-row>
+		</div>
+	</modal>
 </template>
 
 <script setup lang="ts" name="ImgCropper">
 import VueCropper from 'vue-cropper/src/vue-cropper.vue'
 import img from '@/assets/images/001.jpeg'
+import modal from '@/components/modal/index.vue'
+
 //https://blog.csdn.net/weixin_44258422/article/details/131528363
 //https://gitee.com/yxl-qwe/vue-cropper
 //https://vueuse.netlify.app/guide/config.html
+
+interface PropsType {
+	open: boolean
+}
+const props = withDefaults(defineProps<PropsType>(), {
+	open: false
+})
+
+const emit = defineEmits(['submit'])
 
 // 裁剪相关配置类型
 interface OptionsType {
@@ -120,32 +133,25 @@ const option = reactive<OptionsType>({
 })
 
 const upload = reactive({
-	action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+	accept: 'image/png,image/jpeg',
+	showUploadList: false,
+	maxCount: 1,
 	headers: {},
-	handleChange: (e: any) => {
-		console.log(e)
-	},
 	// 上传预处理
-	handleBeforeUpload: (file: any) => {
+	beforeUpload: (file: any) => {
 		// 判断图片类型
-		let img = [
-			'image/png',
-			'image/jpg',
-			'image/jpeg',
-			'image/PNG',
-			'image/JPG',
-			'image/JPEG'
-		]
-		if (!img.includes(file.type)) {
-			//utils._message('图片格式有误，请重新上传', 'error')
+		let img = ['image/png', 'image/jpg', 'image/jpeg']
+		if (!img.includes(file.type.toLowerCase())) {
+			//message('图片格式有误，请重新上传', 'error')
 			return false
 		}
 		// 处理预上传的图片及格式
 		const reader = new FileReader()
 		reader.readAsDataURL(file)
 		reader.onload = () => {
-			//options.img = reader.result
+			option.img = reader.result
 		}
+		return false
 	}
 })
 
@@ -156,8 +162,7 @@ const previewStyle2: any = ref({})
 const previewStyle3: any = ref({})
 // 获取图片裁剪实例
 const cropperRef: any = ref()
-// 弹窗状态
-const dialogVisible = ref(false)
+
 // 旋转图片
 let handleRotate = (type: string) => {
 	if (type == 'left') {
@@ -207,12 +212,29 @@ const realTime = (data: any) => {
 let handleSubmit = () => {
 	cropperRef.value.getCropBlob((data: any) => {
 		// 下面是将blob转为formData
-		let formData = new FormData()
-		formData.append('file', data)
+		//let formData = new FormData()
+		//formData.append('file', data)
 		// 添加上传接口及相关操作
-		console.log(formData)
-		dialogVisible.value = false
+		emit('submit', data)
 	})
 }
+
+const visible = ref(false)
+const modalProps = reactive({
+	width: '800px',
+	footer: null
+})
+
+const handleConfirm = () => {}
+const handleCancel = () => {}
+
 onMounted(async () => {})
+
+watch(
+	() => props.open,
+	(newValue: boolean) => {
+		visible.value = newValue
+	},
+	{ immediate: true }
+)
 </script>

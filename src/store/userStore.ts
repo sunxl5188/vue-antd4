@@ -49,7 +49,7 @@ export const useUserStore = defineStore('user', {
 		generateRoutes(data: Array<any>) {
 			this.routes = data
 			// 向后端请求路由数据
-			return new Promise((resolve, reject) => {})
+			//return new Promise((resolve, reject) => {})
 		}
 	},
 	persist: {

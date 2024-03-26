@@ -273,7 +273,7 @@ router.beforeEach(function (to, from) {
 			return { path: '/' }
 		} else if (store.routes.length === 0) {
 			// 判断当前用户是否已拉取完user_info信息
-			store
+			/* store
 				.getInfo()
 				.then(() => {
 					store.generateRoutes().then(accessRoutes => {
@@ -286,7 +286,7 @@ router.beforeEach(function (to, from) {
 					store.dispatch('LogOut').then(() => {
 						return { path: '/' }
 					})
-				})
+				}) */
 		} else {
 			return true
 		}

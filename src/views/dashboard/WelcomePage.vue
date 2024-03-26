@@ -1,11 +1,8 @@
 <template>
-	<div>
-		<ImgCropper />
-	</div>
+	<div></div>
 </template>
 
 <script setup lang="ts" name="WelcomePage">
-import ImgCropper from '@/components/img-cropper/index.vue'
 const route = useRoute()
 
 onMounted(() => {
