@@ -3,12 +3,13 @@
 </template>
 
 <script setup lang="ts" name="MyTable">
-import { TableProps } from 'ant-design-vue'
-const table = reactive<TableProps>({
+import type { ColumnType } from 'ant-design-vue'
+type Key = string | number
+const table = reactive({
 	loading: false,
 	rowKey: 'id',
 	dataSource: [],
-	columns: [
+	columns: <ColumnType>[
 		{
 			title: '姓名',
 			dataIndex: 'name',
@@ -25,7 +26,29 @@ const table = reactive<TableProps>({
 			key: 'address'
 		}
 	],
-	pagination: {}
+	pagination: {},
+	rowSelection() {
+		return {
+			columnWidth: '80px',
+			columnTitle: '选择',
+			type: 'checkbox, radio',
+			selectedRowKeys: [''],
+			onChange: (selectedRowKeys: Key[], selectedRows: any[]) => {
+				console.log(
+					'selectedRowKeys: selectedRowKeys',
+					'selectedRows: ',
+					selectedRowKeys,
+					selectedRows
+				)
+			},
+			getCheckboxProps: (record: any) => ({
+				props: {
+					disabled: record.name === '',
+					name: record.name
+				}
+			})
+		}
+	}
 })
 
 onMounted(() => {
