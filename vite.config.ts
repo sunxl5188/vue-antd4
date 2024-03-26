@@ -34,7 +34,7 @@ export default ({ mode }: { mode: any }) => {
 				'@': resolve(__dirname, './src')
 				//'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js'
 			},
-			//注意，不 建议忽略自定义导入类型的扩展名（例如：.vue）
+			//注意，不建议忽略自定义导入类型的扩展名（例如：.vue）
 			extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json']
 		},
 		plugins: [

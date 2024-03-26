@@ -1,17 +1,76 @@
 <template>
-	<div>
-		<vueCropper
-			ref="cropper"
-			:img="option.img"
-			:outputSize="option.outputSize"
-			:outputType="option.outputType"
-		></vueCropper>
+	<div style="width: 700px" class="mx-auto">
+		<a-row
+			align="middle"
+			:gutter="20"
+			type="flex"
+			justify="space-between"
+			class="mb-4"
+		>
+			<a-col flex="1">
+				<div style="width: 530px; height: 450px">
+					<vueCropper ref="cropperRef" v-bind="option" @realTime="realTime" />
+				</div>
+			</a-col>
+			<a-col>
+				<div :style="previewStyle1">
+					<div :style="previews.div">
+						<img :src="previews.url" alt="" :style="previews.img" />
+					</div>
+				</div>
+
+				<div :style="previewStyle2">
+					<div :style="previews.div">
+						<img :src="previews.url" alt="" :style="previews.img" />
+					</div>
+				</div>
+
+				<div :style="previewStyle3">
+					<div :style="previews.div">
+						<img :src="previews.url" alt="" :style="previews.img" />
+					</div>
+				</div>
+			</a-col>
+		</a-row>
+		<a-row align="middle" type="flex" justify="space-between">
+			<a-col>
+				<a-space>
+					<a-upload
+						:action="upload.action"
+						:headers="upload.headers"
+						:beforeUpload="upload.handleBeforeUpload"
+						@change="upload.handleChange"
+					>
+						<a-button>
+							<CloudUploadOutlined />
+							上传
+						</a-button>
+					</a-upload>
+					<a-button @click="handleScale(1)">
+						<PlusOutlined />
+					</a-button>
+					<a-button @click="handleScale(-1)">
+						<MinusOutlined />
+					</a-button>
+					<a-button @click="handleRotate('left')">
+						<ReloadOutlined />
+					</a-button>
+					<a-button @click="handleRotate('right')">
+						<ReloadOutlined style="transform: rotateY(180deg)" />
+					</a-button>
+					<a-button @click="handleRefreshCrop">重置</a-button>
+				</a-space>
+			</a-col>
+			<a-col>
+				<a-button type="primary" @click="handleSubmit">保存</a-button>
+			</a-col>
+		</a-row>
 	</div>
 </template>
 
 <script setup lang="ts" name="ImgCropper">
 import VueCropper from 'vue-cropper/src/vue-cropper.vue'
-import 'vue-cropper/dist/index.css'
+import img from '@/assets/images/001.jpeg'
 //https://blog.csdn.net/weixin_44258422/article/details/131528363
 //https://gitee.com/yxl-qwe/vue-cropper
 //https://vueuse.netlify.app/guide/config.html
@@ -42,16 +101,16 @@ interface OptionsType {
 }
 
 const option = reactive<OptionsType>({
-	img: '', // 需要剪裁的图片
+	img, // 需要剪裁的图片
 	autoCrop: true, // 是否默认生成截图框
-	autoCropWidth: 150, // 默认生成截图框的宽度
-	autoCropHeight: 150, // 默认生成截图框的长度
+	autoCropWidth: 200, // 默认生成截图框的宽度
+	autoCropHeight: 200, // 默认生成截图框的长度
 	fixedBox: false, // 是否固定截图框的大小 不允许改变
 	info: true, // 裁剪框的大小信息
-	outputSize: 0.5, // 裁剪生成图片的质量 [1至0.1]
+	outputSize: 1, // 裁剪生成图片的质量 [1至0.1]
 	outputType: 'jpeg', // 裁剪生成图片的格式
-	canScale: false, // 图片是否允许滚轮缩放
-	fixed: false, // 是否开启截图框宽高固定比例
+	canScale: true, // 图片是否允许滚轮缩放
+	fixed: true, // 是否开启截图框宽高固定比例
 	fixedNumber: [1, 1], // 截图框的宽高比例 需要配合centerBox一起使用才能生效
 	full: true, // 是否输出原图比例的截图
 	canMoveBox: false, // 截图框能否拖动
@@ -60,14 +119,47 @@ const option = reactive<OptionsType>({
 	infoTrue: true // true 为展示真实输出图片宽高 false 展示看到的截图框宽高
 })
 
+const upload = reactive({
+	action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+	headers: {},
+	handleChange: (e: any) => {
+		console.log(e)
+	},
+	// 上传预处理
+	handleBeforeUpload: (file: any) => {
+		// 判断图片类型
+		let img = [
+			'image/png',
+			'image/jpg',
+			'image/jpeg',
+			'image/PNG',
+			'image/JPG',
+			'image/JPEG'
+		]
+		if (!img.includes(file.type)) {
+			//utils._message('图片格式有误，请重新上传', 'error')
+			return false
+		}
+		// 处理预上传的图片及格式
+		const reader = new FileReader()
+		reader.readAsDataURL(file)
+		reader.onload = () => {
+			//options.img = reader.result
+		}
+	}
+})
+
 // 裁剪之后的数据
 const previews: any = ref({})
+const previewStyle1: any = ref({})
+const previewStyle2: any = ref({})
+const previewStyle3: any = ref({})
 // 获取图片裁剪实例
-const cropperRef: any = ref({})
+const cropperRef: any = ref()
 // 弹窗状态
 const dialogVisible = ref(false)
 // 旋转图片
-let rotateClick = (type: string) => {
+let handleRotate = (type: string) => {
 	if (type == 'left') {
 		cropperRef.value.rotateLeft()
 	}
@@ -76,48 +168,43 @@ let rotateClick = (type: string) => {
 	}
 }
 // 放大缩小图片比例
-let changeScale = (num: number) => {
+let handleScale = (num: number) => {
 	const scale = num || 1
 	cropperRef.value.changeScale(scale)
 }
 // 重置图片
-let refreshCrop = () => {
+let handleRefreshCrop = () => {
 	cropperRef.value.refresh()
 }
 // 裁剪之后的数据
 const realTime = (data: any) => {
 	previews.value = data
-}
-// 覆盖默认上传行为
-let requestUpload = () => {}
-// 上传预处理
-let beforeUpload = (file: any) => {
-	// 判断图片类型
-	let img = [
-		'image/png',
-		'image/jpg',
-		'image/jpeg',
-		'image/PNG',
-		'image/JPG',
-		'image/JPEG'
-	]
-	if (!img.includes(file.type)) {
-		utils._message('图片格式有误，请重新上传', 'error')
-		return false
+
+	previewStyle1.value = {
+		width: data.w + 'px',
+		height: data.h + 'px',
+		overflow: 'hidden',
+		margin: '0 0 20px 0',
+		zoom: 150 / data.w
 	}
-	// 处理预上传的图片及格式
-	const reader = new FileReader()
-	reader.readAsDataURL(file)
-	reader.onload = () => {
-		options.img = reader.result
+	previewStyle2.value = {
+		width: data.w + 'px',
+		height: data.h + 'px',
+		overflow: 'hidden',
+		margin: '0 0 20px 0',
+		zoom: 100 / data.w
 	}
-}
-// 编辑头像
-function editCropper() {
-	dialogVisible.value = true
+
+	previewStyle3.value = {
+		width: data.w + 'px',
+		height: data.h + 'px',
+		overflow: 'hidden',
+		margin: '0',
+		zoom: 50 / data.w
+	}
 }
 // 提交
-let uploadImg = () => {
+let handleSubmit = () => {
 	cropperRef.value.getCropBlob((data: any) => {
 		// 下面是将blob转为formData
 		let formData = new FormData()
@@ -127,9 +214,5 @@ let uploadImg = () => {
 		dialogVisible.value = false
 	})
 }
-onMounted(() => {
-	setTimeout(() => {
-		options.img = avatar.value
-	}, 100)
-})
+onMounted(async () => {})
 </script>
