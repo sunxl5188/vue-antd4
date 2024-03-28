@@ -1,8 +1,8 @@
 import { ComponentCustomProperties } from 'vue'
 
-declare module '@vue/runtime-core' {
+declare module 'vue' {
 	interface ComponentCustomProperties {
-		$api: proxy
+		$api: any
 	}
 }
 

@@ -1,7 +1,7 @@
 <template>
 	<div class="h-screen bg-gray-100 flex justify-center items-center">
 		<div>
-			<ImgCropper v-model:open="something" />
+			<!-- <ImgCropper v-model:open="something" /> -->
 			<div class="flex justify-center">
 				<span><SvgIcon name="logo" class="w-8 h-8" /></span>
 				<span class="font-bold text-3xl ml-2">Admin Pro</span>
@@ -98,7 +98,8 @@ import type { UnwrapRef } from 'vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import { useUserStore } from '@/store/userStore'
 import { notification } from 'ant-design-vue'
-import ImgCropper from '@/components/cropper/index.vue'
+//import ImgCropper from '@/components/cropper/index.vue'
+//import { ModalKey, MessageKey } from '@/utils/injectKey'
 
 interface LoginPropType {
 	userName: string
@@ -107,6 +108,7 @@ interface LoginPropType {
 	code: string
 	autoLogin: boolean
 }
+
 const store = useUserStore()
 const activeKey = ref<number>(1)
 const formData: UnwrapRef<LoginPropType> = reactive({
@@ -124,7 +126,7 @@ const rules: Record<string, Rule[]> = {
 	code: [{ required: true, message: '请输入验证码' }]
 }
 
-const something = ref(true)
+//const something = ref(true)
 const formRef = ref()
 const handleSubmit = (): void => {
 	formRef.value
@@ -145,12 +147,12 @@ const handleSubmit = (): void => {
 		.catch(() => {})
 }
 
-const handleConfirm = () => {
+/* const handleConfirm = () => {
 	console.log(111)
 }
 const handleCalcen = () => {
 	console.log(222)
-}
+} */
 
 onMounted(() => {})
 </script>
