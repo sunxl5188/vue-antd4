@@ -272,7 +272,7 @@ router.beforeEach(function (to, from) {
 		if (to.path === '/login') {
 			return { path: '/' }
 		} else if (store.routes.length === 0) {
-			// 判断当前用户是否已拉取完user_info信息
+			store.generateRoutes()
 			/* store
 				.getInfo()
 				.then(() => {

@@ -97,9 +97,11 @@
 import type { UnwrapRef } from 'vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import { useUserStore } from '@/store/userStore'
-import { notification } from 'ant-design-vue'
+import { NotificationKey, LodashKey } from '@/utils/injectKey'
 //import ImgCropper from '@/components/cropper/index.vue'
-//import { ModalKey, MessageKey } from '@/utils/injectKey'
+
+const notific = inject(NotificationKey)
+const _ = inject(LodashKey)
 
 interface LoginPropType {
 	userName: string
@@ -110,7 +112,9 @@ interface LoginPropType {
 }
 
 const store = useUserStore()
+const router = useRouter()
 const activeKey = ref<number>(1)
+const redirect = ref<string | undefined>(undefined)
 const formData: UnwrapRef<LoginPropType> = reactive({
 	userName: '',
 	password: '',
@@ -135,10 +139,14 @@ const handleSubmit = (): void => {
 			store
 				.login(formData, activeKey.value)
 				.then(() => {
-					notification['success']({
+					notific?.success({
 						message: '登录成功',
-						description: '正在跳转页面'
+						description: '正在跳转页面',
+						duration: 3
 					})
+					_.delay(() => {
+						router.push({ path: redirect.value ?? '/' })
+					}, 3000)
 				})
 				.catch(err => {
 					console.log(err)

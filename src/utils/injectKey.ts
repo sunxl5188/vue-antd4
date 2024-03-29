@@ -1,8 +1,14 @@
-import type {
-	ModalFuncProps,
-	MessageArgsProps,
-	NotificationArgsProps
-} from 'ant-design-vue'
+import type { ModalFuncProps, MessageArgsProps } from 'ant-design-vue'
+import type { LoDashStatic } from 'lodash'
+declare type VNodeChildAtom =
+	| VNode
+	| string
+	| number
+	| boolean
+	| null
+	| undefined
+	| void
+export type VueNode = VNodeChildAtom | VNodeChildAtom[] | VNode
 
 //======modal=================================================
 
@@ -119,6 +125,39 @@ export interface MessageType {
 export const MessageKey = Symbol() as InjectionKey<MessageType>
 
 //========notification======================================================
+export type NotificationPlacement =
+	| 'top'
+	| 'topLeft'
+	| 'topRight'
+	| 'bottom'
+	| 'bottomLeft'
+	| 'bottomRight'
+export type IconType = 'success' | 'info' | 'error' | 'warning'
+export interface CSSProperties {
+	[key: string]: string | number
+}
+
+export interface NotificationArgsProps {
+	message: VueNode | (() => VueNode)
+	description?: VueNode | (() => VueNode)
+	btn?: VueNode | (() => VueNode)
+	key?: string
+	onClose?: () => void
+	duration?: number | null
+	icon?: VueNode | (() => VueNode)
+	placement?: NotificationPlacement
+	maxCount?: number
+	style?: CSSProperties
+	prefixCls?: string
+	class?: string
+	readonly type?: IconType
+	onClick?: () => void
+	top?: string | number
+	bottom?: string | number
+	getContainer?: () => HTMLElement
+	closeIcon?: VueNode | (() => VueNode)
+	appContext?: any
+}
 
 export interface NotificationType {
 	/**
@@ -162,3 +201,6 @@ export interface NotificationType {
 }
 
 export const NotificationKey = Symbol() as InjectionKey<NotificationType>
+
+//==========lodash================================================================
+export const LodashKey = Symbol() as InjectionKey<LoDashStatic>

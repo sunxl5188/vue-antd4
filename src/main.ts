@@ -8,7 +8,14 @@ import 'virtual:svg-icons-register'
 import SvgIcon from './components/icons/SvgIcon.vue'
 import modal from './utils/modal'
 import message from '@/utils/message'
-import { ModalKey, MessageKey } from '@/utils/injectKey'
+import notification from '@/utils/notification'
+import lodash from 'lodash'
+import {
+	ModalKey,
+	MessageKey,
+	NotificationKey,
+	LodashKey
+} from '@/utils/injectKey'
 
 const app = createApp(App)
 const pinia = createPinia()
@@ -20,6 +27,8 @@ app.component('SvgIcon', SvgIcon)
 //注入全局
 app.provide(ModalKey, modal)
 app.provide(MessageKey, message)
+app.provide(NotificationKey, notification)
+app.provide(LodashKey, lodash)
 
 app.use(router)
 app.use(pinia)

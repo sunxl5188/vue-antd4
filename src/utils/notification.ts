@@ -1,5 +1,5 @@
-import { NotificationPlacement, notification } from 'ant-design-vue'
-import type { NotificationArgsProps } from 'ant-design-vue'
+import { notification } from 'ant-design-vue'
+import { NotificationArgsProps } from '@/utils/injectKey'
 
 export default {
 	success(config: NotificationArgsProps): void {
