@@ -1,11 +1,10 @@
 import { defineStore } from 'pinia'
 import cookie from '@/utils/cookies'
 import loginJson from '@/data/login.json'
-import routerJSON from '@/data/getRouters.json'
 import { useRouter } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import auth from '@/utils/auth'
-import { Layout, dynamicRoutes } from '@/router'
+import { dynamicRoutes } from '@/router'
 
 export const useUserStore = defineStore('user', {
 	state: () => ({
@@ -55,57 +54,26 @@ export const useUserStore = defineStore('user', {
 		//生成路由
 		generateRoutes(): any {
 			const router = useRouter()
-			const data = routerJSON.data
 			const asyncRoutes = this.filterDynamicRoutes(dynamicRoutes)
-			console.log(data, '----')
-			console.log(asyncRoutes)
-			router.addRoute({
-				path: '/dashboard',
-				name: 'dashboard',
-				component: Layout,
-				redirect: { name: 'welcome' },
-				meta: { title: '仪表盘', keepAlive: true },
-				children: [
-					{
-						path: 'welcome',
-						name: 'WelcomePage',
-						component: () => import('@/views/dashboard/WelcomePage.vue'),
-						meta: { title: '欢迎页', keepAlive: true }
-					},
-					{
-						path: 'analysis',
-						name: 'AnalysisPage',
-						component: () => import('@/views/dashboard/AnalysisPage.vue'),
-						meta: { title: '分析页', keepAlive: true }
-					},
-					{
-						path: 'monitor',
-						name: 'MonitorPage',
-						component: () => import('@/views/dashboard/MonitorPage.vue'),
-						meta: { title: '监控页', keepAlive: false }
-					}
-				]
+			asyncRoutes.push({
+				path: '/:pathMatch(.*)*',
+				name: 'NotFound',
+				component: () => import('@/views/error/ErrorPage404.vue')
 			})
-			/* const sdata = JSON.parse(JSON.stringify(data))
-			const rdata = JSON.parse(JSON.stringify(data))
-			const sidebarRoutes = filterAsyncRouter(sdata)
-			const rewriteRoutes = filterAsyncRouter(rdata, false, true)
-			const asyncRoutes = filterDynamicRoutes(dynamicRoutes)
-			rewriteRoutes.push({ path: '*', redirect: '/404', hidden: true })
-			router.addRoutes(asyncRoutes)
-			commit('SET_ROUTES', rewriteRoutes)
+			asyncRoutes.forEach((item: RouteRecordRaw) => {
+				router.addRoute(item)
+			})
+
+			/* commit('SET_ROUTES', rewriteRoutes)
 			commit('SET_SIDEBAR_ROUTERS', constantRoutes.concat(sidebarRoutes))
 			commit('SET_DEFAULT_ROUTES', sidebarRoutes)
 			commit('SET_TOPBAR_ROUTES', sidebarRoutes)
-			resolve(rewriteRoutes) */
-			// 向后端请求路由数据
-			//return new Promise((resolve, reject) => {})
+			resolve() */
 		},
 		// 动态路由遍历，验证是否具备权限
 		filterDynamicRoutes(routes: RouteRecordRaw[]) {
 			const res: RouteRecordRaw[] = []
 			routes.forEach(route => {
-				console.log(route.permissions, route.roles)
 				if (route.permissions) {
 					if (auth.hasPermiOr(route.permissions)) {
 						res.push(route)

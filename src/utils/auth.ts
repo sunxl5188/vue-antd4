@@ -4,11 +4,11 @@ type permissionType = string | Array<string>
 
 function authPermission(permission: permissionType) {
 	const store = useUserStore()
-	const all_permission = '*:*:*'
+	const allPermission = '*:*:*'
 	const permissions = store.$state.permissions
-	if (permission && permission.length > 0) {
+	if (permission?.length > 0) {
 		return permissions.some(function (v: string[] | string) {
-			return all_permission === v || v === permission
+			return allPermission === v || v === permission
 		})
 	} else {
 		return false

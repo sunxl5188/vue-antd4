@@ -80,6 +80,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		component: layout,
 		redirect: { name: 'welcome' },
 		meta: { title: '仪表盘', keepAlive: true },
+		permissions: ['dashboard:welcome:edit'],
 		children: [
 			{
 				path: 'welcome',
@@ -107,6 +108,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		component: layout,
 		redirect: { name: 'base-form' },
 		meta: { title: '表单页', keepAlive: true },
+		permissions: ['form:list:edit'],
 		children: [
 			{
 				path: 'base-form',
@@ -134,6 +136,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		component: layout,
 		redirect: { name: 'table-list' },
 		meta: { title: '表单页', keepAlive: true },
+		permissions: ['list:list:edit'],
 		children: [
 			{
 				path: 'table-list',
@@ -161,6 +164,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		component: layout,
 		redirect: { name: 'basic' },
 		meta: { title: '详细页', keepAlive: true },
+		permissions: ['profile:list:edit'],
 		children: [
 			{
 				path: 'basic',
@@ -182,6 +186,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		component: layout,
 		redirect: { name: 'error-403' },
 		meta: { title: '异常页', keepAlive: true },
+		permissions: ['error:list:edit'],
 		children: [
 			{
 				path: 'error-403',
@@ -209,6 +214,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		component: layout,
 		redirect: { name: 'success' },
 		meta: { title: '结果页', keepAlive: true },
+		permissions: ['result:list:edit'],
 		children: [
 			{
 				path: 'success',
@@ -230,6 +236,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		component: layout,
 		redirect: { name: 'center' },
 		meta: { title: '个人中心', keepAlive: true },
+		permissions: ['account:list:edit'],
 		children: [
 			{
 				path: 'center',
@@ -251,6 +258,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		component: layout,
 		redirect: { name: 'role-list' },
 		meta: { title: '系统管理', keepAlive: true },
+		roles: ['admin'],
 		children: [
 			{
 				path: 'role-list',
