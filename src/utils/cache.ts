@@ -1,4 +1,4 @@
-import dayjs from 'dayjs'
+import dayjs from '@/utils/dayjs'
 import { encryptData, decryptData } from './cryptojs'
 
 const prefix = __APP_PREFIX__ + '-' + __APP_VERSION__ + '-'
@@ -104,7 +104,7 @@ export const local = {
 				}
 			}
 		}
-		return JSON.parse(value)
+		return value === '' ? '' : JSON.parse(value)
 	},
 	/**
 	 * 删除localStorage
@@ -163,7 +163,7 @@ export const session = {
 				value = decryptData(value, __SECRET_KEY__, __SECRET_VI__)
 			}
 		}
-		return JSON.parse(value)
+		return value === '' ? '' : JSON.parse(value)
 	},
 	/**
 	 * 删除sessionStorage

@@ -9,6 +9,8 @@
 	</div>
 </template>
 
-<script setup lang="ts" name="AdminIndex"></script>
+<script setup lang="ts" name="AdminIndex">
+onMounted(() => {})
+</script>
 
 <style scoped></style>

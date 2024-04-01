@@ -1,5 +1,6 @@
 import type { ModalFuncProps, MessageArgsProps } from 'ant-design-vue'
 import type { LoDashStatic } from 'lodash'
+import { Dayjs, ConfigType } from 'dayjs'
 declare type VNodeChildAtom =
 	| VNode
 	| string
@@ -204,3 +205,9 @@ export const NotificationKey = Symbol() as InjectionKey<NotificationType>
 
 //==========lodash================================================================
 export const LodashKey = Symbol() as InjectionKey<LoDashStatic>
+
+//==========Dayjs================================================================
+
+export type DayjsType = (T: ConfigType) => Dayjs
+
+export const DayjsKey: InjectionKey<DayjsType> = Symbol()

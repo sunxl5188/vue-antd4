@@ -1,7 +1,6 @@
 <template>
 	<div class="h-screen bg-gray-100 flex justify-center items-center">
 		<div>
-			<!-- <ImgCropper v-model:open="something" /> -->
 			<div class="flex justify-center">
 				<span><SvgIcon name="logo" class="w-8 h-8" /></span>
 				<span class="font-bold text-3xl ml-2">Admin Pro</span>
@@ -89,6 +88,7 @@
 					</div>
 				</a-form-item>
 			</a-form>
+			{{ $t('title') }}
 		</div>
 	</div>
 </template>
@@ -98,7 +98,6 @@ import type { UnwrapRef } from 'vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import { useUserStore } from '@/store/userStore'
 import { NotificationKey, LodashKey } from '@/utils/injectKey'
-//import ImgCropper from '@/components/cropper/index.vue'
 
 const notific = inject(NotificationKey)
 const _ = inject(LodashKey)
@@ -130,7 +129,6 @@ const rules: Record<string, Rule[]> = {
 	code: [{ required: true, message: '请输入验证码' }]
 }
 
-//const something = ref(true)
 const formRef = ref()
 const handleSubmit = (): void => {
 	formRef.value
@@ -144,7 +142,7 @@ const handleSubmit = (): void => {
 						description: '正在跳转页面',
 						duration: 3
 					})
-					_.delay(() => {
+					_?.delay(() => {
 						router.push({ path: redirect.value ?? '/' })
 					}, 3000)
 				})
@@ -154,15 +152,6 @@ const handleSubmit = (): void => {
 		})
 		.catch(() => {})
 }
-
-/* const handleConfirm = () => {
-	console.log(111)
-}
-const handleCalcen = () => {
-	console.log(222)
-} */
-
-onMounted(() => {})
 </script>
 
 <style lang="less" scoped>

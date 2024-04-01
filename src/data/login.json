@@ -22,5 +22,6 @@
 		"loginIp": "110.190.178.194",
 		"loginDate": "2023-08-11T11:12:24.000+08:00"
 	},
-	"permissions": ["*:*:*"]
+	"permissions": ["*:*:*"],
+	"roles": ["admin"]
 }

@@ -34,6 +34,7 @@
 		},
 		// 模块加载兼容模式,可以使用 import from 语法导入 commonJS 模块
 		"esModuleInterop": true,
+		"allowSyntheticDefaultImports":true,
 		// 要包含的类型声明文件名列表
 		"types": ["vite/client"],
 		// 是否移除编译后的 JavaScript 文件的注释
