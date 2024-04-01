@@ -290,7 +290,7 @@ router.beforeEach(function (to, from) {
 	//设置页面标题
 	if (to.meta.title) {
 		//判断是否有标题
-		document.title = to.meta.title as string
+		document.title = to.meta.title
 	}
 	if (from) {
 		// ...

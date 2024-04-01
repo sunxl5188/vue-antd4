@@ -88,7 +88,6 @@
 					</div>
 				</a-form-item>
 			</a-form>
-			{{ $t('title') }}
 		</div>
 	</div>
 </template>

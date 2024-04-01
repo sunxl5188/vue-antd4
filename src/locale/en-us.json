@@ -1,0 +1,5 @@
+{
+	"title": "title",
+	"car": "car | cars",
+	"apple": "no apples | one apple | {count} apples"
+}
