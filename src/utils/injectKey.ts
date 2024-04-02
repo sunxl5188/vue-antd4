@@ -208,6 +208,6 @@ export const LodashKey = Symbol() as InjectionKey<LoDashStatic>
 
 //==========Dayjs================================================================
 
-export type DayjsType = (T: ConfigType) => Dayjs
+export type DayjsType = (T?: ConfigType) => Dayjs
 
-export const DayjsKey: InjectionKey<DayjsType> = Symbol()
+export const DayjsKey: InjectionKey<DayjsType> = Symbol('')

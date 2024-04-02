@@ -89,6 +89,7 @@
 				</a-form-item>
 			</a-form>
 		</div>
+		{{ $t('title') }}
 	</div>
 </template>
 
@@ -96,10 +97,11 @@
 import type { UnwrapRef } from 'vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import { useUserStore } from '@/store/userStore'
-import { NotificationKey, LodashKey } from '@/utils/injectKey'
+import { NotificationKey, LodashKey, DayjsKey } from '@/utils/injectKey'
 
 const notific = inject(NotificationKey)
 const _ = inject(LodashKey)
+const dayjs = inject(DayjsKey)
 
 interface LoginPropType {
 	userName: string
@@ -151,6 +153,10 @@ const handleSubmit = (): void => {
 		})
 		.catch(() => {})
 }
+
+onMounted(() => {
+	dayjs?.().add(1, 'day')
+})
 </script>
 
 <style lang="less" scoped>

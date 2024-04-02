@@ -1,8 +1,9 @@
 import { createI18n } from 'vue-i18n'
-import type { MessageSchema } from 'vue-i18n'
 import zhCn from './zh-cn.json'
 import enUs from './en-us.json'
 import { local } from '@/utils/cache'
+
+type MessageSchema = typeof zhCn
 
 // 默认读取本地存储语言设置
 const defaultLocale = local.get('locale') || 'zh-CN'
