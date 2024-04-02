@@ -1,40 +1,18 @@
-import VueCookies from 'vue-cookies'
+import vueCookies from 'vue-cookies'
 
 const prefix = __APP_PREFIX__ + '-' + __APP_VERSION__ + '-'
-const $cookie: any = VueCookies
+const $cookies: any = vueCookies
 
-interface CookiesConfig {
-	expires: string | number | Date
-	path?: string
-	domain?: string
-	secure?: boolean
-	sameSite?: string
-}
+$cookies.config('1d', ';path=/', '', true, ';SameSite=Lax')
 
-export const config: CookiesConfig = {
-	expires: '1d',
-	path: '; path=/',
-	domain: '',
-	secure: true,
-	sameSite: '; SameSite=Lax'
-}
-
-$cookie.config(
-	config.expires,
-	config.path,
-	config.domain,
-	config.secure,
-	config.sameSite
-)
-
-const _default = {
+export default {
 	/**
 	 * 获取cookies值
 	 * @param key cookie名
 	 * @returns 返回cookies值
 	 */
 	get: (key: string): any => {
-		return $cookie.get(prefix + key)
+		return $cookies.get(prefix + key)
 	},
 	/**
 	 * 设置cookie
@@ -55,7 +33,7 @@ const _default = {
 		secure?: boolean,
 		sameSite?: string
 	): void => {
-		$cookie.set(
+		$cookies.set(
 			prefix + keyName,
 			value,
 			expires,
@@ -73,7 +51,7 @@ const _default = {
 	 * @returns
 	 */
 	remove: (keyName: string, path?: string, domain?: string): boolean => {
-		return $cookie.remove(prefix + keyName, path, domain)
+		return $cookies.remove(prefix + keyName, path, domain)
 	},
 	/**
 	 * 是否有key cookie
@@ -81,15 +59,13 @@ const _default = {
 	 * @returns boolean
 	 */
 	isKey: (key: string): boolean => {
-		return $cookie.isKey(prefix + key)
+		return $cookies.isKey(prefix + key)
 	},
 	/**
 	 * 列出所有cookie
-	 * @returns 返回娄组
+	 * @returns 返回数组
 	 */
 	keys: (): string[] => {
-		return $cookie.keys()
+		return $cookies.keys()
 	}
 }
-
-export default _default

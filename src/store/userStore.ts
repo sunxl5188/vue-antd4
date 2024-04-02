@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import cookie from '@/utils/cookies'
+import $cookies from '@/utils/cookies'
 import loginJson from '@/data/login.json'
 import { useRouter } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
@@ -45,7 +45,7 @@ export const useUserStore = defineStore('user', {
 		},
 		// 存储用户信息
 		setInfo(data: any): void {
-			cookie.set('token', data?.token)
+			$cookies.set('token', data?.token)
 			this.token = data?.token
 			this.userInfo = data?.user
 			this.roles = data?.roles
