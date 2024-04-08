@@ -89,7 +89,6 @@
 				</a-form-item>
 			</a-form>
 		</div>
-		{{ $t('title') }}
 	</div>
 </template>
 
@@ -97,11 +96,10 @@
 import type { UnwrapRef } from 'vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import { useUserStore } from '@/store/userStore'
-import { NotificationKey, LodashKey, DayjsKey } from '@/utils/injectKey'
+import { NotificationKey, LodashKey } from '@/utils/injectKey'
 
 const notific = inject(NotificationKey)
 const _ = inject(LodashKey)
-const dayjs = inject(DayjsKey)
 
 interface LoginPropType {
 	userName: string
@@ -141,11 +139,11 @@ const handleSubmit = (): void => {
 					notific?.success({
 						message: '登录成功',
 						description: '正在跳转页面',
-						duration: 3
+						duration: 2
 					})
 					_?.delay(() => {
 						router.push({ path: redirect.value ?? '/' })
-					}, 3000)
+					}, 2000)
 				})
 				.catch(err => {
 					console.log(err)
@@ -154,9 +152,7 @@ const handleSubmit = (): void => {
 		.catch(() => {})
 }
 
-onMounted(() => {
-	dayjs?.().add(1, 'day')
-})
+onMounted(() => {})
 </script>
 
 <style lang="less" scoped>

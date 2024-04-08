@@ -1,6 +1,6 @@
 import { createI18n } from 'vue-i18n'
-import zhCn from './zh-cn.json'
-import enUs from './en-us.json'
+import zhCn from './locale/zh-cn.json'
+import enUs from './locale/en-us.json'
 import { local } from '@/utils/cache'
 
 type MessageSchema = typeof zhCn
