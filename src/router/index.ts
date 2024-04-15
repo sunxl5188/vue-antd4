@@ -4,7 +4,7 @@ import layout from '@/layout/index.vue'
 import cookies from '@/utils/cookies'
 import { useUserStore } from '@/store/userStore'
 
-const whiteList: Array<string> = ['/login', '/register']
+const whiteList: Array<string> = ['/login', '/register', '/recover']
 export const Layout = layout
 
 /**
