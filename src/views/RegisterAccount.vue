@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<TableVirtually />
 		<!-- <a-breadcrumb :routes="route.matched">
 			<template v-slot:itemRender="{ route, params, routes, paths }">
 				<span v-if="routes.indexOf(route) === routes.length - 1">
@@ -14,6 +15,14 @@
 	</div>
 </template>
 
-<script setup lang="ts" name="RegisterAccount"></script>
+<script setup lang="ts" name="RegisterAccount">
+import TableVirtually from '@/components/TableVirtually.vue'
+
+const data = reactive({})
+
+const init = { ...data }
+
+Object.assign(data, init)
+</script>
 
 <style scoped land="scss"></style>
