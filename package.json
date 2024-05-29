@@ -10,6 +10,7 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"@ant-design/icons-vue": "^7.0.1",
 		"@vueuse/components": "^10.9.0",
 		"@vueuse/core": "^10.9.0",
 		"ant-design-vue": "^4.1.2",
@@ -20,11 +21,13 @@
 		"lodash": "^4.17.21",
 		"pinia": "^2.1.7",
 		"pinia-plugin-persistedstate": "^3.2.1",
+		"sortablejs": "^1.15.2",
 		"vue": "^3.4.19",
 		"vue-cookies": "^1.8.3",
 		"vue-cropper": "^0.6.4",
 		"vue-i18n": "^9.10.2",
-		"vue-router": "^4.3.0"
+		"vue-router": "^4.3.0",
+		"vuedraggable": "^2.24.3"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.24.0",
@@ -33,6 +36,7 @@
 		"@types/crypto-js": "^4.2.2",
 		"@types/lodash": "^4.17.0",
 		"@types/node": "^20.11.24",
+		"@types/sortablejs": "^1.15.8",
 		"@typescript-eslint/eslint-plugin": "^7.1.0",
 		"@typescript-eslint/parser": "^7.1.0",
 		"@vitejs/plugin-vue": "^5.0.4",
