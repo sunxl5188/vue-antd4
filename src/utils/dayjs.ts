@@ -9,6 +9,7 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import isToday from 'dayjs/plugin/isToday'
 import weekday from 'dayjs/plugin/weekday'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
 
 dayjs.locale('zh-cn')
 dayjs.extend(utc)
@@ -19,5 +20,6 @@ dayjs.extend(isSameOrBefore)
 dayjs.extend(isToday)
 dayjs.extend(weekday)
 dayjs.extend(relativeTime)
+dayjs.extend(localizedFormat)
 
 export default dayjs

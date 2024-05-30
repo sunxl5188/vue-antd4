@@ -4,7 +4,7 @@ import layout from '@/layout/index.vue'
 import cookies from '@/utils/cookies'
 import { useUserStore } from '@/store/userStore'
 
-const whiteList: Array<string> = ['/login', '/register']
+const whiteList: Array<string> = ['/login', '/register', '/recover']
 export const Layout = layout
 
 /**
@@ -62,6 +62,12 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 		name: 'RegisterAccount',
 		component: () => import('@/views/RegisterAccount.vue'),
 		meta: { title: '注册账号' }
+	},
+	{
+		path: '/home',
+		name: 'HomePage',
+		component: () => import('@/views/HomePage.vue'),
+		meta: { title: '首页演示' }
 	}
 ]
 //通配路由

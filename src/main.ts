@@ -6,7 +6,7 @@ import { createPinia } from 'pinia'
 import { createPersistedState } from 'pinia-plugin-persistedstate'
 import 'virtual:svg-icons-register'
 import SvgIcon from './components/icons/SvgIcon.vue'
-import i18n from './locale'
+import i18n from './i18n'
 import modal from './utils/modal'
 import message from '@/utils/message'
 import notification from '@/utils/notification'
@@ -16,7 +16,8 @@ import {
 	ModalKey,
 	MessageKey,
 	NotificationKey,
-	LodashKey
+	LodashKey,
+	DayjsKey
 } from '@/utils/injectKey'
 import global from '@/utils/globalProperties'
 
@@ -32,7 +33,7 @@ app.provide(ModalKey, modal)
 app.provide(MessageKey, message)
 app.provide(NotificationKey, notification)
 app.provide(LodashKey, lodash)
-app.provide('dayjs', dayjs)
+app.provide(DayjsKey, dayjs)
 app.use(i18n)
 app.use(global)
 app.use(router)
