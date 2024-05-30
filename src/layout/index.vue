@@ -1,5 +1,6 @@
 <template>
 	<a-layout class="h-screen">
+		<Breadcrumb />
 		<a-layout-header></a-layout-header>
 		<a-layout>
 			<LayoutSider />
@@ -18,6 +19,7 @@
 
 <script setup lang="ts" name="LayoutIndex">
 import LayoutSider from './LayoutSider.vue'
+import Breadcrumb from '@/components/breadcrumb/index.vue'
 import { useAppStore } from '@/store/appStore'
 
 const store = useAppStore()

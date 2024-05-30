@@ -31,6 +31,7 @@ declare module 'vue' {
     ATabPane: typeof import('ant-design-vue/es')['TabPane']
     ATabs: typeof import('ant-design-vue/es')['Tabs']
     AUpload: typeof import('ant-design-vue/es')['Upload']
+    Breadcrumb: typeof import('./src/components/breadcrumb/index.vue')['default']
     CloudUploadOutlined: typeof import('@ant-design/icons-vue')['CloudUploadOutlined']
     Cropper: typeof import('./src/components/cropper/index.vue')['default']
     ImgCropper: typeof import('./src/components/img-cropper/index.vue')['default']

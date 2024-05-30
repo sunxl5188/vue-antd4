@@ -34,11 +34,12 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 	{
 		path: '/',
 		component: layout,
+		name: 'IndexIndex',
 		redirect: { name: 'index' },
 		children: [
 			{
 				path: 'index',
-				name: 'index', //名称要与组件名称相同,用于keepAlive缓存页面
+				name: 'Index', //名称要与组件名称相同,用于keepAlive缓存页面
 				component: () => import('@/views/index.vue'),
 				meta: { title: '工作台' }
 			}
