@@ -61,6 +61,12 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 		name: 'RegisterAccount',
 		component: () => import('@/views/RegisterAccount.vue'),
 		meta: { title: '注册账号' }
+	},
+	{
+		path: '/home',
+		name: 'HomePage',
+		component: () => import('@/views/HomePage.vue'),
+		meta: { title: '首页演示' }
 	}
 ]
 //通配路由
