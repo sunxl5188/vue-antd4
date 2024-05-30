@@ -6,23 +6,25 @@
 			mode="inline"
 			theme="dark"
 			:inline-collapsed="state.collapsed"
-			:items="items"
+			:items="store.sidebarRouters"
 			@select="handleSelect"
 		></a-menu>
 	</a-layout-sider>
 </template>
 
 <script setup lang="ts" name="LayoutSider">
-import {
+/* import {
 	PieChartOutlined,
 	MailOutlined,
 	DesktopOutlined,
 	InboxOutlined,
 	AppstoreOutlined
-} from '@ant-design/icons-vue'
+} from '@ant-design/icons-vue' */
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/store/userStore'
 
 const router = useRouter()
+const store = useUserStore()
 
 const state = reactive({
 	collapsed: false,
@@ -30,7 +32,7 @@ const state = reactive({
 	openKeys: ['sub1'],
 	preOpenKeys: ['sub1']
 })
-const items = reactive([
+/* const items = reactive([
 	{
 		label: '工作台',
 		title: '工作台', //设置收缩时展示的悬浮标题
@@ -181,7 +183,7 @@ const items = reactive([
 			}
 		]
 	}
-])
+]) */
 
 const handleSelect = ({ key }: { key: string }) => {
 	router.push(key)

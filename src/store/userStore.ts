@@ -2,9 +2,10 @@ import { defineStore } from 'pinia'
 import $cookies from '@/utils/cookies'
 import loginJson from '@/data/login.json'
 import { useRouter } from 'vue-router'
-import type { RouteRecordRaw } from 'vue-router'
+import type { RouteRecordRaw, _RouteRecordBase } from 'vue-router'
 import auth from '@/utils/auth'
-import { dynamicRoutes } from '@/router'
+import { constantRoutes, dynamicRoutes } from '@/router'
+import type { ItemType } from 'ant-design-vue'
 
 export const useUserStore = defineStore('user', {
 	state: () => ({
@@ -13,7 +14,8 @@ export const useUserStore = defineStore('user', {
 		code: <string>'',
 		routes: <any>[],
 		roles: <any>[],
-		permissions: <any>[]
+		permissions: <any>[],
+		sidebarRouters: <any>[] //导航菜单路由
 	}),
 	getters: {},
 	actions: {
@@ -53,22 +55,32 @@ export const useUserStore = defineStore('user', {
 		},
 		//生成路由
 		generateRoutes(): any {
-			const router = useRouter()
-			const asyncRoutes = this.filterDynamicRoutes(dynamicRoutes)
-			asyncRoutes.push({
-				path: '/:pathMatch(.*)*',
-				name: 'NotFound',
-				component: () => import('@/views/error/ErrorPage404.vue')
+			return new Promise(resolve => {
+				const router = useRouter()
+				const asyncRoutes = this.filterDynamicRoutes(dynamicRoutes)
+				asyncRoutes.forEach((item: RouteRecordRaw) => {
+					router.addRoute(item)
+				})
+				constantRoutes.forEach((item: _RouteRecordBase) => {
+					if (item.name === 'layout') {
+						asyncRoutes.forEach(citem => {
+							item.children?.push(citem)
+						})
+						//生成导航菜单
+						const sidebar: ItemType[] = []
+						item.children?.forEach(item => {
+							sidebar.push({
+								label: item.meta?.title,
+								title: item.meta?.title,
+								key: item.path,
+								icon: () => h((item.meta as any)?.icon)
+							})
+						})
+						this.sidebarRouters = sidebar
+					}
+				})
+				resolve(this.sidebarRouters)
 			})
-			asyncRoutes.forEach((item: RouteRecordRaw) => {
-				router.addRoute(item)
-			})
-
-			/* commit('SET_ROUTES', rewriteRoutes)
-			commit('SET_SIDEBAR_ROUTERS', constantRoutes.concat(sidebarRoutes))
-			commit('SET_DEFAULT_ROUTES', sidebarRoutes)
-			commit('SET_TOPBAR_ROUTES', sidebarRoutes)
-			resolve() */
 		},
 		// 动态路由遍历，验证是否具备权限
 		filterDynamicRoutes(routes: RouteRecordRaw[]) {
@@ -90,6 +102,6 @@ export const useUserStore = defineStore('user', {
 	persist: {
 		//key: 'user',
 		storage: localStorage,
-		paths: ['token', 'userInfo', 'roles', 'permissions']
+		paths: ['token', 'userInfo', 'roles', 'permissions', 'sidebarRouters']
 	}
 })

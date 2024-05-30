@@ -34,8 +34,8 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 	{
 		path: '/',
 		component: layout,
-		name: 'IndexIndex',
-		redirect: { name: 'index' },
+		name: 'layout',
+		redirect: { name: 'Index' },
 		children: [
 			{
 				path: 'index',
@@ -68,10 +68,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 		name: 'HomePage',
 		component: () => import('@/views/HomePage.vue'),
 		meta: { title: '首页演示' }
-	}
-]
-//通配路由
-export const pathMatch = [
+	},
 	{
 		path: '/:pathMatch(.*)*',
 		name: 'NotFound',
@@ -86,26 +83,26 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		name: 'dashboard',
 		component: layout,
 		redirect: { name: 'welcome' },
-		meta: { title: '仪表盘', keepAlive: true },
+		meta: { title: '仪表盘', icon: 'DesktopOutlined', keepAlive: true },
 		permissions: ['dashboard:welcome:edit'],
 		children: [
 			{
 				path: 'welcome',
 				name: 'WelcomePage',
 				component: () => import('@/views/dashboard/WelcomePage.vue'),
-				meta: { title: '欢迎页', keepAlive: true }
+				meta: { title: '欢迎页', icon: '', keepAlive: true }
 			},
 			{
 				path: 'analysis',
 				name: 'AnalysisPage',
 				component: () => import('@/views/dashboard/AnalysisPage.vue'),
-				meta: { title: '分析页', keepAlive: true }
+				meta: { title: '分析页', icon: '', keepAlive: true }
 			},
 			{
 				path: 'monitor',
 				name: 'MonitorPage',
 				component: () => import('@/views/dashboard/MonitorPage.vue'),
-				meta: { title: '监控页', keepAlive: false }
+				meta: { title: '监控页', icon: '', keepAlive: true }
 			}
 		]
 	},
@@ -114,7 +111,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		name: 'form',
 		component: layout,
 		redirect: { name: 'base-form' },
-		meta: { title: '表单页', keepAlive: true },
+		meta: { title: '表单页', icon: 'InboxOutlined', keepAlive: true },
 		permissions: ['form:list:edit'],
 		children: [
 			{
@@ -142,7 +139,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		name: 'list',
 		component: layout,
 		redirect: { name: 'table-list' },
-		meta: { title: '表单页', keepAlive: true },
+		meta: { title: '表单页', icon: 'MailOutlined', keepAlive: true },
 		permissions: ['list:list:edit'],
 		children: [
 			{
@@ -170,7 +167,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		name: 'profile',
 		component: layout,
 		redirect: { name: 'basic' },
-		meta: { title: '详细页', keepAlive: true },
+		meta: { title: '详细页', icon: 'AppstoreOutlined', keepAlive: true },
 		permissions: ['profile:list:edit'],
 		children: [
 			{
@@ -192,7 +189,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		name: 'error',
 		component: layout,
 		redirect: { name: 'error-403' },
-		meta: { title: '异常页', keepAlive: true },
+		meta: { title: '异常页', icon: 'AppstoreOutlined', keepAlive: true },
 		permissions: ['error:list:edit'],
 		children: [
 			{
@@ -220,7 +217,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		name: 'result',
 		component: layout,
 		redirect: { name: 'success' },
-		meta: { title: '结果页', keepAlive: true },
+		meta: { title: '结果页', icon: 'AppstoreOutlined', keepAlive: true },
 		permissions: ['result:list:edit'],
 		children: [
 			{
@@ -242,7 +239,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		name: 'account',
 		component: layout,
 		redirect: { name: 'center' },
-		meta: { title: '个人中心', keepAlive: true },
+		meta: { title: '个人中心', icon: 'AppstoreOutlined', keepAlive: true },
 		permissions: ['account:list:edit'],
 		children: [
 			{
@@ -264,7 +261,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		name: 'system',
 		component: layout,
 		redirect: { name: 'role-list' },
-		meta: { title: '系统管理', keepAlive: true },
+		meta: { title: '系统管理', icon: 'AppstoreOutlined', keepAlive: true },
 		roles: ['admin'],
 		children: [
 			{

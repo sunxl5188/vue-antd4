@@ -8,7 +8,7 @@ interface StateType {
 export const useAppStore = defineStore('app', {
 	state: (): StateType => ({
 		network: true,
-		keepAlive: ['WelcomePage', 'AnalysisPage']
+		keepAlive: []
 	}),
 	getters: {
 		keepArray: (state): string[] => state.keepAlive

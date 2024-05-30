@@ -17,7 +17,7 @@ const isDashboard = (route: RouteRecordRaw) => {
 }
 
 if (!isDashboard(matched[0])) {
-	let amatched = [{ path: '/index', meta: { title: '首页' } }].concat(matched)
-	console.log(amatched)
+	//let amatched = [{ path: '/index', meta: { title: '首页' } }].concat(matched)
+	//console.log(amatched)
 }
 </script>
