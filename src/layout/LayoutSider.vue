@@ -1,5 +1,6 @@
 <template>
 	<a-layout-sider>
+		<component :is="aIcon['FastBackwardOutlined']" style="color: #fff" />
 		<a-menu
 			v-model:openKeys="state.openKeys"
 			v-model:selectedKeys="state.selectedKeys"
@@ -8,29 +9,25 @@
 			:inline-collapsed="state.collapsed"
 			:items="store.sidebarRouters"
 			@select="handleSelect"
-		></a-menu>
+		>
+		</a-menu>
 	</a-layout-sider>
 </template>
 
 <script setup lang="ts" name="LayoutSider">
-/* import {
-	PieChartOutlined,
-	MailOutlined,
-	DesktopOutlined,
-	InboxOutlined,
-	AppstoreOutlined
-} from '@ant-design/icons-vue' */
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/store/userStore'
 
 const router = useRouter()
 const store = useUserStore()
 
+const aIcon = inject('aIcon') as any
+
 const state = reactive({
 	collapsed: false,
-	selectedKeys: ['1'],
-	openKeys: ['sub1'],
-	preOpenKeys: ['sub1']
+	selectedKeys: [],
+	openKeys: [],
+	preOpenKeys: []
 })
 /* const items = reactive([
 	{
@@ -188,6 +185,10 @@ const state = reactive({
 const handleSelect = ({ key }: { key: string }) => {
 	router.push(key)
 }
+
+onMounted(() => {
+	console.log(store.sidebarRouters, '========')
+})
 </script>
 
 <style scoped land="scss"></style>

@@ -90,19 +90,19 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				path: 'welcome',
 				name: 'WelcomePage',
 				component: () => import('@/views/dashboard/WelcomePage.vue'),
-				meta: { title: '欢迎页', icon: '', keepAlive: true }
+				meta: { title: '欢迎页', keepAlive: true }
 			},
 			{
 				path: 'analysis',
 				name: 'AnalysisPage',
 				component: () => import('@/views/dashboard/AnalysisPage.vue'),
-				meta: { title: '分析页', icon: '', keepAlive: true }
+				meta: { title: '分析页', keepAlive: true }
 			},
 			{
 				path: 'monitor',
 				name: 'MonitorPage',
 				component: () => import('@/views/dashboard/MonitorPage.vue'),
-				meta: { title: '监控页', icon: '', keepAlive: true }
+				meta: { title: '监控页', keepAlive: true }
 			}
 		]
 	},
@@ -111,7 +111,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		name: 'form',
 		component: layout,
 		redirect: { name: 'base-form' },
-		meta: { title: '表单页', icon: 'InboxOutlined', keepAlive: true },
+		meta: { title: '表单页', keepAlive: true },
 		permissions: ['form:list:edit'],
 		children: [
 			{
@@ -139,7 +139,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		name: 'list',
 		component: layout,
 		redirect: { name: 'table-list' },
-		meta: { title: '表单页', icon: 'MailOutlined', keepAlive: true },
+		meta: { title: '表单页', keepAlive: true },
 		permissions: ['list:list:edit'],
 		children: [
 			{
@@ -167,7 +167,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		name: 'profile',
 		component: layout,
 		redirect: { name: 'basic' },
-		meta: { title: '详细页', icon: 'AppstoreOutlined', keepAlive: true },
+		meta: { title: '详细页', keepAlive: true },
 		permissions: ['profile:list:edit'],
 		children: [
 			{
@@ -189,7 +189,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		name: 'error',
 		component: layout,
 		redirect: { name: 'error-403' },
-		meta: { title: '异常页', icon: 'AppstoreOutlined', keepAlive: true },
+		meta: { title: '异常页', keepAlive: true },
 		permissions: ['error:list:edit'],
 		children: [
 			{
@@ -217,7 +217,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		name: 'result',
 		component: layout,
 		redirect: { name: 'success' },
-		meta: { title: '结果页', icon: 'AppstoreOutlined', keepAlive: true },
+		meta: { title: '结果页', keepAlive: true },
 		permissions: ['result:list:edit'],
 		children: [
 			{
@@ -239,7 +239,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		name: 'account',
 		component: layout,
 		redirect: { name: 'center' },
-		meta: { title: '个人中心', icon: 'AppstoreOutlined', keepAlive: true },
+		meta: { title: '个人中心', keepAlive: true },
 		permissions: ['account:list:edit'],
 		children: [
 			{
@@ -261,7 +261,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		name: 'system',
 		component: layout,
 		redirect: { name: 'role-list' },
-		meta: { title: '系统管理', icon: 'AppstoreOutlined', keepAlive: true },
+		meta: { title: '系统管理', keepAlive: true },
 		roles: ['admin'],
 		children: [
 			{
