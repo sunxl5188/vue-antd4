@@ -1,14 +1,26 @@
 <template>
 	<div>
+		<!-- https://www.vvhan.com/ant-design-menu-left.html -->
+		<a-menu>
+			<a-sub-menu key="1">
+				<template #title>
+					<!-- <icon-font type="StepForwardOutlined" /> -->
+					<span>菜单一</span>
+					<a-menu-item key="1-2">
+						<span>子菜单一</span>
+					</a-menu-item>
+				</template>
+			</a-sub-menu>
+		</a-menu>
 		<div id="echartsBar"></div>
 		<div id="echartsLine"></div>
-		<xl-upload :attribute="{ action: 'http://www.baidu.com' }"></xl-upload>
+		<!-- <xl-upload :attribute="{ action: 'http://www.baidu.com' }"></xl-upload> -->
 	</div>
 </template>
 
 <script setup lang="ts">
 import * as echarts from 'echarts'
-import XlUpload from '@/components/xl-upload/index.vue'
+//import XlUpload from '@/components/xl-upload/index.vue'
 
 const echartsLine = () => {
 	const myChart = echarts.init(document.getElementById('echartsLine'))
@@ -202,6 +214,6 @@ onMounted(() => {
 #echartsLine,
 #echartsBar {
 	width: 100%;
-	height: 500px;
+	height: 1px;
 }
 </style>
