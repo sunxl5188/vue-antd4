@@ -21,8 +21,11 @@ declare module 'vue' {
     ALayoutSider: typeof import('ant-design-vue/es')['LayoutSider']
     AlipayCircleOutlined: typeof import('@ant-design/icons-vue')['AlipayCircleOutlined']
     AMenu: typeof import('ant-design-vue/es')['Menu']
+    AMenuItem: typeof import('ant-design-vue/es')['MenuItem']
+    AMenuItemGroup: typeof import('ant-design-vue/es')['MenuItemGroup']
     AResult: typeof import('ant-design-vue/es')['Result']
     ASpace: typeof import('ant-design-vue/es')['Space']
+    ASubMenu: typeof import('ant-design-vue/es')['SubMenu']
     ATabPane: typeof import('ant-design-vue/es')['TabPane']
     ATabs: typeof import('ant-design-vue/es')['Tabs']
     Breadcrumb: typeof import('./src/components/breadcrumb/index.vue')['default']
@@ -33,6 +36,7 @@ declare module 'vue' {
     MobileOutlined: typeof import('@ant-design/icons-vue')['MobileOutlined']
     Modal: typeof import('./src/components/modal/index.vue')['default']
     MyTable: typeof import('./src/components/MyTable.vue')['default']
+    QqOutlined: typeof import('@ant-design/icons-vue')['QqOutlined']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SvgIcon: typeof import('./src/components/icons/SvgIcon.vue')['default']
@@ -41,5 +45,6 @@ declare module 'vue' {
     UserOutlined: typeof import('@ant-design/icons-vue')['UserOutlined']
     WeiboCircleOutlined: typeof import('@ant-design/icons-vue')['WeiboCircleOutlined']
     XlDraggable: typeof import('./src/components/XlDraggable.vue')['default']
+    XlUpload: typeof import('./src/components/xl-upload/index.vue')['default']
   }
 }
