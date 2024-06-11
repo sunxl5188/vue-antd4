@@ -30,6 +30,7 @@ declare module 'vue' {
     Cropper: typeof import('./src/components/cropper/index.vue')['default']
     LockOutlined: typeof import('@ant-design/icons-vue')['LockOutlined']
     MailOutlined: typeof import('@ant-design/icons-vue')['MailOutlined']
+    MapContainer: typeof import('./src/components/MapContainer.vue')['default']
     MobileOutlined: typeof import('@ant-design/icons-vue')['MobileOutlined']
     Modal: typeof import('./src/components/modal/index.vue')['default']
     MyTable: typeof import('./src/components/MyTable.vue')['default']
@@ -41,5 +42,6 @@ declare module 'vue' {
     UserOutlined: typeof import('@ant-design/icons-vue')['UserOutlined']
     WeiboCircleOutlined: typeof import('@ant-design/icons-vue')['WeiboCircleOutlined']
     XlDraggable: typeof import('./src/components/XlDraggable.vue')['default']
+    XlUpload: typeof import('./src/components/xl-upload/index.vue')['default']
   }
 }

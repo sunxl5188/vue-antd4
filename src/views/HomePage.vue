@@ -1,10 +1,11 @@
 <template>
 	<div>
+		<MapContainer />
 		<!-- https://www.vvhan.com/ant-design-menu-left.html -->
-		<a-menu>
+		<!-- <a-menu>
 			<a-sub-menu key="1">
 				<template #title>
-					<!-- <icon-font type="StepForwardOutlined" /> -->
+					<-- <icon-font type="StepForwardOutlined" /> ->
 					<span>菜单一</span>
 					<a-menu-item key="1-2">
 						<span>子菜单一</span>
@@ -13,16 +14,17 @@
 			</a-sub-menu>
 		</a-menu>
 		<div id="echartsBar"></div>
-		<div id="echartsLine"></div>
+		<div id="echartsLine"></div> -->
 		<!-- <xl-upload :attribute="{ action: 'http://www.baidu.com' }"></xl-upload> -->
 	</div>
 </template>
 
 <script setup lang="ts">
-import * as echarts from 'echarts'
+//import * as echarts from 'echarts'
+import MapContainer from '@/components/MapContainer.vue'
 //import XlUpload from '@/components/xl-upload/index.vue'
 
-const echartsLine = () => {
+/* const echartsLine = () => {
 	const myChart = echarts.init(document.getElementById('echartsLine'))
 	const dayTime = [
 		'5:20',
@@ -56,9 +58,6 @@ const echartsLine = () => {
 			borderWidth: 0,
 			textStyle: { color: '#fff' },
 			formatter: '时间:{b}<br />呼吸率:{c}/分'
-			/* formatter: function (data: any) {
-				return '呼吸{a0}'
-			} */
 		},
 		grid: {
 			top: '18%',
@@ -202,11 +201,11 @@ const echartsBar = () => {
 		]
 	}
 	myChart.setOption(option)
-}
+} */
 
 onMounted(() => {
-	echartsLine()
-	echartsBar()
+	/* echartsLine()
+	echartsBar() */
 })
 </script>
 
