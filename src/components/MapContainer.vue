@@ -4,7 +4,7 @@
 		<div>
 			<a-space>
 				<a-button type="primary" @click="edit.createPolygon">新建</a-button>
-				<a-button @click="edit.close()">结束编辑</a-button>
+				<a-button v-if="edit.isEdit" @click="edit.close()">结束编辑</a-button>
 				<a-button @click="edit.handleSubmit">保存</a-button>
 			</a-space>
 		</div>
@@ -16,6 +16,23 @@
 import AMapLoader from '@amap/amap-jsapi-loader'
 let map: any = null
 let polyEditor: any = null
+
+const paths = [
+	[
+		[116.471558, 39.996394],
+		[116.46967, 39.993336],
+		[116.474626, 39.992087],
+		[116.474648, 39.994915]
+	],
+	[
+		[116.467765, 39.992001],
+		[116.466843, 39.988861],
+		[116.471778, 39.986937],
+		[116.473323, 39.988877],
+		[116.471285, 39.990899],
+		[116.469525, 39.989074]
+	]
+]
 
 const pathData = ref<any[]>([])
 
@@ -36,17 +53,17 @@ onMounted(() => {
 				center: [116.471354, 39.994257] // 初始化地图中心点位置
 			})
 			polyEditor = new AMap.PolygonEditor(map)
-			edit.mapConfig()
+			edit.mapConfig(AMap)
 		})
 		.catch(e => {
 			console.log(e)
 		})
 })
 
-const nowPolygon = ref()
 const edit = reactive({
-	eid: -1,
-	mapConfig() {
+	isEdit: false,
+	polygonList: [] as any[],
+	mapConfig(AMap: any) {
 		polyEditor._opt.createOptions = {
 			// 创建区域的样式
 			fillColor: '#409EFF', // 多边形填充颜色，使用16进制颜色代码赋值，如：#00B2D5
@@ -63,34 +80,33 @@ const edit = reactive({
 			strokeColor: '#409EFF',
 			strokeOpacity: 1
 		}
+		if (paths.length) {
+			for (const path of paths) {
+				edit.polygonList.push(new AMap.Polygon({ path }))
+			}
+			map.add(edit.polygonList)
+			map.setFitView()
+			polyEditor.addAdsorbPolygons(edit.polygonList)
+		}
 		polyEditor.on('add', async (e: any) => {
 			const polygon = e.target
-			nowPolygon.value = e.target
-			const arr = await polygon.getPath()
-			let pathArr: any[] = []
-			for (const item of arr) {
-				const data = [item.lng, item.lat]
-				pathArr = [...pathArr, ...[data]]
-			}
-			pathData.value.push(pathArr)
-			polyEditor.close()
-
+			edit.isEdit = true
+			polyEditor.addAdsorbPolygons(polygon)
 			polygon.on('dblclick', (e: any) => {
-				const path = e.target.getPath().map((item: any) => [item.lng, item.lat])
-				const index = pathData.value.findIndex(
-					item => item.join(',') === path.join(',')
-				)
-				edit.eid = index
+				edit.isEdit = true
 				polyEditor.close()
 				polyEditor.setTarget(e.target)
 				polyEditor.open()
 			})
 		})
-		polyEditor.on('end', async (e: any) => {
-			const polygon = e.target
-			let arr = await polygon.getPath().map((item: any) => [item.lng, item.lat])
-			console.log(edit.eid, arr)
-			if (edit.eid > -1) pathData.value[edit.eid] = arr
+		// 编辑已有数据
+		edit.polygonList.forEach(polygon => {
+			polygon.on('dblclick', () => {
+				edit.isEdit = true
+				polyEditor.close()
+				polyEditor.setTarget(polygon)
+				polyEditor.open()
+			})
 		})
 	},
 	createPolygon() {
@@ -100,10 +116,23 @@ const edit = reactive({
 	},
 	close() {
 		polyEditor.close()
+		edit.isEdit = false
+	},
+	getPathArr(data: any[]) {
+		const pathArr: any[] = []
+		data.forEach(item => {
+			pathArr.push([item.lng, item.lat])
+		})
+		return pathArr
 	},
 	async handleSubmit() {
-		const arr = await nowPolygon.value.getPath()
-		console.log(arr)
+		const overlays = map.getAllOverlays()
+		const pathArr = []
+		for (const polygon of overlays) {
+			const arr = await polygon.getPath()
+			pathArr.push(edit.getPathArr(arr))
+		}
+		pathData.value = pathArr
 	}
 })
 
