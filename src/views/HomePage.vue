@@ -2,7 +2,7 @@
 	<div>
 		<MapContainer />
 		<!-- https://www.vvhan.com/ant-design-menu-left.html -->
-		<a-menu
+		<!-- <a-menu
 			v-model:selectedKeys="selectedKeys"
 			v-model:openKeys="openKeys"
 			mode="inline"
@@ -10,7 +10,7 @@
 			<a-sub-menu key="sub1">
 				<template #icon>
 					<MailOutlined />
-		<!-- <a-menu>
+		<a-menu>
 			<a-sub-menu key="1">
 				<template #title>
 					<-- <icon-font type="StepForwardOutlined" /> ->
@@ -35,11 +35,11 @@
 import MapContainer from '@/components/MapContainer.vue'
 //import XlUpload from '@/components/xl-upload/index.vue'
 
-const selectedKeys = ref<string[]>(['1'])
-const openKeys = ref<string[]>(['sub1'])
+//const selectedKeys = ref<string[]>(['1'])
+//const openKeys = ref<string[]>(['sub1'])
 
-const selectedKeys = ref<string[]>(['1'])
-const openKeys = ref<string[]>(['sub1'])
+//const selectedKeys = ref<string[]>(['1'])
+//const openKeys = ref<string[]>(['sub1'])
 
 /* const echartsLine = () => {
 	const myChart = echarts.init(document.getElementById('echartsLine'))
