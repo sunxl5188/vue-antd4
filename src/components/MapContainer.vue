@@ -15,6 +15,7 @@
 <script setup lang="ts" name="MapContainer">
 import AMapLoader from '@amap/amap-jsapi-loader'
 let map: any = null
+let aMap: any = null
 let polyEditor: any = null
 
 const paths = [
@@ -43,9 +44,10 @@ onMounted(() => {
 	AMapLoader.load({
 		key: '7f96a737195a244dbf7d783ecbe8a6ef', // 申请好的Web端开发者Key，首次调用 load 时必填
 		version: '2.0', // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
-		plugins: ['AMap.Scale', 'AMap.PolygonEditor'] //需要使用的的插件列表，如比例尺'AMap.Scale'，支持添加多个如：['...','...']
+		plugins: ['AMap.Scale', 'AMap.PolygonEditor', 'AMap.ContextMenu'] //需要使用的的插件列表，如比例尺'AMap.Scale'，支持添加多个如：['...','...']
 	})
 		.then(AMap => {
+			aMap = AMap
 			map = new AMap.Map('container', {
 				// 设置地图容器id
 				viewMode: '3D', // 是否为3D地图模式
@@ -64,6 +66,7 @@ const edit = reactive({
 	isEdit: false,
 	polygonList: [] as any[],
 	mapConfig(AMap: any) {
+		console.log(AMap)
 		polyEditor._opt.createOptions = {
 			// 创建区域的样式
 			fillColor: '#409EFF', // 多边形填充颜色，使用16进制颜色代码赋值，如：#00B2D5
@@ -88,15 +91,19 @@ const edit = reactive({
 			map.setFitView()
 			polyEditor.addAdsorbPolygons(edit.polygonList)
 		}
+		//新增多边行
 		polyEditor.on('add', async (e: any) => {
 			const polygon = e.target
 			edit.isEdit = true
 			polyEditor.addAdsorbPolygons(polygon)
-			polygon.on('dblclick', (e: any) => {
+			polygon.on('dblclick', () => {
 				edit.isEdit = true
 				polyEditor.close()
-				polyEditor.setTarget(e.target)
+				polyEditor.setTarget(polygon)
 				polyEditor.open()
+			})
+			polygon.on('rightclick', (e: any) => {
+				edit.handleContextMenu(AMap, polygon, e.lnglat)
 			})
 		})
 		// 编辑已有数据
@@ -106,6 +113,9 @@ const edit = reactive({
 				polyEditor.close()
 				polyEditor.setTarget(polygon)
 				polyEditor.open()
+			})
+			polygon.on('rightclick', (e: any) => {
+				edit.handleContextMenu(AMap, polygon, e.lnglat)
 			})
 		})
 	},
@@ -133,6 +143,32 @@ const edit = reactive({
 			pathArr.push(edit.getPathArr(arr))
 		}
 		pathData.value = pathArr
+		const boole = aMap.GeometryUtil.doesRingRingIntersect(paths[0], paths[1])
+		console.log(boole)
+		/**
+		 * reduce() 方法接收一个函数作为累加器
+		 * total：上一次调用回调返回的值，或者是提供的初始值（initialValue）；
+		 * currentValue：当前被处理的元素；
+		 * currentIndex：当前元素的索引
+		 * arr：当前元素所属的数组对象
+		 */
+
+		/* pathData.reduce((total, currentValue, currentIndex, arr) => {
+			
+		}, []) */
+	},
+	handleContextMenu(AMap: any, polygon: any, lnglat: any) {
+		const menu = new AMap.ContextMenu()
+		menu.addItem('删除', () => {
+			edit.handleRemovePolygon(polygon)
+			menu.close()
+		})
+		menu.open(map, lnglat)
+	},
+	handleRemovePolygon(polygon: any) {
+		polyEditor.close()
+		map.remove(polygon)
+		edit.isEdit = false
 	}
 })
 
