@@ -28,7 +28,7 @@ export interface ModalType {
 	 * 错误提示
 	 * @param config Modal配置
 	 */
-	error(config?: ModalFuncProps): void
+	error(message: string | object, config?: ModalFuncProps): void
 	/**
 	 * 警告提示
 	 * @param config Modal配置

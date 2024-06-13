@@ -31,13 +31,17 @@ export default {
 	},
 	/**
 	 * 错误提示
-	 * @param config Modal配置
+	 * @param message 提示内容
+	 * @param config 配置参数
 	 */
-	error: (config?: ModalFuncProps): void => {
-		Modal.error({
-			...ModalConfig,
-			...config
-		})
+	error: (message: string | object): void => {
+		let opt: ModalFuncProps
+		if (Object.prototype.toString.call(message) === '[object String]')
+			opt = { ...ModalConfig, ...{ content: message as string } }
+		else {
+			opt = { ...ModalConfig, ...(message as ModalFuncProps) }
+		}
+		Modal.error(opt)
 	},
 	/**
 	 * 警告提示

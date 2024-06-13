@@ -13,10 +13,13 @@
 </template>
 
 <script setup lang="ts" name="MapContainer">
+import { ModalKey } from '@/utils/injectKey'
 import AMapLoader from '@amap/amap-jsapi-loader'
 let map: any = null
 let aMap: any = null
 let polyEditor: any = null
+
+const modal = inject(ModalKey)
 
 const paths = [
 	[
@@ -66,7 +69,6 @@ const edit = reactive({
 	isEdit: false,
 	polygonList: [] as any[],
 	mapConfig(AMap: any) {
-		console.log(AMap)
 		polyEditor._opt.createOptions = {
 			// 创建区域的样式
 			fillColor: '#409EFF', // 多边形填充颜色，使用16进制颜色代码赋值，如：#00B2D5
@@ -143,19 +145,17 @@ const edit = reactive({
 			pathArr.push(edit.getPathArr(arr))
 		}
 		pathData.value = pathArr
-		const boole = aMap.GeometryUtil.doesRingRingIntersect(paths[0], paths[1])
-		console.log(boole)
-		/**
-		 * reduce() 方法接收一个函数作为累加器
-		 * total：上一次调用回调返回的值，或者是提供的初始值（initialValue）；
-		 * currentValue：当前被处理的元素；
-		 * currentIndex：当前元素的索引
-		 * arr：当前元素所属的数组对象
-		 */
-
-		/* pathData.reduce((total, currentValue, currentIndex, arr) => {
-			
-		}, []) */
+		let boole = false
+		for (const item of pathData.value) {
+			for (const iter of pathData.value) {
+				if (item.join('') !== iter.join('')) {
+					boole = aMap.GeometryUtil.doesLineRingIntersect(iter, item)
+					if (boole) break
+				}
+			}
+			if (boole) break
+		}
+		if (boole) modal?.error('绘制的图形不能有交叉')
 	},
 	handleContextMenu(AMap: any, polygon: any, lnglat: any) {
 		const menu = new AMap.ContextMenu()
