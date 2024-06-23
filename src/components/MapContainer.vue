@@ -93,7 +93,7 @@ const edit = reactive({
 			map.setFitView()
 			polyEditor.addAdsorbPolygons(edit.polygonList)
 		}
-		//新增多边行
+		//新增多边形
 		polyEditor.on('add', async (e: any) => {
 			const polygon = e.target
 			edit.isEdit = true

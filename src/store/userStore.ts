@@ -67,7 +67,8 @@ export const useUserStore = defineStore('user', {
 				})
 				//生成导航菜单
 				this.sidebarRouters = this.generateSidebar(asyncRoutes)
-				resolve(this.sidebarRouters)
+				this.routes = this.sidebarRouters
+				resolve(asyncRoutes)
 			})
 		},
 		// 动态路由遍历，验证是否具备权限
@@ -91,12 +92,11 @@ export const useUserStore = defineStore('user', {
 			const sidebar: ItemType[] = []
 			route?.forEach(item => {
 				let children = undefined
+				const meta = item.meta as any
 				if (item.children?.length) {
 					children = this.generateSidebar(item.children, item.path) || undefined
 				}
-				const icon = (item.meta as any)?.icon
-					? () => h((item.meta as any)?.icon)
-					: undefined
+				const icon = meta?.icon ? meta?.icon : undefined
 				sidebar.push({
 					label: item.meta?.title,
 					title: item.meta?.title,

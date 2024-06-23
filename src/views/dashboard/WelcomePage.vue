@@ -1,13 +1,11 @@
 <template>
-	<div>WelcomePage</div>
+	<div>WelcomePage1111</div>
 </template>
 
 <script setup lang="ts" name="WelcomePage">
-const route = useRoute()
-
+import { useRouter } from 'vue-router'
+const router = useRouter()
 onMounted(() => {
-	console.log(route.name)
+	console.log(router.getRoutes())
 })
 </script>
-
-<style scoped land="scss"></style>

@@ -20,6 +20,7 @@ import {
 	DayjsKey
 } from '@/utils/injectKey'
 import global from '@/utils/globalProperties'
+import * as antIcons from '@ant-design/icons-vue'
 
 const app = createApp(App)
 const pinia = createPinia()
@@ -27,6 +28,10 @@ pinia.use(createPersistedState())
 
 // 注册全局组件
 app.component('SvgIcon', SvgIcon)
+const iconList: any = antIcons
+for (const key of Object.keys(iconList)) {
+	app.component(key, iconList[key])
+}
 //注入全局
 app.provide(ModalKey, modal)
 app.provide(MessageKey, message)

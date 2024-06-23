@@ -14,9 +14,10 @@ let themes = ref({ token: {} })
 
 themes.value.token = token
 
-onMounted(() => {})
-
 const route = useRouter()
+onMounted(() => {
+	console.log(route.getRoutes())
+})
 
 watch(
 	() => route,

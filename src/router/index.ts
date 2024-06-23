@@ -83,7 +83,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		name: 'dashboard',
 		component: layout,
 		redirect: { name: 'welcome' },
-		meta: { title: '仪表盘', icon: 'DesktopOutlined', keepAlive: true },
+		meta: { title: '仪表盘', icon: 'dashboardOutlined', keepAlive: true },
 		permissions: ['dashboard:welcome:edit'],
 		children: [
 			{
@@ -111,7 +111,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		name: 'form',
 		component: layout,
 		redirect: { name: 'base-form' },
-		meta: { title: '表单页', keepAlive: true },
+		meta: { title: '表单页', icon: 'formOutlined', keepAlive: true },
 		permissions: ['form:list:edit'],
 		children: [
 			{
@@ -139,7 +139,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		name: 'list',
 		component: layout,
 		redirect: { name: 'table-list' },
-		meta: { title: '表单页', keepAlive: true },
+		meta: { title: '列表页', icon: 'tableOutlined', keepAlive: true },
 		permissions: ['list:list:edit'],
 		children: [
 			{
@@ -167,7 +167,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		name: 'profile',
 		component: layout,
 		redirect: { name: 'basic' },
-		meta: { title: '详细页', keepAlive: true },
+		meta: { title: '详细页', icon: 'profileOutlined', keepAlive: true },
 		permissions: ['profile:list:edit'],
 		children: [
 			{
@@ -189,7 +189,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		name: 'error',
 		component: layout,
 		redirect: { name: 'error-403' },
-		meta: { title: '异常页', keepAlive: true },
+		meta: { title: '异常页', icon: 'warningOutlined', keepAlive: true },
 		permissions: ['error:list:edit'],
 		children: [
 			{
@@ -217,7 +217,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		name: 'result',
 		component: layout,
 		redirect: { name: 'success' },
-		meta: { title: '结果页', keepAlive: true },
+		meta: { title: '结果页', icon: 'checkCircleOutlined', keepAlive: true },
 		permissions: ['result:list:edit'],
 		children: [
 			{
@@ -239,7 +239,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		name: 'account',
 		component: layout,
 		redirect: { name: 'center' },
-		meta: { title: '个人中心', keepAlive: true },
+		meta: { title: '个人中心', icon: 'userOutlined', keepAlive: true },
 		permissions: ['account:list:edit'],
 		children: [
 			{
@@ -261,7 +261,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		name: 'system',
 		component: layout,
 		redirect: { name: 'role-list' },
-		meta: { title: '系统管理', keepAlive: true },
+		meta: { title: '系统管理', icon: 'windowsOutlined', keepAlive: true },
 		roles: ['admin'],
 		children: [
 			{
@@ -297,7 +297,7 @@ const router = createRouter({
 
 //全局前置守卫
 
-router.beforeEach(function (to, from) {
+router.beforeEach(async (to, from, next) => {
 	const store = useUserStore()
 	//设置页面标题
 	if (to.meta.title) {
@@ -309,31 +309,18 @@ router.beforeEach(function (to, from) {
 	}
 	if (cookies.get('token')) {
 		if (to.path === '/login') {
-			return { path: '/' }
+			next({ path: '/' })
 		} else if (store.routes.length === 0) {
-			store.generateRoutes()
-			/* store
-				.getInfo()
-				.then(() => {
-					store.generateRoutes().then(accessRoutes => {
-						// 根据roles权限生成可访问的路由表
-						router.addRoutes(accessRoutes) // 动态添加可访问路由表
-						return { ...to, replace: true } // hack方法 确保addRoutes已完成
-					})
-				})
-				.catch(err => {
-					store.dispatch('LogOut').then(() => {
-						return { path: '/' }
-					})
-				}) */
+			await store.generateRoutes()
+			next({ path: to.path, replace: true })
 		} else {
-			return true
+			next()
 		}
 	} else if (whiteList.indexOf(to.path) !== -1) {
 		// 在免登录白名单，直接进入
-		return true
+		next()
 	} else {
-		return { path: `/login?redirect=${to.fullPath}` } // 否则全部重定向到登录页
+		next({ path: `/login?redirect=${to.fullPath}` }) // 否则全部重定向到登录页
 	}
 })
 

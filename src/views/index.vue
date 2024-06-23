@@ -10,7 +10,11 @@
 </template>
 
 <script setup lang="ts" name="AdminIndex">
-onMounted(() => {})
+import { useRouter } from 'vue-router'
+const router = useRouter()
+onMounted(() => {
+	console.log(router.getRoutes())
+})
 </script>
 
 <style scoped></style>
