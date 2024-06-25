@@ -1,6 +1,5 @@
 <template>
 	<div>
-		{{ pathData }}
 		<div>
 			<a-space>
 				<a-button type="primary" @click="edit.createPolygon">新建</a-button>
@@ -38,37 +37,65 @@ const paths = [
 	]
 ]
 
-const pathData = ref<any[]>([])
-
-onMounted(() => {
+onMounted(async () => {
 	;(window as any)['_AMapSecurityConfig'] = {
 		securityJsCode: 'ec92c3d8d63147f4e348635a516e16a6'
 	}
-	AMapLoader.load({
+	const AMap = await AMapLoader.load({
 		key: '7f96a737195a244dbf7d783ecbe8a6ef', // 申请好的Web端开发者Key，首次调用 load 时必填
 		version: '2.0', // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
 		plugins: ['AMap.Scale', 'AMap.PolygonEditor', 'AMap.ContextMenu'] //需要使用的的插件列表，如比例尺'AMap.Scale'，支持添加多个如：['...','...']
 	})
-		.then(AMap => {
-			aMap = AMap
-			map = new AMap.Map('container', {
-				// 设置地图容器id
-				viewMode: '3D', // 是否为3D地图模式
-				zoom: 16, // 初始化地图级别
-				center: [116.471354, 39.994257] // 初始化地图中心点位置
-			})
-			polyEditor = new AMap.PolygonEditor(map)
-			edit.mapConfig(AMap)
-		})
-		.catch(e => {
-			console.log(e)
-		})
+	aMap = AMap
+	map = new AMap.Map('container', {
+		resizeEnable: true, // 窗口大小调整
+		// 设置地图容器id
+		viewMode: '3D', // 是否为3D地图模式
+		zoom: 16, // 初始化地图级别
+		isHotspot: true, // 是否开启地图热点和标注的 hover 效果
+		mapStyle: 'amap://styles/dark', //设置地图的显示样式
+		center: [116.471354, 39.994257] // 初始化地图中心点位置
+	})
+	polyEditor = new AMap.PolygonEditor(map)
+	edit.mapConfig(AMap)
 })
-
+//创建点标记
+const mark = reactive({
+	marker: null as any,
+	//实例化点标记
+	create() {
+		if (mark.marker) return
+		mark.marker = new aMap.Marker({
+			draggable: true,
+			icon: 'https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png',
+			anchor: 'center'
+		})
+		map.on('click', mark.handleAddMarker)
+	},
+	handleAddMarker(position: string) {
+		mark.marker.position = new aMap.LngLat(position)
+		mark.marker.setMap(map)
+	},
+	//清除 marker
+	clearMarker() {
+		if (mark.marker) {
+			mark.marker.setMap(null)
+			mark.marker = null
+		}
+	}
+})
+//地图热点
+/* const hot = reactive({
+	create() {}
+}) */
+//绘制距形图
 const edit = reactive({
 	isEdit: false,
+	pathData: [] as Array<any[]>,
 	polygonList: [] as any[],
 	mapConfig(AMap: any) {
+		edit.pathData = []
+		edit.polygonList = []
 		polyEditor._opt.createOptions = {
 			// 创建区域的样式
 			fillColor: '#409EFF', // 多边形填充颜色，使用16进制颜色代码赋值，如：#00B2D5
@@ -144,10 +171,10 @@ const edit = reactive({
 			const arr = await polygon.getPath()
 			pathArr.push(edit.getPathArr(arr))
 		}
-		pathData.value = pathArr
+		edit.pathData = pathArr
 		let boole = false
-		for (const item of pathData.value) {
-			for (const iter of pathData.value) {
+		for (const item of edit.pathData) {
+			for (const iter of edit.pathData) {
 				if (item.join('') !== iter.join('')) {
 					boole = aMap.GeometryUtil.doesLineRingIntersect(iter, item)
 					if (boole) break
@@ -155,7 +182,10 @@ const edit = reactive({
 			}
 			if (boole) break
 		}
-		if (boole) modal?.error('绘制的图形不能有交叉')
+		if (boole) {
+			modal?.error('绘制的图形不能有交叉')
+			return false
+		}
 	},
 	handleContextMenu(AMap: any, polygon: any, lnglat: any) {
 		const menu = new AMap.ContextMenu()
