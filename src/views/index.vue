@@ -10,10 +10,10 @@
 </template>
 
 <script setup lang="ts" name="AdminIndex">
-import { useRouter } from 'vue-router'
-const router = useRouter()
+//import { useRouter } from 'vue-router'
+//const router = useRouter()
 onMounted(() => {
-	console.log(router.getRoutes())
+	//console.log(router.getRoutes())
 })
 </script>
 

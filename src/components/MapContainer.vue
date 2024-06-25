@@ -44,7 +44,12 @@ onMounted(async () => {
 	const AMap = await AMapLoader.load({
 		key: '7f96a737195a244dbf7d783ecbe8a6ef', // 申请好的Web端开发者Key，首次调用 load 时必填
 		version: '2.0', // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
-		plugins: ['AMap.Scale', 'AMap.PolygonEditor', 'AMap.ContextMenu'] //需要使用的的插件列表，如比例尺'AMap.Scale'，支持添加多个如：['...','...']
+		plugins: [
+			'AMap.Scale',
+			'AMap.PolygonEditor',
+			'AMap.ContextMenu',
+			'AMap.Geocoder'
+		] //需要使用的的插件列表，如比例尺'AMap.Scale'，支持添加多个如：['...','...']
 	})
 	aMap = AMap
 	map = new AMap.Map('container', {
@@ -56,25 +61,61 @@ onMounted(async () => {
 		mapStyle: 'amap://styles/dark', //设置地图的显示样式
 		center: [116.471354, 39.994257] // 初始化地图中心点位置
 	})
+	//绘制多边形
 	polyEditor = new AMap.PolygonEditor(map)
 	edit.mapConfig(AMap)
+	//创建点标记
+	mark.create()
 })
 //创建点标记
 const mark = reactive({
 	marker: null as any,
 	//实例化点标记
 	create() {
-		if (mark.marker) return
 		mark.marker = new aMap.Marker({
-			draggable: true,
-			icon: 'https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png',
+			icon: new aMap.Icon({
+				image:
+					'//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png',
+				imageSize: new aMap.Size(25, 34),
+				size: new aMap.Size(25, 34)
+			}),
 			anchor: 'center'
+		})
+		mark.marker.setMap(map)
+		mark.marker.hide()
+		//鼠标点击marker弹出窗
+		mark.marker.on('click', (e: any) => {
+			const data = [
+				{
+					label: '信息1',
+					value: '11111'
+				},
+				{
+					label: '信息2',
+					value: '2222222222'
+				},
+				{
+					label: '信息3',
+					value: '333333333333'
+				},
+				{
+					label: '信息4',
+					value: '4444444'
+				},
+				{
+					label: '信息5',
+					value: '555555555555'
+				}
+			]
+			showInfoWindow(data, e)
 		})
 		map.on('click', mark.handleAddMarker)
 	},
-	handleAddMarker(position: string) {
-		mark.marker.position = new aMap.LngLat(position)
-		mark.marker.setMap(map)
+	async handleAddMarker(e: any) {
+		const lnglat = [e.lnglat.getLng(), e.lnglat.getLat()]
+		mark.marker.setPosition(lnglat)
+		mark.marker.show()
+		map.clearInfoWindow()
 	},
 	//清除 marker
 	clearMarker() {
@@ -202,6 +243,50 @@ const edit = reactive({
 	}
 })
 
+//经纬度转地址
+let geocoder: any
+const regeoToAddress = (lnglat: string[]) => {
+	return new Promise((resolve, reject) => {
+		if (!geocoder) geocoder = new aMap.Geocoder()
+		if (geocoder) {
+			geocoder.getAddress(lnglat, function (status: string, result: any) {
+				if (status === 'complete' && result.regeocode) {
+					resolve(result.regeocode.formattedAddress)
+				} else {
+					reject('根据经纬度查询地址失败')
+				}
+			})
+		}
+	})
+}
+
+//绘制弹窗
+const showInfoWindow = async (data: any[], e: any) => {
+	const lnglat = e.lnglat
+	const address = await regeoToAddress(lnglat)
+	let infoWindow
+	let info = []
+	info.push(
+		`<div class="header"><span class="title">${address}</span><span class="close"></span></div>`
+	)
+	info.push('<ul>')
+	for (const item of data) {
+		info.push(`<li> ${item.label}：${item.value}</li>`)
+	}
+	info.push('</ul>')
+	// 创建浮窗
+	infoWindow = new aMap.InfoWindow({
+		isCustom: true,
+		offset: new aMap.Pixel(26, -15), // 偏移量
+		content: info.join('') // 使用默认信息窗体框样式，显示信息内容
+	})
+	infoWindow.open(map, e.lnglat) // 打开弹窗
+	const el = document.querySelector('.close')
+	el?.addEventListener('click', () => {
+		map.clearInfoWindow()
+	})
+}
+
 onUnmounted(() => {
 	map?.destroy()
 })
@@ -211,5 +296,75 @@ onUnmounted(() => {
 .map {
 	width: 100%;
 	height: 800px;
+}
+</style>
+<style lang="less">
+.amap-layers {
+	* {
+		box-sizing: border-box;
+	}
+	ul,
+	li {
+		list-style: none;
+	}
+	.amap-marker-label {
+		background: rgba(0, 0, 0, 0.7);
+		color: #fff;
+		border-color: #000;
+		border-radius: 5px;
+		font-size: 14px;
+		padding: 8px 12px;
+	}
+	.amap-info-contentContainer {
+		background: #fff;
+		border-radius: 5px;
+		min-width: 260px;
+		max-width: 350px;
+		.header {
+			width: 100%;
+			border-bottom: 1px solid #dedede;
+			padding: 10px 15px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			.title {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				line-height: 30px;
+				font-weight: 600;
+				flex: 1;
+			}
+			.close {
+				width: 30px;
+				height: 30px;
+				display: inline-block;
+				cursor: pointer;
+				&::before {
+					content: 'x';
+					font-size: 16px;
+					text-align: center;
+					width: 30px;
+					height: 30px;
+					line-height: 30px;
+					display: inline-block;
+					color: #888;
+				}
+				&:hover {
+					&::before {
+						color: #333;
+					}
+				}
+			}
+		}
+		ul {
+			padding: 15px;
+			li {
+				height: 26px;
+				line-height: 26px;
+				font-size: 15px;
+			}
+		}
+	}
 }
 </style>

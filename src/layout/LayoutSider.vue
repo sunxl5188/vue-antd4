@@ -44,6 +44,6 @@ const handleSelect = ({ key }: { key: string }) => {
 }
 
 onMounted(() => {
-	console.log(store.sidebarRouters, '========')
+	console.log([...store.sidebarRouters], '========')
 })
 </script>

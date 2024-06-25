@@ -58,13 +58,12 @@ export const useUserStore = defineStore('user', {
 			return new Promise(resolve => {
 				const router = useRouter()
 				const asyncRoutes = this.filterDynamicRoutes(dynamicRoutes)
+				const i = constantRoutes.findIndex(o => o.name === 'layout')
 				asyncRoutes.forEach((item: RouteRecordRaw) => {
 					router.addRoute(item)
+					constantRoutes[i].children?.push(item)
 				})
-				const i = constantRoutes.findIndex(o => o.name === 'layout')
-				asyncRoutes.forEach(cItem => {
-					constantRoutes[i].children?.push(cItem)
-				})
+				console.log(constantRoutes, '88888')
 				//生成导航菜单
 				this.sidebarRouters = this.generateSidebar(asyncRoutes)
 				this.routes = this.sidebarRouters
@@ -93,10 +92,10 @@ export const useUserStore = defineStore('user', {
 			route?.forEach(item => {
 				let children = undefined
 				const meta = item.meta as any
+				const icon = meta?.icon ? meta?.icon : undefined
 				if (item.children?.length) {
 					children = this.generateSidebar(item.children, item.path) || undefined
 				}
-				const icon = meta?.icon ? meta?.icon : undefined
 				sidebar.push({
 					label: item.meta?.title,
 					title: item.meta?.title,

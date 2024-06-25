@@ -263,6 +263,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		redirect: { name: 'role-list' },
 		meta: { title: '系统管理', icon: 'windowsOutlined', keepAlive: true },
 		roles: ['admin'],
+		permissions: ['system:list:edit'],
 		children: [
 			{
 				path: 'role-list',
@@ -277,6 +278,13 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				meta: { title: '个人设置', keepAlive: true }
 			}
 		]
+	},
+	{
+		path: '/system1',
+		name: 'system1',
+		component: () => import('@/views/system/RoleList.vue'),
+		meta: { title: '系统管理1', icon: 'windowsOutlined', keepAlive: true },
+		permissions: ['system1:list:edit']
 	}
 ]
 
