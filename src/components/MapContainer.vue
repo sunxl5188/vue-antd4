@@ -79,43 +79,23 @@ const mark = reactive({
 				imageSize: new aMap.Size(25, 34),
 				size: new aMap.Size(25, 34)
 			}),
-			anchor: 'center'
+			anchor: 'center',
+			offset: new aMap.Pixel(-13, -30)
 		})
 		mark.marker.setMap(map)
 		mark.marker.hide()
-		//鼠标点击marker弹出窗
-		mark.marker.on('click', (e: any) => {
-			const data = [
-				{
-					label: '信息1',
-					value: '11111'
-				},
-				{
-					label: '信息2',
-					value: '2222222222'
-				},
-				{
-					label: '信息3',
-					value: '333333333333'
-				},
-				{
-					label: '信息4',
-					value: '4444444'
-				},
-				{
-					label: '信息5',
-					value: '555555555555'
-				}
-			]
-			showInfoWindow(data, e)
-		})
 		map.on('click', mark.handleAddMarker)
 	},
 	async handleAddMarker(e: any) {
 		const lnglat = [e.lnglat.getLng(), e.lnglat.getLat()]
+		const content = await regeoToAddress(lnglat)
+		mark.marker.setLabel({
+			content,
+			direction: 'center',
+			offset: new aMap.Pixel(0, 35)
+		})
 		mark.marker.setPosition(lnglat)
 		mark.marker.show()
-		map.clearInfoWindow()
 	},
 	//清除 marker
 	clearMarker() {
@@ -261,6 +241,7 @@ const regeoToAddress = (lnglat: string[]) => {
 }
 
 //绘制弹窗
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const showInfoWindow = async (data: any[], e: any) => {
 	const lnglat = e.lnglat
 	const address = await regeoToAddress(lnglat)
@@ -284,6 +265,7 @@ const showInfoWindow = async (data: any[], e: any) => {
 	const el = document.querySelector('.close')
 	el?.addEventListener('click', () => {
 		map.clearInfoWindow()
+		el.remove()
 	})
 }
 
