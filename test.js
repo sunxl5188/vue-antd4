@@ -11,3 +11,6 @@ worker.onerror = function (ev) {
 	//如果发生错误,立即终止代码
 	worker.terminate()
 } */
+const a = undefined
+
+console.log(Number.isFinite(a))
