@@ -14,9 +14,35 @@
 		</a-form-item>
 		<a-form-item label="单选" name="b">
 			<a-radio-group
-				v-model:value="form.formData.a"
+				v-model:value="form.formData.b"
 				:options="form.radioOption"
 			/>
+		</a-form-item>
+		<a-form-item label="多选" name="c">
+			<a-checkbox-group
+				v-model:value="form.formData.c"
+				:options="form.checkboxOption"
+			>
+			</a-checkbox-group>
+		</a-form-item>
+		<a-form-item label="下拉选项" name="d">
+			<a-select
+				v-model:value="form.formData.d"
+				placeholder="请选择"
+				allowClear
+				:maxTagCount="2"
+				:maxTagTextLength="5"
+				mode="multiple"
+				:filterOption="form.filterOption"
+				optionFilterProp="value"
+				showArrow
+				show-search
+				:fieldNames="{ label: 'label', value: 'value' }"
+				:options="form.selectOption"
+				@change="form.handleChange"
+			>
+			</a-select
+			><!-- :getPopupContainer="() => document.body" -->
 		</a-form-item>
 	</a-form>
 </template>
@@ -24,7 +50,15 @@
 <script setup lang="ts" name="BaseForm">
 import type { FormInstance } from 'ant-design-vue'
 
-const defaultForm = {}
+const defaultForm = {
+	a: undefined,
+	b: undefined,
+	c: undefined,
+	d: undefined,
+	e: undefined,
+	f: undefined,
+	j: undefined
+}
 const form = reactive({
 	formRef: ref<FormInstance>(),
 	initData: { ...defaultForm },
@@ -48,7 +82,7 @@ const form = reactive({
 	},
 	//验证通过
 	handleFinish(params: any): void {
-		console.log(params)
+		console.log(params, document)
 	},
 	//验证失败
 	handleFinishFailed(error: any): void {
@@ -56,13 +90,42 @@ const form = reactive({
 	},
 	radioOption: [
 		{
-			title: '单选一',
+			label: '单选一',
 			value: '1'
 		},
 		{
-			title: '单选二',
+			label: '单选二',
 			value: '2'
 		}
-	]
+	],
+	checkboxOption: [
+		{
+			label: '门店',
+			value: '1'
+		},
+		{
+			label: '经销商',
+			value: '2'
+		},
+		{
+			label: '供应商',
+			value: '3'
+		},
+		{
+			label: '其他商家',
+			value: '4'
+		}
+	],
+	selectOption: [
+		{ value: '4', label: '总代' },
+		{ value: '1', label: '一级代理' },
+		{ value: '2', label: '专区代理' },
+		{ value: '3', label: '二级代理' }
+	],
+	handleChange() {},
+	filterOption(val: string, option: Array<any>) {
+		console.log(val, option)
+		return (option as any).label.indexOf(val) >= 0
+	}
 })
 </script>

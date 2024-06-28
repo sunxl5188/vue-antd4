@@ -54,7 +54,7 @@
 		// 不允许 switch 表达式中存在 fallthrough case，即如果某个 case 内不存在 break 或 return 关键字，会抛出错误。
 		// 注意：只有当该 case 中存在代码逻辑但是无 break 或 return 时才会抛出错误。如果 case 内无逻辑代码则不会抛出错误。
 		"noFallthroughCasesInSwitch": true,
-		"allowJs": true,// 允许js
+		"allowJs": true, // 允许js
 		"noImplicitAny":false,
 	},
 	// 定义希望被编译的文件所在的目录 ** 代表任意目录 * 代表任意文件
