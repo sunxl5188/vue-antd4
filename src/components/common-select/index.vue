@@ -25,30 +25,6 @@ const props = withDefaults(defineProps<PropsType>(), {
 
 const emit = defineEmits(['update:value', 'change'])
 
-// 属性
-const attribute = computed(() => {
-	return {
-		fieldNames: { label: 'label', value: 'value' },
-		showArrow: true,
-		showSearch: true,
-		placeholder: '请选择',
-		allowClear: true,
-		maxTagCount: 2,
-		maxTagTextLength: 5,
-		mode: 'default', //default / multiple / tags / combobox
-		filterOption: state.filterOption,
-		optionFilterProp: 'value',
-		...props.attr
-	}
-})
-
-//事件
-const onEvents = computed(() => {
-	return {
-		change: state.handleChange,
-		...props.events
-	}
-})
 interface OptionType {
 	label: string
 	value: string | number
@@ -94,6 +70,27 @@ const state = reactive({
 		emit('change', data, label, list)
 	}
 })
+
+// 属性
+const attribute = {
+	fieldNames: { label: 'label', value: 'value' },
+	showArrow: true,
+	showSearch: true,
+	placeholder: '请选择',
+	allowClear: true,
+	maxTagCount: 2,
+	maxTagTextLength: 5,
+	mode: 'default', //default / multiple / tags / combobox
+	filterOption: state.filterOption,
+	optionFilterProp: 'value',
+	...props.attr
+}
+
+//事件
+const onEvents = {
+	change: state.handleChange,
+	...props.events
+}
 </script>
 <style lang="less" scoped>
 ::v-deep(.ant-spin) {
