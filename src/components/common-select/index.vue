@@ -1,7 +1,7 @@
 <template>
 	<a-select
-		v-model:value="form.value"
-		:options="dataSource"
+		v-model:value="state.value"
+		:options="options"
 		class="w-full"
 		v-bind="attribute"
 		v-on="onEvents"
@@ -14,13 +14,13 @@ interface PropsType {
 	value: any
 	attr?: any
 	events?: any
-	dataSource: Array<any>
+	options: Array<any>
 }
 const props = withDefaults(defineProps<PropsType>(), {
 	value: undefined,
 	attr: () => {},
 	events: () => {},
-	dataSource: () => []
+	options: () => []
 })
 
 const emit = defineEmits(['update:value', 'change'])
@@ -28,18 +28,16 @@ const emit = defineEmits(['update:value', 'change'])
 // 属性
 const attribute = computed(() => {
 	return {
-		...{
-			fieldNames: { label: 'label', value: 'value' },
-			showArrow: true,
-			showSearch: true,
-			placeholder: '请选择',
-			allowClear: true,
-			maxTagCount: 2,
-			maxTagTextLength: 5,
-			mode: 'default', //default / multiple / tags / combobox
-			filterOption: form.filterOption,
-			optionFilterProp: 'value'
-		},
+		fieldNames: { label: 'label', value: 'value' },
+		showArrow: true,
+		showSearch: true,
+		placeholder: '请选择',
+		allowClear: true,
+		maxTagCount: 2,
+		maxTagTextLength: 5,
+		mode: 'default', //default / multiple / tags / combobox
+		filterOption: state.filterOption,
+		optionFilterProp: 'value',
 		...props.attr
 	}
 })
@@ -47,9 +45,7 @@ const attribute = computed(() => {
 //事件
 const onEvents = computed(() => {
 	return {
-		...{
-			change: form.handleChange
-		},
+		change: state.handleChange,
 		...props.events
 	}
 })
@@ -61,12 +57,12 @@ type arrayType = Array<string | number>
 type valueType = string | string[] | undefined
 type callbackType = string | arrayType
 
-const form = reactive({
+const state = reactive({
 	checked: undefined as valueType,
 	value: computed({
 		get: () => props.value,
 		set: (val: valueType) => {
-			form.checked = val
+			state.checked = val
 			emit('update:value', val)
 		}
 	}),
@@ -85,14 +81,14 @@ const form = reactive({
 		let list = [] as Array<any>
 		if (isArray) {
 			label = [] as arrayType
-			list = props.dataSource.filter(o => data.includes(o.value))
+			list = props.options.filter(o => data.includes(o.value))
 			list.forEach((item: any) => {
 				label.push(item.label)
 			})
 		} else {
 			let val = data as string | number
 			label = '' as string
-			list = props.dataSource.filter(o => o.value === val)
+			list = props.options.filter(o => o.value === val)
 			label = list[0].label
 		}
 		emit('change', data, label, list)
