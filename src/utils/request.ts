@@ -15,6 +15,9 @@ declare module 'axios' {
 	interface InternalAxiosRequestConfig {
 		_count?: number
 	}
+	interface AxiosResponse {
+		code?: number
+	}
 }
 
 const store = useAppStore()

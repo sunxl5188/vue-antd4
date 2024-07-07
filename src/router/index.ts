@@ -4,7 +4,13 @@ import layout from '@/layout/index.vue'
 import cookies from '@/utils/cookies'
 import { useUserStore } from '@/store/userStore'
 
-const whiteList: Array<string> = ['/login', '/register', '/recover', '/home']
+const whiteList: Array<string> = [
+	'/login',
+	'/register',
+	'/recover',
+	'/home',
+	'/detail'
+]
 export const Layout = layout
 
 /**
@@ -68,6 +74,12 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 		name: 'HomePage',
 		component: () => import('@/views/HomePage.vue'),
 		meta: { title: '首页演示' }
+	},
+	{
+		path: '/detail/:id',
+		name: 'HomeDetail',
+		component: () => import('@/views/DetailPage.vue'),
+		meta: { title: '首页详情' }
 	},
 	{
 		path: '/:pathMatch(.*)*',

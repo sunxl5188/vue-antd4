@@ -1,5 +1,9 @@
 <template>
-	<a-config-provider :locale="locale" component-size="large">
+	<a-config-provider
+		:locale="locale"
+		component-size="large"
+		:transformCellText="transformCellText"
+	>
 		<router-view />
 	</a-config-provider>
 </template>
@@ -13,6 +17,10 @@ const { token } = useToken()
 let themes = ref({ token: {} })
 
 themes.value.token = token
+
+const transformCellText = ({ text }): void => {
+	return text?.length ? text : h('span', { class: 'text-gray-400' }, '--')
+}
 
 const route = useRouter()
 onMounted(() => {

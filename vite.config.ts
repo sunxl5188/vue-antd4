@@ -12,6 +12,7 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 // https://vitejs.dev/config/
 export default ({ mode }: { mode: any }) => {
 	const env = loadEnv(mode, process.cwd(), '')
+	console.log(env)
 	return defineConfig({
 		define: {
 			__APP_PREFIX__: JSON.stringify(env.VITE_PREFIX),
@@ -102,9 +103,7 @@ export default ({ mode }: { mode: any }) => {
 			})
 		],
 		server: {
-			port: 8000, // 设置服务启动端口号，如果端口已经被使用，Vite 会自动尝试下一个可用的端口
-			open: false, // boolean | string 设置服务启动时是否自动打开浏览器，当此值为字符串时，会被用作 URL 的路径名
-			cors: true, // 为开发服务器配置 CORS，配置为允许跨域
+			port: 8000,
 			// 设置代理，根据我们项目实际情况配置
 			proxy: {
 				[env.VITE_API]: {
