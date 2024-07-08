@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<!-- <HeaderSearch /> -->
 		<xl-table
 			:columns="state.columns"
 			api="/index/index/article"
