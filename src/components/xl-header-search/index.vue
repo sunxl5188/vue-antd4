@@ -6,7 +6,7 @@
 		v-bind="formAttribute"
 	>
 		<a-row :gutter="10" type="flex" justify="start">
-			<template v-for="(item, i) in state.formItem" :key="i">
+			<template v-for="(item, i) in formItem" :key="i">
 				<a-col
 					v-show="i < state.colNum || state.expand"
 					:xs="24"
@@ -22,21 +22,15 @@
 							<slot :name="item.slotName"> --插槽-- </slot>
 						</template>
 						<!-- 选择框 -->
-						<a-select
+						<XlSelect
 							v-else-if="item.type === 'select'"
 							v-model:value="state.formData[item.prop]"
-							v-bind="{
-								allowClear: true,
-								showSearch: true,
-								placeholder: '请选择',
-								...item.attribute
-							}"
-						>
-							<a-select-option :value="1">1</a-select-option>
-						</a-select>
-						<!-- tree-select -->
-						<TreeSelect
-							v-else-if="item.type === 'treeSelect'"
+							:attr="item.attribute"
+							:events="item.events"
+						></XlSelect>
+						<!-- tree -->
+						<XlTreeSelect
+							v-else-if="item.type === 'tree'"
 							v-model:value="state.formData[item.prop]"
 							v-bind="{
 								allowClear: true,
@@ -44,28 +38,37 @@
 								placeholder: '请选择',
 								...item.attribute
 							}"
-						></TreeSelect>
+							v-on="item.events"
+						></XlTreeSelect>
 						<!-- date-picker rang-->
-						<DatePicker
-							v-else-if="['date', 'range'].includes(item.type)"
+						<XlDatePicker
+							v-else-if="item.type === 'date' || item.type === 'range'"
 							v-model:value="state.formData[item.prop]"
 							:type="item.type"
-						></DatePicker>
+							v-bind="item.attribute"
+							v-on="item.events"
+						></XlDatePicker>
 						<!-- Cascader -->
-						<Cascader
+						<XlCascader
 							v-else-if="item.type === 'cascader'"
 							v-model:value="state.formData[item.prop]"
-						></Cascader>
+							v-bind="item.attribute"
+							v-on="item.events"
+						></XlCascader>
 						<!-- Checkbox -->
-						<Checkbox
+						<XlCheckbox
 							v-else-if="item.type === 'checkbox'"
 							v-model:value="state.formData[item.prop]"
-						></Checkbox>
+							v-bind="item.attribute"
+							v-on="item.events"
+						></XlCheckbox>
 						<!-- radio -->
-						<Radio
+						<XlRadio
 							v-else-if="item.type === 'radio'"
 							v-model:value="state.formData[item.prop]"
-						></Radio>
+							v-bind="item.attribute"
+							v-on="item.events"
+						></XlRadio>
 						<!-- 输入框文本 -->
 						<a-input
 							v-else
@@ -88,7 +91,7 @@
 					<a-button type="primary" @click="state.handleSearch">查询</a-button>
 					<a-button @click="state.handleReset">重置</a-button>
 					<a-button
-						v-if="state.formItem.length > state.colNum"
+						v-if="formItem.length > state.colNum"
 						type="link"
 						@click="state.expand = !state.expand"
 					>
@@ -102,24 +105,13 @@
 </template>
 
 <script setup lang="ts" name="HeaderSearch">
-import TreeSelect from '@/components/tree-select/index.vue'
-import DatePicker from '@/components/date-picker/index.vue'
-import Cascader from '@/components/cascader/index.vue'
-import Checkbox from '@/components/checkbox/index.vue'
-import Radio from '@/components/radio/index.vue'
-
-interface PropsType {
-	formAttribute?: any
-}
-
-withDefaults(defineProps<PropsType>(), {
-	formAttribute: () => {
-		return {
-			labelCol: { span: 6 },
-			wrapperCol: { span: 18 }
-		}
-	}
-})
+import type { FormInstance } from 'ant-design-vue'
+import XlSelect from '@/components/xl-select/index.vue'
+import XlTreeSelect from '@/components/xl-tree-select/index.vue'
+import XlDatePicker from '@/components/xl-date-picker/index.vue'
+import XlCascader from '@/components/xl-cascader/index.vue'
+import XlCheckbox from '@/components/xl-checkbox/index.vue'
+import XlRadio from '@/components/xl-radio/index.vue'
 
 interface FormItemType {
 	label?: string
@@ -130,105 +122,35 @@ interface FormItemType {
 	slotName?: string
 }
 
+interface PropsType {
+	formAttribute?: any
+	formData: any
+	formItem: Array<FormItemType>
+}
+
+const props = withDefaults(defineProps<PropsType>(), {
+	formAttribute: () => {
+		return {
+			labelCol: { span: 6 },
+			wrapperCol: { span: 18 }
+		}
+	},
+	formData: () => {
+		return {}
+	},
+	formItem: () => {
+		return []
+	}
+})
+
 const emit = defineEmits(['search'])
 
 const state = reactive({
 	formRef: ref(),
 	//存储初始参数
-	initForm: {},
+	initForm: { ...props.formData },
 	//表单参数
-	formData: {
-		a: undefined,
-		b: undefined,
-		h: [],
-		f: undefined
-	},
-	//表单元素
-	formItem: [
-		{
-			label: '驿站',
-			prop: 'a',
-			type: 'select',
-			attribute: {},
-			events: {}
-		},
-		{
-			label: '负责人',
-			prop: 'b',
-			attribute: {},
-			events: {}
-		},
-		{
-			label: '地区',
-			prop: 'c',
-			type: 'tree',
-			attribute: {},
-			events: {}
-		},
-		{
-			label: '状态',
-			prop: 'd',
-			type: 'checkbox',
-			attribute: {},
-			events: {}
-		},
-		{
-			label: '服务项目',
-			prop: 'e',
-			type: 'radio',
-			attribute: {},
-			events: {}
-		},
-		{
-			label: '自定义',
-			prop: 'f',
-			type: 'treeSelect',
-			attribute: {},
-			events: {}
-		},
-		{
-			label: '服务项目',
-			prop: 'j',
-			type: 'date',
-			attribute: {},
-			events: {}
-		},
-		{
-			label: '服务项目',
-			prop: 'h',
-			type: 'range',
-			attribute: {},
-			events: {}
-		},
-		{
-			label: '服务项目',
-			prop: 'i',
-			type: 'radio',
-			attribute: {},
-			events: {}
-		},
-		{
-			label: '服务项目',
-			prop: 'j',
-			type: 'radio',
-			attribute: {},
-			events: {}
-		},
-		{
-			label: '服务项目',
-			prop: 'k',
-			type: 'radio',
-			attribute: {},
-			events: {}
-		},
-		{
-			label: '服务项目',
-			prop: 'l',
-			type: 'radio',
-			attribute: {},
-			events: {}
-		}
-	] as Array<FormItemType>,
+	formData: { ...props.formData },
 	//是否展开
 	expand: false,
 	//计算出一行多少个元素

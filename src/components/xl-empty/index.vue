@@ -1,8 +1,9 @@
 <template>
-	<a-empty :description="description"></a-empty>
+	<a-empty :image="image" :description="description"></a-empty>
 </template>
 
 <script setup lang="ts" name="EmptyComponent">
+import { Empty } from 'ant-design-vue'
 interface PropsType {
 	description?: string
 	imageStyle?: any
@@ -11,6 +12,6 @@ interface PropsType {
 withDefaults(defineProps<PropsType>(), {
 	description: undefined,
 	imageStyle: () => {},
-	image: undefined
+	image: Empty.PRESENTED_IMAGE_SIMPLE
 })
 </script>

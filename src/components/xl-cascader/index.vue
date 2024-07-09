@@ -10,8 +10,8 @@
 <script setup lang="ts" name="CascaderComponent">
 interface PropsType {
 	value: string[]
-	label: string[]
-	options: string[]
+	label?: string[]
+	options?: string[]
 	attr?: any
 	events?: any
 }

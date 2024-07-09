@@ -1,7 +1,7 @@
 <template>
 	<div class="h-100">
 		<a-layout v-if="network" class="h-screen">
-			<Breadcrumb />
+			<XlBreadcrumb />
 			<a-layout-header></a-layout-header>
 			<a-layout>
 				<LayoutSider />
@@ -22,7 +22,7 @@
 
 <script setup lang="ts" name="LayoutIndex">
 import LayoutSider from './LayoutSider.vue'
-import Breadcrumb from '@/components/breadcrumb/index.vue'
+import XlBreadcrumb from '@/components/xl-breadcrumb/index.vue'
 import { useAppStore } from '@/store/appStore'
 import { useEventListener } from '@vueuse/core'
 

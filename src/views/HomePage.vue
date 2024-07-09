@@ -1,7 +1,15 @@
 <template>
 	<div>
-		<!-- <HeaderSearch /> -->
-		<xl-table
+		{{ checkList }}--{{ label }}
+		<xl-tree-select
+			v-model:value="checkList"
+			v-model:label="label"
+			api="/index/index/getTreeCity"
+			:events="events"
+		></xl-tree-select>
+		<!-- api="/index/index/getTreeCity" -->
+		<!-- <XlHeaderSearch :formData="formData" :formItem="formItem" /> -->
+		<!-- <xl-table
 			:columns="state.columns"
 			api="/index/index/article"
 			:filterData="handleFilterData"
@@ -11,17 +19,83 @@
 					>编辑</a-button
 				>
 			</template>
-		</xl-table>
+		</xl-table> -->
 	</div>
 </template>
 
 <script setup lang="ts">
+const checkList = ref()
+const label = ref()
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const treeData = [
+	{
+		label: 'root 1',
+		value: 'root 1',
+		children: [
+			{
+				label: 'parent 1',
+				value: 'parent 1',
+				children: [
+					{
+						label: 'parent 1-0',
+						value: 'parent 1-0',
+						children: [
+							{
+								label: 'my leaf',
+								value: 'leaf1'
+							},
+							{
+								label: 'your leaf',
+								value: 'leaf2'
+							}
+						]
+					},
+					{
+						label: 'parent 1-1',
+						value: 'parent 1-1'
+					}
+				]
+			},
+			{
+				label: 'parent 2',
+				value: 'parent 2'
+			}
+		]
+	}
+]
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const options = [
+	{
+		value: 'jack',
+		label: 'Jack'
+	},
+	{
+		value: 'lucy',
+		label: 'Lucy'
+	},
+	{
+		value: 'disabled',
+		label: 'Disabled',
+		disabled: true
+	},
+	{
+		value: 'yiminghe',
+		label: 'Yiminghe'
+	}
+]
+
+const events = {
+	change: (e: any) => {
+		console.log(e)
+	}
+}
 /* const blobToFile = (blob: any, fileName: string) => {
 	const file = new File([blob], fileName, { type: blob.type })
 	return file
 } */
 
-const handleFilterData = data => {
+/* const handleFilterData = data => {
 	return data.map(item => {
 		item.status = '1'
 		return item
@@ -665,7 +739,167 @@ const state = reactive({
 			state.loading = false
 		}, 3000)
 	}
-})
+}) */
+
+/* const formData = {
+	i: [],
+	g: undefined,
+	k: undefined
+}
+const formItem = [
+	{
+		label: '驿站',
+		prop: 'a',
+		type: 'select',
+		attribute: {
+			mode: 'default',
+			options: [
+				{
+					value: 'jack',
+					label: 'Jack'
+				},
+				{
+					value: 'lucy',
+					label: 'Lucy'
+				},
+				{
+					value: 'disabled',
+					label: 'Disabled',
+					disabled: true
+				},
+				{
+					value: 'yiminghe',
+					label: 'Yiminghe'
+				}
+			]
+		},
+		events: {}
+	},
+	{
+		label: '负责人',
+		prop: 'b',
+		attribute: {},
+		events: {}
+	},
+	{
+		label: '地区',
+		prop: 'c',
+		type: 'tree',
+		attribute: {},
+		events: {}
+	},
+	{
+		label: '状态',
+		prop: 'd',
+		type: 'checkbox',
+		attribute: {},
+		events: {}
+	},
+	{
+		label: '服务项目',
+		prop: 'e',
+		type: 'radio',
+		attribute: {},
+		events: {}
+	},
+	{
+		label: '自定义',
+		prop: 'f',
+		type: 'tree',
+		attribute: {},
+		events: {}
+	},
+	{
+		label: '服务项目',
+		prop: 'j',
+		type: 'date',
+		attribute: {},
+		events: {}
+	},
+	{
+		label: '服务项目',
+		prop: 'h',
+		type: 'range',
+		attribute: {},
+		events: {}
+	},
+	{
+		label: '联级',
+		prop: 'i',
+		type: 'cascader',
+		attribute: {
+			options: [
+				{
+					value: 'zhejiang',
+					label: 'Zhejiang',
+					children: [
+						{
+							value: 'hangzhou',
+							label: 'Hangzhou',
+							children: [
+								{
+									value: 'xihu',
+									label: 'West Lake'
+								}
+							]
+						}
+					]
+				},
+				{
+					value: 'jiangsu',
+					label: 'Jiangsu',
+					children: [
+						{
+							value: 'nanjing',
+							label: 'Nanjing',
+							children: [
+								{
+									value: 'zhonghuamen',
+									label: 'Zhong Hua Men'
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		events: {}
+	},
+	{
+		label: '服务项目',
+		prop: 'g',
+		type: 'radio',
+		attribute: {
+			options: [
+				{ value: 'a', label: 'Hangzhou' },
+				{ value: 'b', label: 'Shanghai' },
+				{ value: 'c', label: 'Beijing' },
+				{ value: 'd', label: 'Chengdu' }
+			]
+		},
+		events: {}
+	},
+	{
+		label: '多选',
+		prop: 'k',
+		type: 'checkbox',
+		attribute: {
+			options: [
+				{ label: 'Apple', value: '1' },
+				{ label: 'Pear', value: '2' },
+				{ label: 'Orange', value: '3' }
+			]
+		},
+		events: {}
+	},
+	{
+		label: '服务项目',
+		prop: 'l',
+		type: 'radio',
+		attribute: {},
+		events: {}
+	}
+] */
 </script>
 
 <style lang="less" scoped></style>

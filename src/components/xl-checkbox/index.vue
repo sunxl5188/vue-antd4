@@ -10,12 +10,13 @@
 	</div>
 	<a-checkbox-group
 		v-model:value="state.checkedList"
-		:options="options"
+		:options="state.options"
 		@change="state.handleChange"
 	/>
 </template>
 
 <script setup lang="ts" name="CheckboxComponent">
+import { loadDict } from '@/api/common'
 interface OptionType {
 	label: string
 	value: string | number
@@ -24,33 +25,34 @@ interface OptionType {
 type ValueType = Array<string | number>
 
 interface PropsType {
-	value: ValueType
-	label: Array<string>
+	value: ValueType | undefined
+	label?: Array<string>
 	all?: boolean
-	options: Array<OptionType>
+	options?: Array<OptionType>
+	api?: string
 }
 
 const props = withDefaults(defineProps<PropsType>(), {
 	all: false,
-	options: () => []
+	options: () => [],
+	api: undefined
 })
 
 const emit = defineEmits(['update:value', 'update:label', 'change'])
 
 const state = reactive({
-	checked: [] as ValueType,
+	checked: [] as ValueType | undefined,
 	checkedList: computed({
 		get: () => props.value,
-		set: (val: ValueType) => {
+		set: (val: ValueType | undefined) => {
 			state.checked = val
 			emit('update:value', val)
 		}
 	}),
 	labelList: [] as Array<string>,
 	checkedData: [] as Array<OptionType>,
-	optionData: computed((): ValueType => {
-		return props.options.map(item => item.value)
-	}),
+	optionData: [] as Array<string | number>,
+	options: [] as Array<OptionType>,
 	checkAll: false,
 	indeterminate: false,
 	handleAllChange: () => {
@@ -65,15 +67,31 @@ const state = reactive({
 		state.labelList = state.checkedData.map(o => o.label)
 		emit('update:label', state.labelList)
 		emit('change', e, state.labelList, state.checkedData)
+	},
+	setCheckState: () => {
+		if (state.checked) {
+			state.indeterminate =
+				!!state.checked.length && state.checked.length < state.optionData.length
+			state.checkAll = state.checked.length === state.optionData.length
+		}
 	}
+})
+//==========================
+onBeforeMount(async () => {
+	state.options = props.options
+	state.checked = props.value
+	if (props.api) {
+		state.options = await loadDict(props.api)
+	}
+	state.optionData = state.options.map(item => item.value)
+	state.setCheckState()
 })
 
 watch(
-	() => state.checkedList,
-	(val: ValueType) => {
-		state.indeterminate = !!val.length && val.length < state.optionData.length
-		state.checkAll = val.length === state.optionData.length
+	() => state.checked,
+	() => {
+		state.setCheckState()
 	},
-	{ deep: true, immediate: true }
+	{ deep: true }
 )
 </script>

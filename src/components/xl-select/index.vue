@@ -1,8 +1,8 @@
 <template>
 	<a-select
 		v-model:value="state.value"
-		:options="options"
 		class="w-full"
+		:options="state.options"
 		v-bind="attribute"
 		v-on="onEvents"
 	>
@@ -10,35 +10,36 @@
 </template>
 
 <script setup lang="ts" name="commonSelect">
+import { loadDict } from '@/api/common'
+import type { SelectProps } from 'ant-design-vue'
+
+type ValueType = string | Array<string | number> | undefined
 interface PropsType {
-	value: any
+	value: ValueType
 	attr?: any
 	events?: any
-	options: Array<any>
+	api?: string
 }
-const props = withDefaults(defineProps<PropsType>(), {
-	value: undefined,
-	attr: () => {},
-	events: () => {},
-	options: () => []
-})
-
-const emit = defineEmits(['update:value', 'change'])
-
 interface OptionType {
 	label: string
 	value: string | number
 }
 type arrayType = Array<string | number>
-type valueType = string | string[] | undefined
 type callbackType = string | arrayType
 
+const props = withDefaults(defineProps<PropsType>(), {
+	value: undefined,
+	attr: () => {},
+	events: () => {},
+	api: undefined
+})
+
+const emit = defineEmits(['update:value', 'update:label', 'change'])
 const state = reactive({
-	checked: undefined as valueType,
+	options: [] as any[],
 	value: computed({
 		get: () => props.value,
-		set: (val: valueType) => {
-			state.checked = val
+		set: (val: ValueType) => {
 			emit('update:value', val)
 		}
 	}),
@@ -51,23 +52,20 @@ const state = reactive({
 	 * @param selectedLabel 选中的label
 	 * @param selectedDataList 选中的数组
 	 */
-	handleChange: (data: callbackType) => {
+	handleChange: (data: callbackType, option: SelectProps['options']) => {
 		const isArray = Array.isArray(data)
-		let label
-		let list = [] as Array<any>
 		if (isArray) {
-			label = [] as arrayType
-			list = props.options.filter(o => data.includes(o.value))
-			list.forEach((item: any) => {
+			let label = [] as any[]
+			;(option as []).forEach((item: any) => {
 				label.push(item.label)
 			})
+			emit('update:label', label)
+			emit('change', data, label, option)
 		} else {
-			let val = data as string | number
-			label = '' as string
-			list = props.options.filter(o => o.value === val)
-			label = list[0].label
+			let label = (option as any).label
+			emit('update:label', label)
+			emit('change', data, label, option)
 		}
-		emit('change', data, label, list)
 	}
 })
 
@@ -91,6 +89,16 @@ const onEvents = {
 	change: state.handleChange,
 	...props.events
 }
+
+onBeforeMount(async () => {
+	if (attribute.options) {
+		state.options = attribute.options
+		delete attribute.options
+	}
+	if (props.api) {
+		state.options = await loadDict(props.api)
+	}
+})
 </script>
 <style lang="less" scoped>
 ::v-deep(.ant-spin) {
