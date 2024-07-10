@@ -1,53 +1,86 @@
 <template>
-	<a-flex vertical justify="space-between" align="center" gap="middle">
-		<a-input-number
-			v-model:value="state.startVal"
-			v-bind="attribute"
-			@change="state.handleChange"
-		/>
-		<a-input-number
-			v-model:value="state.endVal"
-			v-bind="attribute"
-			@change="state.handleChange"
-		/>
-	</a-flex>
+	<a-form-item-rest>
+		<a-flex justify="space-between" align="center" gap="middle" class="w-full">
+			<a-input-number
+				v-model:value="state.startVal"
+				v-bind="attribute[0]"
+				v-on="onEvents"
+				class="flex-1"
+			/>
+			<div class="text-center text-gray-400">-</div>
+			<a-input-number
+				v-model:value="state.endVal"
+				v-bind="attribute[1]"
+				v-on="onEvents"
+				class="flex-1"
+			/>
+		</a-flex>
+	</a-form-item-rest>
 </template>
 
 <script setup lang="ts" name="NumberSection">
 interface PropsType {
-	startVal: number
-	endVal: number
-	attr: any
+	value: Array<number>
+	attr?: any
+	events?: any
 }
 const props = withDefaults(defineProps<PropsType>(), {
-	attr: () => {}
+	attr: () => {},
+	events: () => {
+		return {}
+	}
 })
 
 const emit = defineEmits(['update:value'])
 
 const state = reactive({
-	startData: 0,
-	endData: 0,
 	startVal: computed({
-		get: () => props.startVal,
+		get: () => props.value[0],
 		set: (val: number) => {
-			state.startData = val
+			let data = [...props.value]
+			data[0] = val
+			emit('update:value', data)
 		}
 	}),
 	endVal: computed({
-		get: () => props.endVal,
+		get: () => props.value[1],
 		set: (val: number) => {
-			state.endData = val
+			let data = [...props.value]
+			data[1] = val
+			emit('update:value', data)
 		}
 	}),
 	handleChange: () => {
-		const data = [state.startData, state.endData].sort((a, b) => a - b)
-		emit('update:value', data)
+		const data = [...props.value]
+		if (data[0] && data[1]) {
+			const arrays = data.sort((a, b) => a - b)
+			emit('update:value', arrays)
+		}
+		if (props.events.blur) props.events.blur()
 	}
 })
 
-const attribute = {
-	allowClear: false,
-	...props.attr
+const attribute = [
+	{
+		min: 1,
+		max: Infinity,
+		stringMode: true,
+		precision: 0,
+		placeholder: '请输入',
+		...props.attr
+	},
+	{
+		min: 1,
+		max: Infinity,
+		stringMode: true,
+		precision: 0,
+		placeholder: '请输入',
+		...props.attr
+	}
+]
+
+const onEvents = {
+	...props.events,
+	blur: state.handleChange
 }
 </script>

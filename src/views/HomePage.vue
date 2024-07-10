@@ -1,14 +1,12 @@
 <template>
 	<div>
-		{{ checkList }}--{{ label }}
-		<xl-tree-select
-			v-model:value="checkList"
-			v-model:label="label"
-			api="/index/index/getTreeCity"
-			:events="events"
-		></xl-tree-select>
-		<!-- api="/index/index/getTreeCity" -->
-		<!-- <XlHeaderSearch :formData="formData" :formItem="formItem" /> -->
+		<xl-drawer v-model:value="visible"></xl-drawer>
+		<a-button type="primary" @click="visible = true">111</a-button>
+		<xl-base-form
+			:formData="formData"
+			:formItem="formItem"
+			:rules="rules"
+		></xl-base-form>
 		<!-- <xl-table
 			:columns="state.columns"
 			api="/index/index/article"
@@ -24,9 +22,9 @@
 </template>
 
 <script setup lang="ts">
-const checkList = ref()
-const label = ref()
-
+import XlBaseForm from '@/components/xl-form/index.vue'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const visible = ref(false)
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const treeData = [
 	{
@@ -84,18 +82,63 @@ const options = [
 		label: 'Yiminghe'
 	}
 ]
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const options1 = [
+	{
+		value: '1',
+		label: 'Zhejiang',
+		children: [
+			{
+				value: '1-1',
+				label: 'Hangzhou',
+				children: [
+					{
+						value: '1-1-1',
+						label: 'West Lake'
+					}
+				]
+			}
+		]
+	},
+	{
+		value: '1-2',
+		label: 'Jiangsu',
+		children: [
+			{
+				value: '1-2-1',
+				label: 'Nanjing',
+				children: [
+					{
+						value: '1-2-1-1',
+						label: 'Zhong Hua Men'
+					}
+				]
+			}
+		]
+	}
+]
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const events = {
-	change: (e: any) => {
+	change: (e: any, op: any) => {
+		console.log(e, op)
+	},
+	search: (e: any) => {
 		console.log(e)
 	}
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const handleSearch = (data: any) => {
+	console.log(data)
 }
 /* const blobToFile = (blob: any, fileName: string) => {
 	const file = new File([blob], fileName, { type: blob.type })
 	return file
 } */
 
-/* const handleFilterData = data => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const handleFilterData = data => {
 	return data.map(item => {
 		item.status = '1'
 		return item
@@ -739,167 +782,45 @@ const state = reactive({
 			state.loading = false
 		}, 3000)
 	}
-}) */
+})
 
-/* const formData = {
-	i: [],
-	g: undefined,
-	k: undefined
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const formData = {
+	a: undefined,
+	b: undefined
 }
+
+const rules = {
+	a: [{ required: true, message: '请输入', trigger: 'blur' }],
+	b: [{ required: true, message: '请选择', trigger: 'blur' }]
+}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const formItem = [
 	{
-		label: '驿站',
+		label: '输入框',
 		prop: 'a',
+		attribute: {},
+		events: {}
+	},
+	{
+		label: '下拉框',
+		prop: 'b',
 		type: 'select',
 		attribute: {
-			mode: 'default',
 			options: [
 				{
-					value: 'jack',
-					label: 'Jack'
+					label: 'Online',
+					value: '1'
 				},
 				{
-					value: 'lucy',
-					label: 'Lucy'
-				},
-				{
-					value: 'disabled',
-					label: 'Disabled',
-					disabled: true
-				},
-				{
-					value: 'yiminghe',
-					label: 'Yiminghe'
+					label: 'Online2',
+					value: '2'
 				}
 			]
 		},
-		events: {}
-	},
-	{
-		label: '负责人',
-		prop: 'b',
-		attribute: {},
-		events: {}
-	},
-	{
-		label: '地区',
-		prop: 'c',
-		type: 'tree',
-		attribute: {},
-		events: {}
-	},
-	{
-		label: '状态',
-		prop: 'd',
-		type: 'checkbox',
-		attribute: {},
-		events: {}
-	},
-	{
-		label: '服务项目',
-		prop: 'e',
-		type: 'radio',
-		attribute: {},
-		events: {}
-	},
-	{
-		label: '自定义',
-		prop: 'f',
-		type: 'tree',
-		attribute: {},
-		events: {}
-	},
-	{
-		label: '服务项目',
-		prop: 'j',
-		type: 'date',
-		attribute: {},
-		events: {}
-	},
-	{
-		label: '服务项目',
-		prop: 'h',
-		type: 'range',
-		attribute: {},
-		events: {}
-	},
-	{
-		label: '联级',
-		prop: 'i',
-		type: 'cascader',
-		attribute: {
-			options: [
-				{
-					value: 'zhejiang',
-					label: 'Zhejiang',
-					children: [
-						{
-							value: 'hangzhou',
-							label: 'Hangzhou',
-							children: [
-								{
-									value: 'xihu',
-									label: 'West Lake'
-								}
-							]
-						}
-					]
-				},
-				{
-					value: 'jiangsu',
-					label: 'Jiangsu',
-					children: [
-						{
-							value: 'nanjing',
-							label: 'Nanjing',
-							children: [
-								{
-									value: 'zhonghuamen',
-									label: 'Zhong Hua Men'
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		events: {}
-	},
-	{
-		label: '服务项目',
-		prop: 'g',
-		type: 'radio',
-		attribute: {
-			options: [
-				{ value: 'a', label: 'Hangzhou' },
-				{ value: 'b', label: 'Shanghai' },
-				{ value: 'c', label: 'Beijing' },
-				{ value: 'd', label: 'Chengdu' }
-			]
-		},
-		events: {}
-	},
-	{
-		label: '多选',
-		prop: 'k',
-		type: 'checkbox',
-		attribute: {
-			options: [
-				{ label: 'Apple', value: '1' },
-				{ label: 'Pear', value: '2' },
-				{ label: 'Orange', value: '3' }
-			]
-		},
-		events: {}
-	},
-	{
-		label: '服务项目',
-		prop: 'l',
-		type: 'radio',
-		attribute: {},
 		events: {}
 	}
-] */
+]
 </script>
 
 <style lang="less" scoped></style>

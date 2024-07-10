@@ -16,14 +16,16 @@
 					:xl="6"
 					:xxl="6"
 				>
-					<a-form-item :label="item.label" :name="item.prop">
-						<!-- 插槽 -->
-						<template v-if="item.slotName">
-							<slot :name="item.slotName"> --插槽-- </slot>
-						</template>
+					<!-- 插槽 -->
+					<template v-if="item.slotName">
+						<slot :name="item.slotName" :item="item" :formData="state.formData">
+							--插槽--
+						</slot>
+					</template>
+					<a-form-item v-else :label="item.label" :name="item.prop">
 						<!-- 选择框 -->
 						<XlSelect
-							v-else-if="item.type === 'select'"
+							v-if="item.type === 'select'"
 							v-model:value="state.formData[item.prop]"
 							:attr="item.attribute"
 							:events="item.events"
@@ -40,7 +42,7 @@
 							}"
 							v-on="item.events"
 						></XlTreeSelect>
-						<!-- date-picker rang-->
+						<!-- date-picker range-->
 						<XlDatePicker
 							v-else-if="item.type === 'date' || item.type === 'range'"
 							v-model:value="state.formData[item.prop]"
@@ -69,17 +71,23 @@
 							v-bind="item.attribute"
 							v-on="item.events"
 						></XlRadio>
+						<!-- number -->
+						<XlInputNumber
+							v-else-if="item.type === 'number'"
+							v-model:value="state.formData[item.prop]"
+							v-bind="item.attribute"
+							v-on="item.events"
+						></XlInputNumber>
 						<!-- 输入框文本 -->
 						<a-input
 							v-else
 							v-model:value="state.formData[item.prop]"
-							placeholder=""
-							allowClear
 							v-bind="{
 								allowClear: true,
 								placeholder: '请输入',
 								...item.attribute
 							}"
+							v-on="item.events"
 						/>
 					</a-form-item>
 				</a-col>
@@ -112,6 +120,7 @@ import XlDatePicker from '@/components/xl-date-picker/index.vue'
 import XlCascader from '@/components/xl-cascader/index.vue'
 import XlCheckbox from '@/components/xl-checkbox/index.vue'
 import XlRadio from '@/components/xl-radio/index.vue'
+import XlInputNumber from '@/components/xl-input-number/NumberSection.vue'
 
 interface FormItemType {
 	label?: string

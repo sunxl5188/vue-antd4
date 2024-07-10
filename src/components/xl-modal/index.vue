@@ -1,42 +1,62 @@
 <template>
-	<a-modal v-bind="props" @ok="handleConfirm" @cancel="handleCancel">
+	<a-modal
+		v-model:open="state.visible"
+		v-bind="state.attribute"
+		@ok="state.handleConfirm"
+		@cancel="state.handleCancel"
+	>
 		<slot></slot>
+		<template v-if="footer" #footer>
+			<slot
+				name="footer"
+				:confirm="state.handleConfirm"
+				:cancel="state.handleCancel"
+			>
+			</slot>
+		</template>
 	</a-modal>
 </template>
 
 <script setup lang="ts" name="ModalIndex">
 interface ModalProps {
-	title?: string
-	open: boolean
-	width?: string
-	destroyOnClose?: boolean
-	confirmLoading?: boolean
-	footer?: string | null
-	keyboard?: boolean
-	maskClosable?: boolean
-	bodyStyle: any
+	value: boolean
+	attr?: any
+	footer?: boolean
 }
 
 const props = withDefaults(defineProps<ModalProps>(), {
-	title: '系统提示',
-	open: false,
-	width: '520px',
-	destroyOnClose: true,
-	confirmLoading: false,
-	keyboard: false,
-	maskClosable: false,
-	bodyStyle: { padding: '10px 0' }
+	value: false,
+	attr: () => {},
+	footer: false
 })
 
-const emit = defineEmits(['update:open', 'confirm', 'cancel'])
+const emit = defineEmits(['update:value', 'confirm', 'cancel'])
 
-//确认
-const handleConfirm = (): void => {
-	emit('confirm')
-}
-//取消
-const handleCancel = (): void => {
-	emit('update:open', false)
-	emit('cancel')
-}
+const state = reactive({
+	visible: computed({
+		get: () => props.value,
+		set: (val: boolean) => {
+			emit('update:value', val)
+		}
+	}),
+	attribute: {
+		title: '系统提示',
+		width: 520,
+		destroyOnClose: true,
+		confirmLoading: false,
+		keyboard: false,
+		maskClosable: false,
+		bodyStyle: { padding: '10px 0' },
+		...props.attr
+	},
+	//确认
+	handleConfirm: (): void => {
+		emit('confirm')
+	},
+	//取消
+	handleCancel: (): void => {
+		emit('update:value', false)
+		emit('cancel')
+	}
+})
 </script>

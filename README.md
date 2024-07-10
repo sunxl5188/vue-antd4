@@ -1,18 +1,45 @@
 # Vue 3 + TypeScript + Vite
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## 表格头部搜索组件
 
-## Recommended IDE Setup
+```
+<xl-header-search :formData="formData" :formItem="formItem" @search="handleSearch">
+   <template #xxx="{item, formData}">
+      <a-form-item v-else :label="item.label" :name="item.prop">
+         <a-input v-model:value="formData[item.prop]" />
+      </a-form-item>
+   </template>
+</xl-header-search>
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Type Support For `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
-
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+1. 表单参数
+const formData = {
+  a: undefined,
+  number: [],
+  checkbox: [],
+  tree: [],
+  cascader: [],
+  range: []
+}
+2. 元素
+const formItem = [
+   {
+      abel: '选择框', //label名称
+      prop: 'a', //字段名称
+      type: 'select', //类型默认输入框, 可选select number tree checkbox radio (date range) cascader
+      slotName: '', //插槽名称 <template #xxx={item,formData}></template>
+      //antd表单元素属性
+      attribute: {
+         mode: 'default', //multiple
+         api: '字典地址',
+         options: [
+            {
+               value: '1',
+               label: 'Jack'
+            }
+         ]
+      },
+      //事件
+      events: {}
+      }
+]
+```

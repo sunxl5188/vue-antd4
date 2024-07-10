@@ -7,7 +7,7 @@ import { Empty } from 'ant-design-vue'
 interface PropsType {
 	description?: string
 	imageStyle?: any
-	image?: string
+	image?: any
 }
 withDefaults(defineProps<PropsType>(), {
 	description: undefined,
