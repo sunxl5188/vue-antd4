@@ -19,9 +19,13 @@
 interface PropsType {
 	value: string | undefined
 	type: string
+	attr?: any
+	events?: any
 }
 const props = withDefaults(defineProps<PropsType>(), {
-	type: 'date' //range
+	type: 'date', //range
+	attr: () => {},
+	events: () => {}
 })
 
 const emit = defineEmits(['update:value', 'change'])
@@ -44,7 +48,8 @@ const attribute = {
 	placeholder: '请选择日期',
 	valueFormat: 'YYYY-MM-DD hh:mm:ss',
 	showTime: true,
-	showNow: true
+	showNow: true,
+	...props.attr
 }
 //属性
 const attributeRange = {
@@ -52,11 +57,13 @@ const attributeRange = {
 	picker: 'date',
 	placeholder: ['请选择开始日期', '请选择结束日期'],
 	valueFormat: 'YYYY-MM-DD hh:mm:ss',
-	showTime: true
+	showTime: true,
+	...props.attr
 }
 //事件
 const onEvents = {
-	change: state.handleChange
+	change: state.handleChange,
+	...props.events
 }
 </script>
 <style lang="less" scoped>

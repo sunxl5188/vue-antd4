@@ -7,6 +7,7 @@
 			:formItem="formItem"
 			:rules="rules"
 		></xl-base-form>
+
 		<!-- <xl-table
 			:columns="state.columns"
 			api="/index/index/article"
@@ -787,7 +788,10 @@ const state = reactive({
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const formData = {
 	a: undefined,
-	b: undefined
+	b: undefined,
+	c: '1',
+	d: ['3'],
+	e: undefined
 }
 
 const rules = {
@@ -819,6 +823,36 @@ const formItem = [
 			]
 		},
 		events: {}
+	},
+	{
+		label: '单选',
+		prop: 'c',
+		type: 'radio',
+		attribute: { api: '/index/system/index/code/4' }
+	},
+	{
+		label: '多选',
+		prop: 'd',
+		type: 'checkbox',
+		attribute: { api: '/index/system/index/code/3' }
+	},
+	{
+		label: '创建日期',
+		prop: 'e',
+		type: 'date',
+		attribute: { showTime: false }
+	},
+	{
+		label: '下单日期',
+		prop: 'f',
+		type: 'range',
+		attribute: {}
+	},
+	{
+		label: '地区',
+		prop: 'j',
+		type: 'cascader',
+		attribute: { api: '/index/index/getTreeCity' }
 	}
 ]
 </script>

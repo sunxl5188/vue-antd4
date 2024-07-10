@@ -4,6 +4,7 @@
 		:model="form.formData"
 		:rules="rules"
 		v-bind="form.formAttribute"
+		class="px-0.5"
 	>
 		<a-row type="flex" justify="start" :gutter="1">
 			<a-col v-for="(item, i) in formItem" :key="i" v-bind="layout">
@@ -19,7 +20,7 @@
 						v-if="item.type === 'select'"
 						v-model:value="form.formData[item.prop]"
 						:attr="item.attribute"
-						:events="item.events"
+						:events="item.events || {}"
 					></XlSelect>
 					<!-- tree -->
 					<XlTreeSelect
@@ -31,43 +32,43 @@
 							placeholder: '请选择',
 							...item.attribute
 						}"
-						v-on="item.events"
+						v-on="item.events || {}"
 					></XlTreeSelect>
 					<!-- date-picker range-->
 					<XlDatePicker
 						v-else-if="item.type === 'date' || item.type === 'range'"
 						v-model:value="form.formData[item.prop]"
 						:type="item.type"
-						v-bind="item.attribute"
-						v-on="item.events"
+						v-bind:attr="item.attribute"
+						:events="item.events || {}"
 					></XlDatePicker>
 					<!-- Cascader -->
 					<XlCascader
 						v-else-if="item.type === 'cascader'"
 						v-model:value="form.formData[item.prop]"
 						v-bind="item.attribute"
-						v-on="item.events"
+						v-on="item.events || {}"
 					></XlCascader>
 					<!-- Checkbox -->
 					<XlCheckbox
 						v-else-if="item.type === 'checkbox'"
 						v-model:value="form.formData[item.prop]"
 						v-bind="item.attribute"
-						v-on="item.events"
+						v-on="item.events || {}"
 					></XlCheckbox>
 					<!-- radio -->
 					<XlRadio
 						v-else-if="item.type === 'radio'"
 						v-model:value="form.formData[item.prop]"
 						v-bind="item.attribute"
-						v-on="item.events"
+						v-on="item.events || {}"
 					></XlRadio>
 					<!-- number -->
 					<XlInputNumber
 						v-else-if="item.type === 'number'"
 						v-model:value="form.formData[item.prop]"
 						v-bind="item.attribute"
-						v-on="item.events"
+						v-on="item.events || {}"
 					></XlInputNumber>
 					<!-- 输入框文本 -->
 					<a-input
@@ -78,7 +79,7 @@
 							placeholder: '请输入',
 							...item.attribute
 						}"
-						v-on="item.events"
+						v-on="item.events || {}"
 					/>
 				</a-form-item>
 			</a-col>
