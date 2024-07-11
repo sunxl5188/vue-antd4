@@ -1,12 +1,13 @@
 <template>
 	<div>
-		<xl-drawer v-model:value="visible"></xl-drawer>
+		<xl-sharding-upload></xl-sharding-upload>
+		<!-- <xl-drawer v-model:value="visible"></xl-drawer>
 		<a-button type="primary" @click="visible = true">111</a-button>
 		<xl-base-form
 			:formData="formData"
 			:formItem="formItem"
 			:rules="rules"
-		></xl-base-form>
+		></xl-base-form> -->
 
 		<!-- <xl-table
 			:columns="state.columns"
@@ -23,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import XlBaseForm from '@/components/xl-form/index.vue'
+//import XlBaseForm from '@/components/xl-form/index.vue'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const visible = ref(false)
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -794,6 +795,7 @@ const formData = {
 	e: undefined
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const rules = {
 	a: [{ required: true, message: '请输入', trigger: 'blur' }],
 	b: [{ required: true, message: '请选择', trigger: 'blur' }]
@@ -855,6 +857,8 @@ const formItem = [
 		attribute: { api: '/index/index/getTreeCity' }
 	}
 ]
+
+onMounted(() => {})
 </script>
 
 <style lang="less" scoped></style>

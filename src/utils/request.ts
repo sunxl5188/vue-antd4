@@ -80,7 +80,7 @@ const errorHandle = (status: number, other: string): void => {
 			handleMessage(`${status}:网关超时`)
 			break
 		default:
-			handleMessage(`${status}:其他错误错误`)
+			handleMessage(`${status}:其他错误`)
 			console.log(other)
 	}
 }
@@ -96,6 +96,7 @@ interface PendingType {
 const pending: Array<PendingType> = []
 const CancelToken = axios.CancelToken
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const removePending = (config: AxiosRequestConfig) => {
 	for (const key in pending) {
 		if (Object.hasOwn(pending, key)) {
@@ -137,7 +138,7 @@ const instance = axios.create({
  */
 instance.interceptors.request.use(
 	(config: InternalAxiosRequestConfig) => {
-		removePending(config)
+		//removePending(config)
 		config.cancelToken = new CancelToken(c => {
 			pending.push({
 				url: config.url,
@@ -220,7 +221,7 @@ instance.interceptors.response.use(
  */
 export const fetch = (
 	url: string,
-	params?: object,
+	params?: any,
 	config?: AxiosRequestConfig
 ): AxiosPromise => {
 	return new Promise((resolve, reject) => {
@@ -240,12 +241,12 @@ export const fetch = (
  */
 export const post = (
 	url: string,
-	data: object,
+	data: any,
 	config?: AxiosRequestConfig
 ): AxiosPromise => {
 	return new Promise((resolve, reject) => {
 		instance
-			.post(url, { ...config, ...{ data } })
+			.post(url, data, { ...config })
 			.then(response => resolve(response))
 			.catch(error => reject(error))
 	})
@@ -260,12 +261,12 @@ export const post = (
  */
 export const put = (
 	url: string,
-	params: object,
+	params: any,
 	config?: AxiosRequestConfig
 ): AxiosPromise => {
 	return new Promise((resolve, reject) => {
 		instance
-			.put(url, { ...config, ...params })
+			.put(url, params, { ...config })
 			.then(response => resolve(response))
 			.catch(error => reject(error))
 	})
@@ -280,12 +281,12 @@ export const put = (
  */
 export const patch = (
 	url: string,
-	params: object,
+	params: any,
 	config?: AxiosRequestConfig
 ): AxiosPromise => {
 	return new Promise((resolve, reject) => {
 		instance
-			.patch(url, { ...config, ...params })
+			.patch(url, params, { ...config })
 			.then(response => resolve(response))
 			.catch(error => reject(error))
 	})
@@ -300,7 +301,7 @@ export const patch = (
  */
 export const del = (
 	url: string,
-	params: object,
+	params: any,
 	config?: AxiosRequestConfig
 ): AxiosPromise => {
 	return new Promise((resolve, reject) => {

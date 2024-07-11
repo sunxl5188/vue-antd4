@@ -25,6 +25,7 @@
 		"pinia": "^2.1.7",
 		"pinia-plugin-persistedstate": "^3.2.1",
 		"sortablejs": "^1.15.2",
+		"spark-md5": "^3.0.2",
 		"vue": "^3.4.19",
 		"vue-cookies": "^1.8.3",
 		"vue-cropper": "^0.6.4",
