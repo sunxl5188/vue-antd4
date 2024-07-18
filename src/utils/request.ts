@@ -85,19 +85,18 @@ const errorHandle = (status: number, other: string): void => {
 	}
 }
 
-interface PendingType {
+/* interface PendingType {
 	url?: string
 	method?: string
 	params: any
 	data: any
 	cancel: any
-}
+} */
 
-const pending: Array<PendingType> = []
-const CancelToken = axios.CancelToken
+//const pending: Array<PendingType> = []
+//const CancelToken = axios.CancelToken
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const removePending = (config: AxiosRequestConfig) => {
+/* const removePending = (config: AxiosRequestConfig) => {
 	for (const key in pending) {
 		if (Object.hasOwn(pending, key)) {
 			const item: number = +key
@@ -116,7 +115,7 @@ const removePending = (config: AxiosRequestConfig) => {
 			}
 		}
 	}
-}
+} */
 
 /**
  * 实例化配置
@@ -139,7 +138,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
 	(config: InternalAxiosRequestConfig) => {
 		//removePending(config)
-		config.cancelToken = new CancelToken(c => {
+		/* config.cancelToken = new CancelToken(c => {
 			pending.push({
 				url: config.url,
 				method: config.method,
@@ -147,7 +146,7 @@ instance.interceptors.request.use(
 				data: config.data,
 				cancel: c
 			})
-		})
+		}) */
 		const token = localStorage.getItem('token') ?? ''
 		if (token && config.headers) {
 			config.headers.Authorization = token

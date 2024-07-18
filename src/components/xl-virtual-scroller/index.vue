@@ -8,7 +8,7 @@
 		v-slot="{ item }"
 		:style="Number.isFinite(height) ? `height:${height}px` : `height:${height}`"
 	>
-		<slot name="item" :item="item"> --插槽内容-- </slot>
+		<slot name="item" :item="item">--插槽内容--</slot>
 	</RecycleScroller>
 	<!-- 动态 -->
 	<DynamicScroller

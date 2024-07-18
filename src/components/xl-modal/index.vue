@@ -11,8 +11,7 @@
 				name="footer"
 				:confirm="state.handleConfirm"
 				:cancel="state.handleCancel"
-			>
-			</slot>
+			></slot>
 		</template>
 	</a-modal>
 </template>

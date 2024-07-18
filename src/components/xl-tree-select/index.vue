@@ -8,10 +8,11 @@
 		v-on="onEvents"
 	>
 		<template #title="{ label }">
-			<template v-for="(item, i) in label" :key="i">
+			<template v-for="(item, i) of label">
 				<span
 					v-if="state.searchValue.indexOf(item) >= 0"
 					class="text-orange-500"
+					:key="i"
 				>
 					{{ item }}
 				</span>

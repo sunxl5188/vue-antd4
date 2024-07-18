@@ -8,7 +8,7 @@
 			:inline-collapsed="state.collapsed"
 			@select="handleSelect"
 		>
-			<template v-for="(item, i) in store.sidebarRouters" :key="i">
+			<template v-for="item of store.sidebarRouters">
 				<a-menu-item v-if="!item.children" :key="item.key">
 					{{ item.label }}
 				</a-menu-item>

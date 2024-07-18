@@ -8,11 +8,12 @@ import AutoImport from 'unplugin-auto-import/vite'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import VueSetupExtend from 'vite-plugin-vue-setup-extend'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import { visualizer } from 'rollup-plugin-visualizer'
+import viteCompression from 'vite-plugin-compression'
 
 // https://vitejs.dev/config/
 export default ({ mode }: { mode: any }) => {
 	const env = loadEnv(mode, process.cwd(), '')
-	console.log(env)
 	return defineConfig({
 		define: {
 			__APP_PREFIX__: JSON.stringify(env.VITE_PREFIX),
@@ -45,6 +46,19 @@ export default ({ mode }: { mode: any }) => {
 				lintOnStart: true,
 				cache: false,
 				include: ['src/**/*.ts', 'src/**/*.vue', 'src/*.ts', 'src/*.vue']
+			}),
+			visualizer({
+				emitFile: false,
+				filename: 'stats.html',
+				open: true,
+				sourcemap: true
+			}),
+			viteCompression({
+				verbose: true,
+				disable: false,
+				threshold: 1024,
+				algorithm: 'gzip',
+				deleteOriginFile: true
 			}),
 			Components({
 				resolvers: [
@@ -123,7 +137,27 @@ export default ({ mode }: { mode: any }) => {
 					drop_debugger: true // 生产环境去除 debugger
 				}
 			},
-			chunkSizeWarningLimit: 1500 // chunk 大小警告的限制（以 kbs 为单位）
+			chunkSizeWarningLimit: 1000, // chunk 大小警告的限制（以 kbs 为单位）
+			cssCodeSplit: false, //启用/禁用 CSS 代码拆分
+			cssMinify: 'lightningcss',
+			rollupOptions: {
+				output: {
+					sourcemap: false,
+					chunkFileNames: 'static/js/[name]-[hash].js',
+					entryFileNames: 'static/js/[name]-[hash].js',
+					assetFileNames: 'static/[ext]/[name]-[hash].[ext]',
+					manualChunks(id) {
+						// id为文件的绝对路径
+						if (id.includes('node_modules')) {
+							return id
+								.toString()
+								.split('node_modules/')[1]
+								.split('/')[0]
+								.toString()
+						}
+					}
+				}
+			}
 		}
 	})
 }

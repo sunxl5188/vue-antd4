@@ -5,8 +5,7 @@
 		:options="state.options"
 		v-bind="attribute"
 		v-on="onEvents"
-	>
-	</a-select>
+	></a-select>
 </template>
 
 <script setup lang="ts" name="commonSelect">

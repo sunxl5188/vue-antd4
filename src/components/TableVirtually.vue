@@ -10,8 +10,7 @@
 			:scroll="{ y: table.itemHeight * table.end }"
 			@change="table.handleTableChange"
 			class="virtual"
-		>
-		</a-table>
+		></a-table>
 		<div v-for="item in table.list" :key="item.id">
 			<span>{{ item.id }}</span>
 			<span>{{ item.buyerName }}</span>

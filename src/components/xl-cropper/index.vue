@@ -15,7 +15,11 @@
 			>
 				<a-col flex="1">
 					<div style="width: 530px; height: 450px">
-						<vueCropper ref="cropperRef" v-bind="option" @realTime="realTime" />
+						<vue-cropper
+							ref="cropperRef"
+							v-bind="option"
+							@realTime="realTime"
+						/>
 					</div>
 				</a-col>
 				<a-col>

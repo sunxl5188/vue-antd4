@@ -90,11 +90,11 @@ export const useUserStore = defineStore('user', {
 		generateSidebar(route: RouteRecordRaw[], path?: string) {
 			const sidebar: ItemType[] = []
 			route?.forEach(item => {
-				let children = undefined
+				let children: Array<any> = []
 				const meta = item.meta as any
 				const icon = meta?.icon ? meta?.icon : undefined
 				if (item.children?.length) {
-					children = this.generateSidebar(item.children, item.path) || undefined
+					children = this.generateSidebar(item.children, item.path)
 				}
 				sidebar.push({
 					label: item.meta?.title,

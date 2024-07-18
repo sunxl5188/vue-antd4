@@ -7,8 +7,7 @@
 		:tree-data="state.treeData"
 		v-bind="attribute"
 		v-on="onEvents"
-	>
-	</a-tree>
+	></a-tree>
 </template>
 
 <script setup lang="ts" name="TreeComponent">

@@ -1,1 +1,3 @@
-console.log(100 + -1)
+const buf = new ArrayBuffer(32)
+const view = new DataView(buf)
+console.log(view)

@@ -39,7 +39,7 @@ const beforeUpload: UploadProps['beforeUpload'] = file => {
 		'.' + file.type.substring(file.type.lastIndexOf('/') + 1, file.type.length)
 	const isType = fileType.includes(suffix)
 	if (!isType) {
-		message.error(`上传格式错误,支持${_attribute.accept}文件上传`)
+		message?.error(`上传格式错误,支持${_attribute.accept}文件上传`)
 	}
 	return isType || Upload.LIST_IGNORE
 }
@@ -65,9 +65,9 @@ const handleChange = (info: UploadChangeParam) => {
 		console.log(info.file, info.fileList)
 	}
 	if (info.file.status === 'done') {
-		message.success(`${info.file.name} 文件上传成功`)
+		message?.success(`${info.file.name} 文件上传成功`)
 	} else if (info.file.status === 'error') {
-		message.error(`${info.file.name} 文件上传失败.`)
+		message?.error(`${info.file.name} 文件上传失败.`)
 	}
 }
 

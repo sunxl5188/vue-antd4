@@ -18,7 +18,7 @@
 <script setup lang="ts" name="ShardingUpload">
 //https://blog.csdn.net/m0_64130892/article/details/134089516
 import SparkMD5 from 'spark-md5'
-import { getMergeFile, shardingUpload } from '@/api/upload'
+import { getMergeFile, shardingUpload, getUploadAll } from '@/api/upload'
 
 const state = reactive({
 	fileRef: ref(),
@@ -77,7 +77,7 @@ const state = reactive({
 		//请示后端是否上传过文件
 		const existingArr = await state.handleVerifyFile()
 		const fileChunkList = state.fileChunkList.filter(
-			o => !existingArr.includes(o.index)
+			(o: any) => !existingArr.includes(o.index)
 		)
 		const result: any[] = await state.promisePool<string, string>(
 			fileChunkList,
@@ -180,8 +180,16 @@ const state = reactive({
 	 * 1.如果有上传过返回已上传成功的hash数组序号
 	 * 2.没有上传过返回空数组
 	 */
-	handleVerifyFile: () => {
-		return []
+	handleVerifyFile: (): Promise<Array<any>> => {
+		return new Promise((resolve, reject) => {
+			getUploadAll('md5')
+				.then(res => {
+					if (res.code === 200) resolve(res.data)
+				})
+				.catch(err => {
+					reject(err)
+				})
+		})
 	}
 })
 </script>

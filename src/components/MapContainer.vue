@@ -187,7 +187,7 @@ const edit = reactive({
 	},
 	async handleSubmit() {
 		const overlays = map.getAllOverlays()
-		const pathArr = []
+		const pathArr: Array<any> = []
 		for (const polygon of overlays) {
 			const arr = await polygon.getPath()
 			pathArr.push(edit.getPathArr(arr))
@@ -242,11 +242,11 @@ const regeoToAddress = (lnglat: string[]) => {
 
 //绘制弹窗
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const showInfoWindow = async (data: any[], e: any) => {
+/* const showInfoWindow = async (data: any[], e: any) => {
 	const lnglat = e.lnglat
 	const address = await regeoToAddress(lnglat)
 	let infoWindow
-	let info = []
+	let info: Array<any> = []
 	info.push(
 		`<div class="header"><span class="title">${address}</span><span class="close"></span></div>`
 	)
@@ -267,7 +267,7 @@ const showInfoWindow = async (data: any[], e: any) => {
 		map.clearInfoWindow()
 		el.remove()
 	})
-}
+} */
 
 onUnmounted(() => {
 	map?.destroy()
