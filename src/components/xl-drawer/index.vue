@@ -12,11 +12,11 @@ import { CloseOutlined } from '@ant-design/icons-vue'
 interface PropsType {
 	value: boolean
 	attr?: any
-	events?: any
+	event?: any
 }
 const props = withDefaults(defineProps<PropsType>(), {
 	attr: () => {},
-	events: () => {}
+	event: () => {}
 })
 const emit = defineEmits(['update:value'])
 const state = reactive({
@@ -43,6 +43,6 @@ const attribute = {
 const onEvents = {
 	afterOpenChange: state.afterOpenChange,
 	close: state.handleClose,
-	...props.events
+	...props.event
 }
 </script>

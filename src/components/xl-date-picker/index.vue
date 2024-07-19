@@ -20,12 +20,12 @@ interface PropsType {
 	value: string | undefined
 	type: string
 	attr?: any
-	events?: any
+	event?: any
 }
 const props = withDefaults(defineProps<PropsType>(), {
 	type: 'date', //range
 	attr: () => {},
-	events: () => {}
+	event: () => {}
 })
 
 const emit = defineEmits(['update:value', 'change'])
@@ -63,7 +63,7 @@ const attributeRange = {
 //事件
 const onEvents = {
 	change: state.handleChange,
-	...props.events
+	...props.event
 }
 </script>
 <style lang="less" scoped>

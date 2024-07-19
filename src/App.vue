@@ -19,7 +19,9 @@ let themes = ref({ token: {} })
 themes.value.token = token
 
 const transformCellText = ({ text }): void => {
-	return text?.length ? text : h('span', { class: 'text-gray-400' }, '--')
+	return typeof text === 'object' || text?.length
+		? text
+		: h('span', { class: 'text-gray-400' }, '--')
 }
 
 const route = useRouter()

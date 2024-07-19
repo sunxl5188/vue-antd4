@@ -2,8 +2,7 @@
 	<a-modal
 		v-model:open="state.visible"
 		v-bind="state.attribute"
-		@ok="state.handleConfirm"
-		@cancel="state.handleCancel"
+		v-on="onEvents"
 	>
 		<slot></slot>
 		<template v-if="footer" #footer>
@@ -20,12 +19,14 @@
 interface ModalProps {
 	value: boolean
 	attr?: any
+	event?: any
 	footer?: boolean
 }
 
 const props = withDefaults(defineProps<ModalProps>(), {
 	value: false,
 	attr: () => {},
+	event: () => {},
 	footer: false
 })
 
@@ -58,4 +59,10 @@ const state = reactive({
 		emit('cancel')
 	}
 })
+
+const onEvents = {
+	ok: state.handleConfirm,
+	cancel: state.handleCancel,
+	...props.event
+}
 </script>

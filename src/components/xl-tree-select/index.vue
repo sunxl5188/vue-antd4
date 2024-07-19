@@ -44,14 +44,16 @@ interface PropsType {
 	treeData?: TreeSelectProps['treeData']
 	fieldNames?: FieldNamesType
 	attr?: any
-	events?: any
+	event?: any
 }
 const props = withDefaults(defineProps<PropsType>(), {
 	api: undefined,
 	treeData: () => [],
 	fieldNames: () => {
 		return { children: 'children', label: 'label', value: 'value' }
-	}
+	},
+	attr: () => {},
+	event: () => {}
 })
 
 const emit = defineEmits(['update:value'])
@@ -90,7 +92,7 @@ const attribute = {
 	...props.attr
 }
 
-const onEvents = { ...props.events }
+const onEvents = { ...props.event }
 
 onBeforeMount(async () => {
 	if (props.treeData) {
@@ -98,6 +100,7 @@ onBeforeMount(async () => {
 	}
 	if (props.api) {
 		state.loading = true
+		state.treeData = []
 		state.treeData = await loadDict(props.api)
 		state.loading = false
 	}

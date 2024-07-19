@@ -22,11 +22,11 @@
 interface PropsType {
 	value: Array<number>
 	attr?: any
-	events?: any
+	event?: any
 }
 const props = withDefaults(defineProps<PropsType>(), {
 	attr: () => {},
-	events: () => {
+	event: () => {
 		return {}
 	}
 })
@@ -56,7 +56,7 @@ const state = reactive({
 			const arrays = data.sort((a, b) => a - b)
 			emit('update:value', arrays)
 		}
-		if (props.events.blur) props.events.blur()
+		if (props.event.blur) props.event.blur()
 	}
 })
 
@@ -80,7 +80,7 @@ const attribute = [
 ]
 
 const onEvents = {
-	...props.events,
+	...props.event,
 	blur: state.handleChange
 }
 </script>

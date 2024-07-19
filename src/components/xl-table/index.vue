@@ -1,13 +1,17 @@
 <template>
 	<a-table
-		:loading="loading || state.loading"
+		:loading="loading"
 		:columns="columns"
-		:data-source="!dataSource.length ? state.dataSource : dataSource"
-		:pagination="pagination || state.pagination"
+		:data-source="dataSource"
+		:pagination="{ ...PAGINATION, ...pagination }"
 		v-bind="attribute"
-		v-on="onEvents"
+		v-on="event"
 	>
 		<template #bodyCell="{ text, record, index, column }">
+			<!-- 序号 -->
+			<template v-if="column.dataIndex === 'idx'">
+				{{ state.indexMethod(index) }}
+			</template>
 			<!-- 单元格自动省略 -->
 			<template v-if="column.ellipsis">
 				<a-tooltip :title="state.tooltipDisabled ? text : ''">
@@ -61,84 +65,56 @@
 				></slot>
 			</template>
 		</template>
+		<template
+			v-if="expanded"
+			#expandedRowRender="{ record, index, indent, expanded }"
+		>
+			<slot
+				name="expandedRowRender"
+				:record="record"
+				:index="index"
+				:indent="indent"
+				:expanded="'expanded'"
+			></slot>
+		</template>
 	</a-table>
 </template>
 
 <script setup lang="ts" name="TableComponent">
-import type { TableProps, TableColumnType } from 'ant-design-vue'
-import { request } from '@/utils/request'
+import type { TableColumnType } from 'ant-design-vue'
 
 interface PropsType {
-	loading?: boolean
+	loading: boolean
 	columns: TableColumnType[]
-	api?: string
-	rowSelection?: TableProps['rowSelection']
-	dataSource?: Array<any>
-	pagination?: any
-	filterData?: (data: Array<any>) => void
+	dataSource: Array<any>
+	pagination: any
+	attr?: any
+	event?: any
+	expanded?: boolean
 }
 const props = withDefaults(defineProps<PropsType>(), {
 	loading: false,
 	columns() {
 		return []
 	},
-	api: undefined,
-	rowSelection: (): any => {},
 	dataSource: () => [],
 	pagination: () => {},
-	filterData: undefined
+	attr: () => {},
+	event: () => {
+		return {}
+	},
+	expanded: false
 })
-
-const emit = defineEmits(['change'])
-
 const PAGINATION = {
 	current: 1,
 	pageSize: 10,
 	total: 0,
+	pageSizeOptions: ['5', '10', '15', '20', '25', '30', '50'],
 	showQuickJumper: true,
 	showLessItems: false,
 	showSizeChanger: true
 }
 const state = reactive({
-	loading: false,
-	dataSource: [],
-	pagination: { ...PAGINATION },
-	selectedRowKeys: [] as string[],
-	selectedRows: [] as any[],
-	rowSelection: {
-		type: 'checkbox',
-		onChange: (selectedRowKeys: string[], selectedRows: any[]) => {
-			state.selectedRowKeys = selectedRowKeys
-			state.selectedRows = selectedRows
-		},
-		// getCheckboxProps: (record: any) => ({
-		// 	disabled: record.name === '', // 判断是否满足条件
-		// 	name: record.name
-		// }),
-		...props.rowSelection
-	} as TableProps['rowSelection'],
-	async handleTableChange(pagination = {} as any): Promise<any> {
-		if (props.api) {
-			state.loading = true
-			const current = pagination.current || PAGINATION.current
-			const pageSize = pagination.pageSize || PAGINATION.pageSize
-			const { code, data } = await request({
-				url: props.api,
-				method: 'post',
-				data: { current, pageSize }
-			})
-			if (code === 200 && data) {
-				const { current, pageSize, total, list } = data
-				state.pagination = { ...state.pagination, current, pageSize, total }
-				state.dataSource =
-					Object.prototype.toString.call(props.filterData) ===
-					'[object Function]'
-						? props.filterData!(list)
-						: list
-			}
-			state.loading = false
-		} else emit('change', pagination)
-	},
 	//判断文本是否益出~文本必须是单行
 	tooltipDisabled: false,
 	isBeyond(e: any) {
@@ -147,22 +123,18 @@ const state = reactive({
 		const clientW = textContent.clientWidth
 		const scrollW = textContent.scrollWidth
 		state.tooltipDisabled = scrollW > clientW
-	}
+	},
+	//序号
+	indexMethod: computed(() => (i: number) => {
+		const { current, pageSize } = props.pagination
+		return current * pageSize - pageSize + (i + 1)
+	})
 })
 
 const attribute = {
 	tableLayout: 'fixed',
 	rowKey: 'id',
 	scroll: { x: 1000, scrollToFirstRowOnChange: true },
-	rowSelection: props.rowSelection ? state.rowSelection : null
+	...props.attr
 }
-const onEvents = {
-	change: state.handleTableChange
-}
-
-onBeforeMount(() => {
-	if (props.api) {
-		state.handleTableChange()
-	}
-})
 </script>

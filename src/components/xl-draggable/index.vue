@@ -1,18 +1,16 @@
 <template>
-	<div>
-		<draggable
-			v-model="dataSource"
-			v-bind="draggableAttr"
-			@start="onStart"
-			@end="onEnd"
-		>
-			<template #item="{ element }">
-				<div>
-					<slot :item="element"></slot>
-				</div>
-			</template>
-		</draggable>
-	</div>
+	<draggable
+		v-model="dataSource"
+		v-bind="draggableAttr"
+		@start="onStart"
+		@end="onEnd"
+	>
+		<template #item="{ element }">
+			<div>
+				<slot :item="element"></slot>
+			</div>
+		</template>
+	</draggable>
 </template>
 
 <script setup lang="ts">

@@ -16,7 +16,7 @@ type ValueType = string | Array<string | number> | undefined
 interface PropsType {
 	value: ValueType
 	attr?: any
-	events?: any
+	event?: any
 	api?: string
 }
 interface OptionType {
@@ -29,7 +29,7 @@ type callbackType = string | arrayType
 const props = withDefaults(defineProps<PropsType>(), {
 	value: undefined,
 	attr: () => {},
-	events: () => {},
+	event: () => {},
 	api: undefined
 })
 
@@ -86,7 +86,7 @@ const attribute = {
 //事件
 const onEvents = {
 	change: state.handleChange,
-	...props.events
+	...props.event
 }
 
 onBeforeMount(async () => {

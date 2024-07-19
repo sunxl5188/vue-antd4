@@ -2,28 +2,22 @@
 	<div>
 		<a-table
 			ref="tableRef"
-			:loading="table.loading"
-			:columns="table.columns"
-			:data-source="[]"
+			:loading="state.loading"
+			:columns="state.columns"
+			:data-source="state.list"
 			:row-key="record => record.id"
 			:pagination="false"
-			:scroll="{ y: table.itemHeight * table.end }"
-			@change="table.handleTableChange"
+			:scroll="{ y: state.itemHeight * state.end }"
+			@change="state.handleTableChange"
 			class="virtual"
 		></a-table>
-		<div v-for="item in table.list" :key="item.id">
-			<span>{{ item.id }}</span>
-			<span>{{ item.buyerName }}</span>
-			<span>{{ item.gender }}</span>
-			<span>{{ item.address }}</span>
-		</div>
 	</div>
 </template>
 
 <script setup name="TableVirtually">
 const tableRef = ref()
 const tableList = ref()
-const table = reactive({
+const state = reactive({
 	loading: false,
 	columns: [
 		{ title: '编号', dataIndex: 'id', width: 150 },
@@ -51,29 +45,29 @@ const table = reactive({
 	start: 0, //起始索引
 	end: 10, //结束索引
 	list: computed(() => {
-		return table.initData.slice(table.start, table.end)
+		return state.initData.slice(state.start, state.end)
 	}),
 	computedVisibleCount: computed(() => {
-		return Math.ceil(table.screenHeight / table.itemHeight) + 1
+		return Math.ceil(state.screenHeight / state.itemHeight) + 1
 	}),
 	scrollEvent: ({ target }) => {
 		//当前滚动位置
 		let scrollTop = target.scrollTop
 		//此时的开始索引
-		table.start = Math.floor(scrollTop / table.itemHeight)
+		state.start = Math.floor(scrollTop / state.itemHeight)
 		//此时的结束索引
-		table.end = table.start + 10
+		state.end = state.start + 10
 		//此时的偏移量
-		/* table.startOffset = `translate3d(0,${
-			scrollTop - (scrollTop % table.itemHeight)
+		/* state.startOffset = `translate3d(0,${
+			scrollTop - (scrollTop % state.itemHeight)
 		}px,0)` */
-		//tableList.value.style.transform = table.startOffset
+		//tableList.value.style.transform = state.startOffset
 	}
 })
 
 onMounted(() => {
 	for (let i = 0; i < 100; i++) {
-		table.initData.push({
+		state.initData.push({
 			id: i + 1,
 			buyerName: 'JJJLin',
 			addressDetail: '小区1测试单元3302室',
@@ -86,15 +80,15 @@ onMounted(() => {
 	}
 	setTimeout(() => {
 		const div = document.createElement('div')
-		div.style = `height:${table.initData.length * table.itemHeight}px;position: absolute;z-index: 1;width:100%`
+		div.style = `height:${state.initData.length * state.itemHeight}px;position: absolute;z-index: 1;width:100%`
 		div.className = 'virtual-scroll'
 		const tabBody = document.querySelector('.ant-table-body')
-		tabBody.style.height = `${table.screenHeight}px`
+		tabBody.style.height = `${state.screenHeight}px`
 		tableList.value = document.querySelector('.ant-table-body table')
 		tabBody.append(div)
 		tabBody.addEventListener('scroll', e => {
 			window.requestAnimationFrame(() => {
-				table.scrollEvent(e)
+				state.scrollEvent(e)
 			})
 		})
 	}, 1000)

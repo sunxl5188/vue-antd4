@@ -2,7 +2,7 @@
 	<a-input-number
 		v-model:value="state.value"
 		v-bind="attribute"
-		v-on="events"
+		v-on="event"
 	></a-input-number>
 </template>
 
@@ -10,11 +10,11 @@
 interface PropsType {
 	value: number | undefined
 	attr?: any
-	events?: any
+	event?: any
 }
 const props = withDefaults(defineProps<PropsType>(), {
 	attr: () => {},
-	events: () => {
+	event: () => {
 		return {}
 	}
 })

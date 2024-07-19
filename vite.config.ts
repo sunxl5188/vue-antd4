@@ -120,7 +120,7 @@ export default ({ mode }: { mode: any }) => {
 			port: 8000,
 			// 设置代理，根据我们项目实际情况配置
 			proxy: {
-				[env.VITE_API]: {
+				[`^${env.VITE_API}`]: {
 					target: env.VITE_TARGET, // 后台服务地址
 					changeOrigin: true, // 是否允许不同源
 					secure: false, // 支持https

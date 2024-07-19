@@ -7,14 +7,24 @@
 		class="px-0.5"
 	>
 		<a-row type="flex" justify="start" :gutter="1">
-			<a-col v-for="(item, i) in formItem" :key="i" v-bind="layout">
+			<a-col
+				v-for="(item, i) in formItem"
+				:key="i"
+				:span="item.span"
+				v-bind="item.span ? { span: item.span } : layout"
+			>
 				<!-- 插槽 -->
 				<template v-if="item.slotName">
 					<slot :name="item.slotName" :item="item" :formData="form.formData">
 						--插槽--
 					</slot>
 				</template>
-				<a-form-item v-else :label="item.label" :name="item.prop">
+				<a-form-item
+					v-else
+					:label="item.label"
+					:name="item.prop"
+					v-bind="item.formItemAttr"
+				>
 					<!-- 选择框 -->
 					<XlSelect
 						v-if="item.type === 'select'"
@@ -26,6 +36,8 @@
 					<XlTreeSelect
 						v-else-if="item.type === 'tree'"
 						v-model:value="form.formData[item.prop]"
+						:treeData="item.attribute.options || []"
+						:api="item.api"
 						:attr="{
 							allowClear: true,
 							showSearch: true,
@@ -167,7 +179,6 @@ const form = reactive({
 	},
 	//重置表单
 	handleReset(): void {
-		console.log(2)
 		form.formData = { ...form.initData }
 		form.formRef?.clearValidate()
 	}

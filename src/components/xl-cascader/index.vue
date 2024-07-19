@@ -21,12 +21,12 @@ interface PropsType {
 	value: string[] | undefined
 	label?: string[]
 	attr?: any
-	events?: any
+	event?: any
 	api?: string
 }
 const props = withDefaults(defineProps<PropsType>(), {
 	attr: () => {},
-	events: () => {
+	event: () => {
 		return {}
 	}
 })
@@ -66,12 +66,12 @@ const state = reactive({
 			)
 		}
 		emit('update:label', label)
-		if (props.events.change) props.events.change(data, selectedOptions)
+		if (props.event.change) props.event.change(data, selectedOptions)
 	}
 })
 
 const onEvents = {
-	...props.events,
+	...props.event,
 	change: state.handleChange
 }
 

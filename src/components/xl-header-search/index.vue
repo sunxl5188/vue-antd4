@@ -28,7 +28,7 @@
 							v-if="item.type === 'select'"
 							v-model:value="state.formData[item.prop]"
 							:attr="item.attribute"
-							:events="item.events || {}"
+							v-on="item.event || {}"
 						></XlSelect>
 						<!-- tree -->
 						<XlTreeSelect
@@ -40,7 +40,7 @@
 								placeholder: '请选择',
 								...item.attribute
 							}"
-							:events="item.events || {}"
+							v-on="item.event || {}"
 						></XlTreeSelect>
 						<!-- date-picker range-->
 						<XlDatePicker
@@ -48,35 +48,35 @@
 							v-model:value="state.formData[item.prop]"
 							:type="item.type"
 							:attr="item.attribute"
-							:events="item.events || {}"
+							v-on="item.event || {}"
 						></XlDatePicker>
 						<!-- Cascader -->
 						<XlCascader
 							v-else-if="item.type === 'cascader'"
 							v-model:value="state.formData[item.prop]"
 							:attr="item.attribute"
-							:events="item.events || {}"
+							v-on="item.event || {}"
 						></XlCascader>
 						<!-- Checkbox -->
 						<XlCheckbox
 							v-else-if="item.type === 'checkbox'"
 							v-model:value="state.formData[item.prop]"
 							:attr="item.attribute"
-							:events="item.events || {}"
+							v-on="item.event || {}"
 						></XlCheckbox>
 						<!-- radio -->
 						<XlRadio
 							v-else-if="item.type === 'radio'"
 							v-model:value="state.formData[item.prop]"
 							:attr="item.attribute"
-							:events="item.events || {}"
+							v-on="item.event || {}"
 						></XlRadio>
 						<!-- number -->
 						<XlInputNumber
 							v-else-if="item.type === 'number'"
 							v-model:value="state.formData[item.prop]"
 							:attr="item.attribute"
-							:events="item.events || {}"
+							v-on="item.event || {}"
 						></XlInputNumber>
 						<!-- 输入框文本 -->
 						<a-input
@@ -87,7 +87,7 @@
 								placeholder: '请输入',
 								...item.attribute
 							}"
-							v-on="item.events || {}"
+							v-on="item.event || {}"
 						/>
 					</a-form-item>
 				</a-col>
@@ -127,7 +127,7 @@ interface FormItemType {
 	prop: string
 	type?: string
 	attribute?: any
-	events?: any
+	event?: any
 	slotName?: string
 }
 

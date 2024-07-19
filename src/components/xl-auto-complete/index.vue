@@ -20,12 +20,12 @@ interface PropsType {
 	value: string
 	type: string
 	attr: any
-	events: any
+	event: any
 }
 const props = withDefaults(defineProps<PropsType>(), {
 	type: 'input', //textarea
 	attr: () => {},
-	events: () => {}
+	event: () => {}
 })
 
 const emit = defineEmits(['update:value'])
@@ -54,6 +54,6 @@ const onEvents = {
 	select: state.handleSelect,
 	search: state.handleSearch,
 	change: state.handleChange,
-	...props.events
+	...props.event
 }
 </script>

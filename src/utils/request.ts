@@ -122,7 +122,6 @@ const errorHandle = (status: number, other: string): void => {
  */
 const instance = axios.create({
 	baseURL: import.meta.env.VITE_API,
-	//"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
 	headers: {
 		'Content-Type': 'application/json;charset=UTF-8' //默认
 	},
@@ -177,7 +176,7 @@ instance.interceptors.response.use(
 			errorHandle(response.status, (response.data as any).message)
 			// 超时重新请求
 			// 全局的请求次数,请求的间隙
-			const [RETRY_COUNT, RETRY_DELAY] = [3, 1000]
+			const [RETRY_COUNT, RETRY_DELAY] = [1, 1000]
 
 			if (config && RETRY_COUNT) {
 				// 设置用于跟踪重试计数的变量
@@ -220,12 +219,11 @@ instance.interceptors.response.use(
  */
 export const fetch = (
 	url: string,
-	params?: any,
 	config?: AxiosRequestConfig
 ): AxiosPromise => {
 	return new Promise((resolve, reject) => {
 		instance
-			.get(url, { ...config, ...params })
+			.get(url, { ...config })
 			.then(response => resolve(response))
 			.catch(error => reject(error))
 	})
