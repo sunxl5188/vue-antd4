@@ -67,9 +67,7 @@ const onEvents = {
 }
 </script>
 <style lang="less" scoped>
-::v-deep {
-	.ant-picker {
-		width: 100% !important;
-	}
+::v-deep(.ant-picker) {
+	width: 100% !important;
 }
 </style>

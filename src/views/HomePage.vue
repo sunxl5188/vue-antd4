@@ -49,13 +49,18 @@ onBeforeMount(() => {
 })
 
 const form = reactive({
-	formData: {},
+	formData: {
+		a: undefined,
+		b: undefined,
+		c: [],
+		d: undefined,
+		e: undefined
+	},
 	formItem: [
 		{
 			label: '输入框',
 			prop: 'a',
 			type: 'input',
-			span: 24,
 			formItemAttr: {},
 			attribute: {}
 		},
@@ -63,7 +68,6 @@ const form = reactive({
 			label: '树',
 			prop: 'b',
 			type: 'tree',
-			span: 24,
 			formItemAttr: {},
 			//api: '/index/index/getTreeCity',
 			attribute: {
@@ -91,6 +95,78 @@ const form = reactive({
 								value: 'parent 1-1'
 							}
 						]
+					}
+				]
+			}
+		},
+		{
+			label: '多选',
+			prop: 'c',
+			type: 'checkbox',
+			api: '/index/system/index/code/3',
+			formItemAttr: {},
+			attribute: {}
+		},
+		{
+			label: '单选',
+			prop: 'd',
+			type: 'radio',
+			api: '/index/system/index/code/4',
+			formItemAttr: {},
+			attribute: {}
+		},
+		{
+			label: '下拉',
+			prop: 'e',
+			type: 'select',
+			//api: '/index/system/index/code/1',
+			formItemAttr: {},
+			attribute: {
+				options: [
+					{
+						label: '1',
+						value: '1'
+					},
+					{
+						label: '2',
+						value: '2'
+					}
+				]
+			}
+		},
+		{
+			label: '日期',
+			prop: 'e',
+			type: 'date',
+			formItemAttr: {},
+			attribute: {
+				showTime: false
+			}
+		},
+		{
+			label: '开始结束时间',
+			prop: 'f',
+			type: 'range',
+			formItemAttr: {},
+			attribute: { showTime: false }
+		},
+		{
+			label: '联级',
+			prop: 'g',
+			type: 'cascader',
+			//api: '/index/index/getTreeCity',
+			formItemAttr: {},
+			attribute: {
+				options: [
+					{
+						value: 'zhejiang',
+						label: 'Zhejiang',
+						isLeaf: false
+					},
+					{
+						value: 'jiangsu',
+						label: 'Jiangsu',
+						isLeaf: false
 					}
 				]
 			}

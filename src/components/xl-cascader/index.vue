@@ -13,6 +13,7 @@
 </template>
 
 <script setup lang="ts" name="CascaderComponent">
+import type { CascaderProps } from 'ant-design-vue'
 import { loadDict } from '@/api/common'
 import XlEmpty from '@/components/xl-empty/index.vue'
 import XlLoading from '@/components/xl-loading/index.vue'
@@ -33,8 +34,38 @@ const props = withDefaults(defineProps<PropsType>(), {
 
 const emit = defineEmits(['update:value', 'update:label'])
 
+const state = reactive({
+	loading: false,
+	checked: computed({
+		get: () => props.value,
+		set: (val: string[] | undefined) => {
+			emit('update:value', val)
+		}
+	}),
+	handleChange: (
+		data: string[],
+		selectedOptions: CascaderProps['options'][]
+	) => {
+		let label = [] as any[]
+		if (selectedOptions) {
+			label = selectedOptions.map(
+				item => item![attribute.value.fieldNames.label]
+			)
+		}
+		emit('update:label', label)
+		if (props.event.change) props.event.change(data, selectedOptions)
+	},
+	loadData: async selectedOptions => {
+		const targetOption = selectedOptions[selectedOptions.length - 1]
+		targetOption.loading = true
+		targetOption.children = await loadDict('/index/index/getCityList')
+		targetOption.loading = false
+		attribute.value.options = [...attribute.value.options]
+	}
+})
+
 const attribute = ref({
-	expandTrigger: 'hover',
+	expandTrigger: 'click',
 	placeholder: '请选择',
 	fieldNames: { label: 'label', value: 'value', children: 'children' },
 	showSearch: {
@@ -48,26 +79,8 @@ const attribute = ref({
 			})
 		}
 	},
+	loadData: state.loadData,
 	...props.attr
-})
-const state = reactive({
-	loading: false,
-	checked: computed({
-		get: () => props.value,
-		set: (val: string[] | undefined) => {
-			emit('update:value', val)
-		}
-	}),
-	handleChange: (data: string[], selectedOptions: any[]) => {
-		let label = [] as any[]
-		if (selectedOptions) {
-			label = selectedOptions.map(
-				item => item[attribute.value.fieldNames.label]
-			)
-		}
-		emit('update:label', label)
-		if (props.event.change) props.event.change(data, selectedOptions)
-	}
 })
 
 const onEvents = {

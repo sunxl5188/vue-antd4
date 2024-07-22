@@ -30,12 +30,14 @@ interface PropsType {
 	all?: boolean
 	options?: Array<OptionType>
 	api?: string
+	attr?: any
 }
 
 const props = withDefaults(defineProps<PropsType>(), {
 	all: false,
 	options: () => [],
-	api: undefined
+	api: undefined,
+	attr: () => {}
 })
 
 const emit = defineEmits(['update:value', 'update:label', 'change'])
