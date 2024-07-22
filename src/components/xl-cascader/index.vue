@@ -58,9 +58,22 @@ const state = reactive({
 	loadData: async selectedOptions => {
 		const targetOption = selectedOptions[selectedOptions.length - 1]
 		targetOption.loading = true
-		targetOption.children = await loadDict('/index/index/getCityList')
+		targetOption.children = await state.getCity(targetOption.value)
 		targetOption.loading = false
 		attribute.value.options = [...attribute.value.options]
+	},
+	//获取省数据
+	getCity: (pid: number | string): Promise<any> => {
+		return new Promise((resolve, reject) => {
+			loadDict(`/index/index/getCityList/id/${pid}`)
+				.then((data: Array<any>) => {
+					data.forEach((item: any) => {
+						item.isLeaf = Number(item.levelType) === 3
+					})
+					resolve(data)
+				})
+				.catch(err => reject(err))
+		})
 	}
 })
 
@@ -79,7 +92,6 @@ const attribute = ref({
 			})
 		}
 	},
-	loadData: state.loadData,
 	...props.attr
 })
 
@@ -94,6 +106,24 @@ onBeforeMount(async () => {
 		attribute.value.options = []
 		attribute.value.options = await loadDict(props.api)
 		state.loading = false
+	}
+	//如果没有传数据或api 默认省市区
+	if (!props.api && !props.attr.options?.length) {
+		attribute.value.showSearch = undefined
+		attribute.value.loadData = state.loadData
+
+		let data = await state.getCity(100000)
+		attribute.value.options = data
+		if (props.value?.length) {
+			const i = attribute.value.options.findIndex(
+				o => o.value === props.value[0]
+			)
+			let data = []
+			data = await state.getCity(props.value[0])
+			const k = data.findIndex(o => o.value === props.value[1])
+			data[k].children = await state.getCity(props.value[1])
+			attribute.value.options[i].children = data
+		}
 	}
 })
 </script>

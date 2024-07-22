@@ -12,6 +12,6 @@ export const loadDict = (api: string): Promise<any[]> => {
 				if (code === 200) resolve(data)
 				else resolve([])
 			})
-			.catch(err => reject('访问字典错误' + err))
+			.catch(err => reject(new Error('访问字典错误' + err)))
 	})
 }

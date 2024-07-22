@@ -6,6 +6,31 @@
 	padding: 0;
 }
 
+* {
+	scrollbar-color: #cdcdcd #f1f1f1;
+	/* 滑块颜色  滚动条背景颜色 未生效 */
+	scrollbar-width: thin;
+	/* 滚动条宽度有三种：thin、auto、none */
+
+	&::-webkit-scrollbar {
+		/*滚动条整体样式*/
+		width: 7px !important;
+		/*高宽分别对应横竖滚动条的尺寸*/
+		height: 7px !important;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		/*滚动条里面小方块*/
+		background-color: #cdcdcd !important;
+	}
+
+	&::-webkit-scrollbar-track {
+		/*滚动条里面轨道*/
+		-webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+		background: #f1f1f1;
+	}
+}
+
 html,
 body {
 	font-size: 16px;

@@ -25,6 +25,9 @@ interface PropsType {
 	event?: any
 }
 const props = withDefaults(defineProps<PropsType>(), {
+	value: () => {
+		return []
+	},
 	attr: () => {},
 	event: () => {
 		return {}

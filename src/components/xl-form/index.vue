@@ -83,9 +83,16 @@
 					<XlInputNumber
 						v-else-if="item.type === 'number'"
 						v-model:value="form.formData[item.prop]"
-						:attr="item.attribute"
+						:attr="item.attribute || {}"
 						v-on="item.event || {}"
 					></XlInputNumber>
+					<!-- number -->
+					<XlNumberRange
+						v-else-if="item.type === 'numberRange'"
+						v-model:value="form.formData[item.prop]"
+						:attr="item.attribute || {}"
+						v-on="item.event || {}"
+					></XlNumberRange>
 					<!-- 输入框文本 -->
 					<a-input
 						v-else
@@ -125,7 +132,8 @@ import XlDatePicker from '@/components/xl-date-picker/index.vue'
 import XlCascader from '@/components/xl-cascader/index.vue'
 import XlCheckbox from '@/components/xl-checkbox/index.vue'
 import XlRadio from '@/components/xl-radio/index.vue'
-import XlInputNumber from '@/components/xl-input-number/NumberSection.vue'
+import XlInputNumber from '@/components/xl-input-number/index.vue'
+import XlNumberRange from '@/components/xl-input-number/NumberSection.vue'
 
 interface PropsType {
 	formData: any

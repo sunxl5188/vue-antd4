@@ -7,15 +7,7 @@
 	>
 		<a-row :gutter="10" type="flex" justify="start">
 			<template v-for="(item, i) in formItem" :key="i">
-				<a-col
-					v-show="i < state.colNum || state.expand"
-					:xs="24"
-					:sm="12"
-					:md="8"
-					:lg="8"
-					:xl="6"
-					:xxl="6"
-				>
+				<a-col v-show="i < state.colNum || state.expand" v-bind="layout">
 					<!-- 插槽 -->
 					<template v-if="item.slotName">
 						<slot :name="item.slotName" :item="item" :formData="state.formData">
@@ -92,21 +84,39 @@
 					</a-form-item>
 				</a-col>
 			</template>
+			<a-col v-if="btnLast" v-bind="layout">
+				<slot
+					name="button"
+					:handleSearch="state.handleSearch"
+					:handleReset="state.handleReset"
+				>
+					<a-space>
+						<a-button type="primary" @click="state.handleSearch">查询</a-button>
+						<a-button @click="state.handleReset">重置</a-button>
+					</a-space>
+				</slot>
+			</a-col>
 		</a-row>
-		<a-row>
+		<a-row v-if="!btnLast">
 			<a-col :span="24" style="text-align: right">
-				<a-space>
-					<a-button type="primary" @click="state.handleSearch">查询</a-button>
-					<a-button @click="state.handleReset">重置</a-button>
-					<a-button
-						v-if="formItem.length > state.colNum"
-						type="link"
-						@click="state.expand = !state.expand"
-					>
-						<component :is="state.expand ? 'UpOutlined' : 'DownOutlined'" />
-						{{ state.expand ? '收起' : '展开' }}
-					</a-button>
-				</a-space>
+				<slot
+					name="button"
+					:handleSearch="state.handleSearch"
+					:handleReset="state.handleReset"
+				>
+					<a-space>
+						<a-button type="primary" @click="state.handleSearch">查询</a-button>
+						<a-button @click="state.handleReset">重置</a-button>
+						<a-button
+							v-if="formItem.length > state.colNum"
+							type="link"
+							@click="state.expand = !state.expand"
+						>
+							<component :is="state.expand ? 'UpOutlined' : 'DownOutlined'" />
+							{{ state.expand ? '收起' : '展开' }}
+						</a-button>
+					</a-space>
+				</slot>
 			</a-col>
 		</a-row>
 	</a-form>
@@ -132,9 +142,11 @@ interface FormItemType {
 }
 
 interface PropsType {
-	formAttribute?: any
 	formData: any
 	formItem: Array<FormItemType>
+	formAttribute?: any
+	layout?: any
+	btnLast?: boolean
 }
 
 const props = withDefaults(defineProps<PropsType>(), {
@@ -149,7 +161,18 @@ const props = withDefaults(defineProps<PropsType>(), {
 	},
 	formItem: () => {
 		return []
-	}
+	},
+	layout: () => {
+		return {
+			xs: 24,
+			sm: 12,
+			md: 8,
+			lg: 8,
+			xl: 6,
+			xxl: 6
+		}
+	},
+	btnLast: false
 })
 
 const emit = defineEmits(['search'])
