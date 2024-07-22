@@ -31,7 +31,7 @@ export const shardingUpload = (formData: FormData): Promise<any> => {
 //获取是否已上传过
 export const getUploadAll = (md5: string): Promise<any> => {
 	return new Promise((resolve, reject) => {
-		fetch('/index/index/upload', { md5 })
+		fetch('/index/index/upload', { params: { md5 } })
 			.then((res: any) => {
 				if (res?.code === 200) resolve(res)
 				else reject(new Error('失败'))

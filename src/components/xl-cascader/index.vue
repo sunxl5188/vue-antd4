@@ -19,13 +19,16 @@ import XlEmpty from '@/components/xl-empty/index.vue'
 import XlLoading from '@/components/xl-loading/index.vue'
 
 interface PropsType {
-	value: string[] | undefined
+	value: string[]
 	label?: string[]
 	attr?: any
 	event?: any
 	api?: string
 }
 const props = withDefaults(defineProps<PropsType>(), {
+	value: () => {
+		return []
+	},
 	attr: () => {},
 	event: () => {
 		return {}
@@ -118,7 +121,7 @@ onBeforeMount(async () => {
 			const i = attribute.value.options.findIndex(
 				o => o.value === props.value[0]
 			)
-			let data = []
+			let data: Array<any> = []
 			data = await state.getCity(props.value[0])
 			const k = data.findIndex(o => o.value === props.value[1])
 			data[k].children = await state.getCity(props.value[1])

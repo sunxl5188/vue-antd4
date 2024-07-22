@@ -5,7 +5,7 @@
 		v-bind="attribute"
 		v-on="onEvents"
 	>
-		<a-textarea v-if="type === 'textarea'" @keypress="state.handleKeyPress" />
+		<a-textarea v-if="type === 'textarea'" />
 	</a-auto-complete>
 </template>
 
