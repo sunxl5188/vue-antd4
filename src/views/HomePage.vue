@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<XlLoading :spinning="true"></XlLoading>
 		<xl-auto-complete
 			v-model:value="search.formData.a"
 			type="textarea"
