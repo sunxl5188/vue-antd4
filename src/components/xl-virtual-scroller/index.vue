@@ -31,7 +31,7 @@
 	</DynamicScroller>
 </template>
 
-<script setup lang="ts" name="VirtualScroll">
+<script setup lang="ts" name="XlVirtualScroll">
 import {
 	RecycleScroller,
 	DynamicScroller,
