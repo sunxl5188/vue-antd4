@@ -21,7 +21,7 @@ import {
 } from '@/utils/injectKey'
 import global from '@/utils/globalProperties'
 import * as antIcons from '@ant-design/icons-vue'
-import XlAntd4 from 'xl-antd4'
+// import XlAntd4 from 'xl-antd4'
 
 const app = createApp(App)
 const pinia = createPinia()
@@ -43,6 +43,6 @@ app.use(i18n)
 app.use(global)
 app.use(router)
 app.use(pinia)
-app.use(XlAntd4)
+//app.use(XlAntd4)
 
 app.mount('#app')
